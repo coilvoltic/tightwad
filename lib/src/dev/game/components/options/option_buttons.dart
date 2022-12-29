@@ -22,6 +22,7 @@ class _OptionButtonsState extends State<OptionButtons> {
     return GestureDetector(
       onTap: () => setState(() {
         notifier.changeTheme();
+        notifier.updateThemeChanging();
       }),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),

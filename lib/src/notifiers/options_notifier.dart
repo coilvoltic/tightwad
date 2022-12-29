@@ -4,6 +4,8 @@ import 'package:tightwad/src/database/database.dart';
 
 class OptionsNotifier extends ChangeNotifier {
 
+  bool _isThemeChanging = false;
+
   void setSoundOn() async {
     await Database.registerSoundSettingOn();
   }
@@ -45,5 +47,11 @@ class OptionsNotifier extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void updateThemeChanging() {
+    _isThemeChanging = !_isThemeChanging;
+  }
+
+  bool get getIsThemeChanging => _isThemeChanging;
 
 }

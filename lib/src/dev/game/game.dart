@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:tightwad/src/dev/game/components/background.dart';
 import 'package:tightwad/src/dev/game/components/scores.dart';
-import 'package:tightwad/src/dev/game/components/option_buttons.dart';
+import 'package:tightwad/src/dev/game/components/options/option_buttons.dart';
 import 'package:tightwad/src/dev/game/components/map.dart';
 import 'package:tightwad/src/dev/game/components/confettis.dart';
 import 'package:tightwad/src/dev/game/components/blur.dart';
