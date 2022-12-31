@@ -67,7 +67,7 @@ class SplashScreen extends StatelessWidget {
       ),
       nextScreen: const TightWadHome(),
       backgroundColor: ThemeColors.background.getLightColor,
-      animationDuration: const Duration(seconds: 2),
+      animationDuration: const Duration(milliseconds: 200),
       splashIconSize: 250,
       splashTransition: SplashTransition.slideTransition,
     );

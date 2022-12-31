@@ -50,6 +50,7 @@ class OptionsNotifier extends ChangeNotifier {
 
   void updateThemeChanging() {
     _isThemeChanging = !_isThemeChanging;
+    notifyListeners();
   }
 
   bool get getIsThemeChanging => _isThemeChanging;

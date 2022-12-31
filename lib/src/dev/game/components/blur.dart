@@ -15,8 +15,9 @@ class Blur extends StatefulWidget {
 
 class _BlurState extends State<Blur> {
 
-  bool _isDisplayedBlur       = false;
-  int  _blurAnimationDuration = 0;
+  bool   _isDisplayedBlur       = false;
+  int    _blurAnimationDuration = 0;
+  double _blurValue             = 0.0;
 
   void updateBlur(GameHandlerNotifier gameHandlerNotifier, OptionsNotifier optionsNotifier)
   {
@@ -24,9 +25,11 @@ class _BlurState extends State<Blur> {
                        optionsNotifier.getIsThemeChanging;
     if (gameHandlerNotifier.getGameStatus != GameStatus.playing) {
       _blurAnimationDuration = 1000;
+      _blurValue = 4.0;
     }
     else if (optionsNotifier.getIsThemeChanging) {
-      _blurAnimationDuration = 200;
+      _blurAnimationDuration = 500;
+      _blurValue = 4.0;
     }
   }
 
@@ -39,10 +42,9 @@ class _BlurState extends State<Blur> {
         return Visibility(
           visible: _isDisplayedBlur,
           child: TweenAnimationBuilder<double>(
-            tween: Tween<double>(begin: 0.01, end: 4.0),
+            tween: Tween<double>(begin: 0.01, end: _blurValue),
             duration: Duration(milliseconds: _blurAnimationDuration),
-            builder: (_, blurValue, __)
-            {
+            builder: (_, blurValue, __) {
               return BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: blurValue, sigmaY: blurValue),
                 child: Container(
