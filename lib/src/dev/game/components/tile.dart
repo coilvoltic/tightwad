@@ -1,16 +1,17 @@
 import 'dart:math';
 
+import 'package:flutter_glow/flutter_glow.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/coordinates.dart';
-import 'package:tightwad/src/database/database.dart';
 
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:tightwad/src/utils/utils.dart';
 
 class Tile extends StatefulWidget {
   const Tile({Key? key,
@@ -34,29 +35,25 @@ class _TileState extends State<Tile> {
   bool   isForbiddenMove          = false;
   bool   isRebuilt                = false;
 
-  Widget createChild(double minDimension)
-  {
+  Widget createChild(double minDimension) {
     Color textColor = Colors.white;
 
-    if (owner == Player.algo)
-    {
+    if (owner == Player.algo) {
       textColor = PlayerColors.algo.withAlpha(200);
-    }
-    else if (isForbiddenMove)
-    {
+    } else if (isForbiddenMove) {
       textColor = Colors.grey.withAlpha(50);
-    }
-    else if (owner == Player.user)
-    {
+    } else if (owner == Player.user) {
       textColor = PlayerColors.user.withAlpha(200);
-    }
-    else
-    {
+    } else if (Utils.shouldGlow()) {
+      textColor = Colors.white.withAlpha(170);
+    } else {
       textColor = Colors.grey.withAlpha(200);
     }
 
-    return Text(
+    return GlowText(
       '${widget.number}',
+      blurRadius: Utils.shouldGlow() ? 10.0 : 0.0,
+      glowColor: Utils.shouldGlow() ? textColor : Colors.transparent,
       textAlign: TextAlign.center,
       style: GoogleFonts.inter(
         decoration: TextDecoration.none,
@@ -123,19 +120,19 @@ class _TileState extends State<Tile> {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              color: Database.getThemeSettingLight() ? ThemeColors.background.getLightColor : ThemeColors.background.getDarkColor,
-              borderRadius: BorderRadius.circular(23.0 - 2 * widget.sqNbOfTiles),
+              color: Utils.getBackgroundColorFromTheme(),
+              borderRadius: BorderRadius.circular(45.0 - 5 * widget.sqNbOfTiles),
               boxShadow: [
                 BoxShadow(
-                  blurRadius: 4.0,
+                  blurRadius: 5.0,
                   offset: -Offset(6.5 - widget.sqNbOfTiles / 2, 6.5 - widget.sqNbOfTiles / 2),
-                  color: Database.getThemeSettingLight() ? ThemeColors.tileBrightness.getLightColor : ThemeColors.tileBrightness.getDarkColor,
+                  color: Utils.getTileBrightessColorFromTheme(),
                   inset: owner != Player.none,
                 ),
                 BoxShadow(
-                  blurRadius: 4.0,
+                  blurRadius: 5.0,
                   offset: Offset(6.5 - widget.sqNbOfTiles / 2, 6.5 - widget.sqNbOfTiles / 2),
-                  color: Database.getThemeSettingLight() ? ThemeColors.tileShadow.getLightColor : ThemeColors.tileShadow.getDarkColor,
+                  color: Utils.getTileShadowColorFromTheme(),
                   inset: owner != Player.none,
                 ),
               ]

@@ -1,18 +1,19 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tightwad/src/utils/utils.dart';
 
 class Database {
   static SharedPreferences? _preferences;
 
-  static const _keyTutorialDone      = 'tutorialpass';
-  static const _keyLevel             = 'level';
-  static const _keyThemeSettingLight = 'theme';
-  static const _keySoundSetting      = 'sound';
+  static const _keyGameEntity   = 'entity';
+  static const _keyLevel        = 'level';
+  static const _keyGameTheme    = 'theme';
+  static const _keySoundSetting = 'sound';
 
   static Future init() async =>
     _preferences = await SharedPreferences.getInstance();
 
-  static Future registerTutorialDone() async {
-    await _preferences?.setBool(_keyTutorialDone, true);
+  static Future registerTutorialDone(int newGameEntity) async {
+    await _preferences?.setInt(_keyGameEntity, newGameEntity);
   }
 
   static Future registerSoundSettingOn() async {
@@ -23,12 +24,8 @@ class Database {
     await _preferences?.setBool(_keySoundSetting, false);
   }
 
-  static Future registerThemeSettingLight() async {
-    await _preferences?.setBool(_keyThemeSettingLight, true);
-  }
-
-  static Future registerThemeSettingDark() async {
-    await _preferences?.setBool(_keyThemeSettingLight, false);
+  static Future registerGameTheme(int newGameTheme) async {
+    await _preferences?.setInt(_keyGameTheme, newGameTheme);
   }
 
   static Future registerLevel(int newLevel) async {
@@ -39,8 +36,8 @@ class Database {
     await _preferences?.remove(_keyLevel);
   }
 
-  static bool  getTutorialDone()      => _preferences?.getBool(_keyTutorialDone)      ?? false;
-  static int   getLevel()             => _preferences?.getInt (_keyLevel)             ?? 0;
-  static bool  getThemeSettingLight() => _preferences?.getBool(_keyThemeSettingLight) ?? true;
-  static bool  getSoundSettingOn()    => _preferences?.getBool(_keySoundSetting)      ?? true;
+  static int   getGameEntity()     => _preferences?.getInt (_keyGameEntity)   ?? Utils.TUTORIAL_ENTITY_INDEX;
+  static int   getLevel()          => _preferences?.getInt (_keyLevel)        ?? 0;
+  static int   getGameTheme()      => _preferences?.getInt (_keyGameTheme)    ?? Utils.LIGHT_THEME_INDEX;
+  static bool  getSoundSettingOn() => _preferences?.getBool(_keySoundSetting) ?? true;
 }

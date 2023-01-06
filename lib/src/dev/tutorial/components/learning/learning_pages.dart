@@ -8,6 +8,7 @@ import 'package:tightwad/src/notifiers/entity_notifier.dart';
 
 import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/dev/tutorial/components/learning/utils/mock_map.dart';
+import 'package:tightwad/src/utils/common_enums.dart';
 
 class LearningPages extends StatefulWidget {
   const LearningPages({Key? key}) : super(key: key);
@@ -280,7 +281,7 @@ class _LearningPagesState extends State<LearningPages> {
         Center(
           child: SizedBox.expand(
             child: TextButton(
-              onPressed: () => notifier.setTutorialDone(),
+              onPressed: () => notifier.changeGameEntity(Entity.singleplayer),
               style: const ButtonStyle(
                 splashFactory: NoSplash.splashFactory,
               ),

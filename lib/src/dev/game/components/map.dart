@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:tightwad/src/dev/game/components/tile.dart';
+
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/utils/computation.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
@@ -18,6 +18,7 @@ class Map extends StatefulWidget {
 class _MapState extends State<Map> {
 
   bool _isRebuilt = false;
+  bool _isReset = false;
 
   int _sqNbOfTiles = 1;
   late Widget _grid;
@@ -43,6 +44,7 @@ class _MapState extends State<Map> {
         {
           if (!_isRebuilt)
           {
+            gameHandlerNotifier.resetLevel();
             _sqNbOfTiles = gameHandlerNotifier.getSqNbOfTiles;
             computeGrid(gameHandlerNotifier);
             

@@ -4,9 +4,9 @@ import 'package:tightwad/src/utils/level_template.dart';
 
 List<LevelTemplate> levels = [
   /* 1 */
-  LevelTemplate(3,
+  LevelTemplate(5,
                 Player.user,
-                80,
+                10,
                 80),
   /* 2 */
   LevelTemplate(4,

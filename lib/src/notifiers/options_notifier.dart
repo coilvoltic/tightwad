@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:tightwad/src/database/database.dart';
+import 'package:tightwad/src/utils/common_enums.dart';
+import 'package:tightwad/src/utils/utils.dart';
 
 class OptionsNotifier extends ChangeNotifier {
 
-  bool _isThemeChanging = false;
+  bool _areSettingsChanging = false;
 
   void setSoundOn() async {
     await Database.registerSoundSettingOn();
@@ -14,45 +16,35 @@ class OptionsNotifier extends ChangeNotifier {
     await Database.registerSoundSettingOff();
   }
 
-  void setLightTheme() async {
-    await Database.registerThemeSettingLight();
+  void setGameTheme(int newGameTheme) async {
+    await Database.registerGameTheme(newGameTheme);
   }
 
-  void setDarkTheme() async {
-    await Database.registerThemeSettingDark();
-  }
-
-  void changeTheme()
-  {
-    if (Database.getThemeSettingLight())
-    {
-      setDarkTheme();
-    }
-    else
-    {
-      setLightTheme();
+  void changeTheme(GameTheme newGameTheme) {
+    if (newGameTheme == GameTheme.light) {
+      setGameTheme(Utils.LIGHT_THEME_INDEX);
+    } else if (newGameTheme == GameTheme.dark) {
+      setGameTheme(Utils.DARK_THEME_INDEX);
+    } else if (newGameTheme == GameTheme.diamond) {
+      setGameTheme(Utils.DIAMOND_THEME_INDEX);
     }
     notifyListeners();
   }
 
-  void changeVolume()
-  {
-    if (Database.getSoundSettingOn())
-    {
+  void changeVolume() {
+    if (Database.getSoundSettingOn()) {
       setSoundOff();
-    }
-    else
-    {
+    } else {
       setSoundOn();
     }
     notifyListeners();
   }
 
-  void updateThemeChanging() {
-    _isThemeChanging = !_isThemeChanging;
+  void updateSettingsChaning() {
+    _areSettingsChanging = !_areSettingsChanging;
     notifyListeners();
   }
 
-  bool get getIsThemeChanging => _isThemeChanging;
+  bool get getAreSettingsChanging => _areSettingsChanging;
 
 }

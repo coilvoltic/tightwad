@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/utils/colors.dart';
-import 'package:tightwad/src/database/database.dart';
+import 'package:tightwad/src/utils/utils.dart';
 
 class Scores extends StatefulWidget {
   const Scores({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _ScoresState extends State<Scores> {
     return FaIcon(
       FontAwesomeIcons.userLarge,
       size: gamePxSize / 12,
-      color: Database.getThemeSettingLight() ? ThemeColors.background.getDarkColor : ThemeColors.background.getLightColor,
+      color: Utils.getIconColorFromTheme(),
     );
   }
 
@@ -36,7 +36,7 @@ class _ScoresState extends State<Scores> {
         '${gameHandlerNotifier.getUserScore}',
         style: GoogleFonts.inter(
           decoration: TextDecoration.none,
-          fontSize: gamePxSize / 12,
+          fontSize: gamePxSize / 14,
           fontWeight: FontWeight.bold,
           color: PlayerColors.user,
         ),
@@ -49,7 +49,7 @@ class _ScoresState extends State<Scores> {
     return FaIcon(
       FontAwesomeIcons.robot,
       size: gamePxSize / 12,
-      color: Database.getThemeSettingLight() ? ThemeColors.background.getDarkColor : ThemeColors.background.getLightColor,
+      color: Utils.getIconColorFromTheme(),
     );
   }
 
@@ -61,7 +61,7 @@ class _ScoresState extends State<Scores> {
         '${gameHandlerNotifier.getAlgoScore}',
         style: GoogleFonts.inter(
           decoration: TextDecoration.none,
-          fontSize: gamePxSize / 12,
+          fontSize: gamePxSize / 14,
           fontWeight: FontWeight.bold,
           color: PlayerColors.algo,
         ),

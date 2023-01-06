@@ -1,11 +1,10 @@
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-class FlowThemeMenuDelegate extends FlowDelegate {
+class FlowModeDelegate extends FlowDelegate {
 
-  const FlowThemeMenuDelegate({
+  const FlowModeDelegate({
     required this.controller,
     required this.buttonSize,
     required this.xPos,
@@ -29,19 +28,23 @@ class FlowThemeMenuDelegate extends FlowDelegate {
       double x = 0.0;
       double y = 0.0;
       double z = 0.0;
+      double scale = max(1 - controller.value, 0.9);
 
+      /** Chaque bouton sauf le main. */
       if (i != n - 1) {
-        final double theta = i * pi * 0.5 / (n - 2) + pi;
+        final double theta = pi + i * (pi / 2 - pi / 5) + pi / 10;
         x = radius * cos(theta);
         y = radius * sin(theta);
         z = 0.0;
+        scale = controller.value;
       }
       context.paintChild(
         i,
         transform: Matrix4.identity()
           ..translate(x + xPos, y + yPos, z)
           ..translate(buttonSize / 2, buttonSize / 2)
-          ..rotateZ(controller.value * 2 * pi)
+          ..rotateZ  (controller.value * 2 * pi)
+          ..scale    (scale)
           ..translate(-buttonSize / 2, -buttonSize / 2)
       );
     }

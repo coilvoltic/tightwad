@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
@@ -19,16 +20,18 @@ class _BlurState extends State<Blur> {
   int    _blurAnimationDuration = 0;
   double _blurValue             = 0.0;
 
-  void updateBlur(GameHandlerNotifier gameHandlerNotifier, OptionsNotifier optionsNotifier)
-  {
+  void updateBlur(GameHandlerNotifier gameHandlerNotifier,
+                  OptionsNotifier     optionsNotifier,
+                  EntityNotifier      entityNotifier) {
     _isDisplayedBlur = gameHandlerNotifier.getGameStatus != GameStatus.playing ||
-                       optionsNotifier.getIsThemeChanging;
+                       optionsNotifier.getAreSettingsChanging ||
+                       entityNotifier.getIsModeChanging;
     if (gameHandlerNotifier.getGameStatus != GameStatus.playing) {
       _blurAnimationDuration = 1000;
       _blurValue = 4.0;
     }
-    else if (optionsNotifier.getIsThemeChanging) {
-      _blurAnimationDuration = 500;
+    else if (optionsNotifier.getAreSettingsChanging || entityNotifier.getIsModeChanging) {
+      _blurAnimationDuration = 100;
       _blurValue = 4.0;
     }
   }
@@ -36,9 +39,9 @@ class _BlurState extends State<Blur> {
   @override
   Widget build(BuildContext context) {
     
-    return Consumer2<GameHandlerNotifier, OptionsNotifier>(
-      builder: (context, gameHandlerNotifier, optionsNotifier, _) {
-        updateBlur(gameHandlerNotifier, optionsNotifier);
+    return Consumer3<GameHandlerNotifier, OptionsNotifier, EntityNotifier>(
+      builder: (context, gameHandlerNotifier, optionsNotifier, entityNotifier, _) {
+        updateBlur(gameHandlerNotifier, optionsNotifier, entityNotifier);
         return Visibility(
           visible: _isDisplayedBlur,
           child: TweenAnimationBuilder<double>(

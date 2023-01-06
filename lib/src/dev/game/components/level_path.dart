@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/database/database.dart';
+import 'package:tightwad/src/utils/utils.dart';
 
 class LevelPath extends StatefulWidget {
   const LevelPath({Key? key}) : super(key: key);
@@ -32,12 +32,13 @@ class _LevelPathState extends State<LevelPath> {
   final int nbOfLine = 3;
   final double endMarginPx = 50.0;
 
-  Color passedColor    = Colors.white;
-  Color notPassedColor = Colors.white;
-  Color labelColor     = Colors.white;
-  Color hideColor      = Colors.white;
+  Color _passedColor         = Colors.white;
+  Color _notPassedColor      = Colors.white;
+  Color _hideColor           = Colors.white;
+  Color _labelPassedColor    = Colors.white;
+  Color _labelNotPassedColor = Colors.white;
 
-  AnimatedContainer buildLvl0(Color labelColor)
+  AnimatedContainer buildLvl0()
   {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
@@ -47,9 +48,9 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
-      decoration: const BoxDecoration(
-        color: Colors.green,
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+      decoration: BoxDecoration(
+        color: _passedColor,
+        borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
         child: Text(
@@ -58,7 +59,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: _labelPassedColor,
           ),
         ),
       ),
@@ -75,7 +76,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -90,7 +91,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -100,7 +101,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -117,7 +118,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -132,7 +133,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -142,7 +143,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -159,7 +160,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -174,7 +175,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -184,7 +185,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -202,7 +203,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength,
       height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20.0),
         ),
@@ -221,7 +222,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -231,7 +232,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -249,7 +250,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength,
       height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(20.0),
         ),
@@ -268,7 +269,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -278,7 +279,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -296,7 +297,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength - pathThickness + 1.0,
       height: 2 * outGamePxHeight / (2 * (nbOfLine + 1)) - pathThickness,
       decoration: BoxDecoration(
-        color: hideColor,
+        color: _hideColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20.0),
           bottomLeft: Radius.circular(20.0),
@@ -315,7 +316,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -330,7 +331,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -340,7 +341,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -357,7 +358,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -372,7 +373,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -382,7 +383,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -400,7 +401,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength,
       height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(20.0),
         ),
@@ -419,7 +420,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -429,7 +430,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -447,7 +448,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength,
       height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
           bottomRight: Radius.circular(20.0),
         ),
@@ -466,7 +467,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -476,7 +477,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -494,7 +495,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength + pathThickness / 2,
       height: 2 * outGamePxHeight / (2 * (nbOfLine + 1)) - pathThickness,
       decoration: BoxDecoration(
-        color: hideColor,
+        color: _hideColor,
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(20.0),
           bottomRight: Radius.circular(20.0),
@@ -513,7 +514,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -528,7 +529,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -538,7 +539,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -555,7 +556,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -570,7 +571,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -580,7 +581,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -597,7 +598,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -612,7 +613,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -622,7 +623,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -638,7 +639,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: startOfPathLeft,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -653,7 +654,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -663,7 +664,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -680,7 +681,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: startOfPathLeft,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -694,7 +695,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -709,7 +710,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -719,7 +720,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -736,7 +737,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -751,7 +752,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -761,7 +762,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -778,7 +779,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -793,7 +794,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -803,7 +804,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -821,7 +822,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength,
       height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20.0),
         ),
@@ -840,7 +841,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -850,7 +851,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -868,7 +869,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength,
       height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(20.0),
         ),
@@ -887,7 +888,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -897,7 +898,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -915,7 +916,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength - pathThickness + 1.0,
       height: 2 * outGamePxHeight / (2 * (nbOfLine + 1)) - pathThickness,
       decoration: BoxDecoration(
-        color: hideColor,
+        color: _hideColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20.0),
           bottomLeft: Radius.circular(20.0),
@@ -934,7 +935,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -949,7 +950,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -959,7 +960,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -976,7 +977,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -991,7 +992,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -1001,7 +1002,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -1019,7 +1020,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength,
       height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(20.0),
         ),
@@ -1038,7 +1039,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -1048,7 +1049,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -1066,7 +1067,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength,
       height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
           bottomRight: Radius.circular(20.0),
         ),
@@ -1085,7 +1086,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -1095,7 +1096,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -1113,7 +1114,7 @@ class _LevelPathState extends State<LevelPath> {
       width: dashLength - pathThickness + 1.0,
       height: 2 * outGamePxHeight / (2 * (nbOfLine + 1)) - pathThickness,
       decoration: BoxDecoration(
-        color: hideColor,
+        color: _hideColor,
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(20.0),
           bottomRight: Radius.circular(20.0),
@@ -1132,7 +1133,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -1147,7 +1148,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -1157,7 +1158,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -1174,7 +1175,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -1189,7 +1190,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -1199,7 +1200,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -1216,7 +1217,7 @@ class _LevelPathState extends State<LevelPath> {
       ),
       width: dashLength,
       height: pathThickness,
-      color: isPassed ? passedColor : notPassedColor,
+      color: isPassed ? _passedColor : _notPassedColor,
     );
   }
 
@@ -1231,7 +1232,7 @@ class _LevelPathState extends State<LevelPath> {
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
       decoration: BoxDecoration(
-        color: isPassed ? passedColor : notPassedColor,
+        color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Center(
@@ -1241,7 +1242,7 @@ class _LevelPathState extends State<LevelPath> {
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
           ),
         ),
       ),
@@ -1255,7 +1256,7 @@ class _LevelPathState extends State<LevelPath> {
     height          = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
     width           = MediaQuery.of(context).size.width;
     gamePxSize      = min(min(width, height) / 1, height / 1.7);
-    outGamePxHeight = (height - gamePxSize) / 2;
+    outGamePxHeight = (height - gamePxSize / 5) / 2 - 200;
 
     startOfPathLeft = gamePxSize / 3.3 + 10;
     endOfPathRight  = width - endMarginPx;
@@ -1265,10 +1266,11 @@ class _LevelPathState extends State<LevelPath> {
     return Consumer2<GameHandlerNotifier, OptionsNotifier>(
       builder: (context, gameHandlerNotifier, optionsNotifier, _) {
 
-        hideColor      = Database.getThemeSettingLight() ? ThemeColors.background.getLightColor : ThemeColors.background.getDarkColor;
-        labelColor     = Database.getThemeSettingLight() ? ThemeColors.background.getDarkColor  : ThemeColors.background.getLightColor;
-        passedColor    = Colors.green;
-        notPassedColor = Database.getThemeSettingLight() ? Colors.white54 : Colors.black12;
+        _hideColor           = Utils.getBackgroundColorFromTheme    ();
+        _passedColor         = Utils.getPassedColorFromTheme        ();
+        _notPassedColor      = Utils.getNotPassedColorFromTheme     ();
+        _labelPassedColor    = Utils.getLabelPassedColorFromTheme   ();
+        _labelNotPassedColor = Utils.getLabelNotPassedColorFromTheme();
 
         return SafeArea(
 
@@ -1297,7 +1299,7 @@ class _LevelPathState extends State<LevelPath> {
                       buildUpperLeftHidder (),
                       buildUpperRightHidder(),
                           
-                      buildLvl0  (labelColor),
+                      buildLvl0  (),
                       buildLvl1  (gameHandlerNotifier.getLvl > 1),
                       buildLvl2  (gameHandlerNotifier.getLvl > 2),
                       buildLvl3  (gameHandlerNotifier.getLvl > 3),

@@ -11,7 +11,8 @@ import 'package:tightwad/src/database/database.dart';
 class GameHandlerNotifier extends ChangeNotifier {
 
   GameStatus gameStatus = GameStatus.playing;
-  int lvl = Database.getLevel();
+  // int lvl = Database.getLevel();
+  int lvl = 5;
   bool isNewLvl = false;
   Coordinates algoNextMove = Coordinates(0,0);
 
