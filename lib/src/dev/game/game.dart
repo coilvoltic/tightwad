@@ -26,7 +26,6 @@ class Game extends StatelessWidget {
 
     return Consumer<EntityNotifier>(
       builder: (context, _, __) {
-        print('KL parent rebuilt');
         if (Database.getGameEntity() == Utils.MULTIPLAYER_ENTITY_INDEX) {
           return Stack(
             children: const [

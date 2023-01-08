@@ -5,6 +5,7 @@ import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/dev/game/components/common/options/flow_settings_delegate%20copy.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
+import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,6 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
   double _borderRadius   = 0.0;
 
   final double _blurRadius        = 4.0;
-  final int    _animationDuration = 150;
 
   @override
   void initState() {
@@ -86,7 +86,7 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
         }
       },
       child: AnimatedContainer(
-        duration: Duration(milliseconds: _animationDuration),
+        duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
         width: _buttonSize,
         height: _buttonSize,
         decoration: Utils.buildNeumorphismBox(_borderRadius,
@@ -129,9 +129,9 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
       updateSettingsController();
       _areSettingsChanging = _optionsNotifier.getAreSettingsChanging;
     }
-    return Consumer<EntityNotifier>(
-      builder: (context, entityNotifier, __) {
-        if (entityNotifier.getIsModeChanging) {
+    return Consumer2<EntityNotifier, GameHandlerNotifier>(
+      builder: (context, entityNotifier, gameHandlerNotifier, _) {
+        if (entityNotifier.getIsModeChanging || gameHandlerNotifier.getGameStatus != GameStatus.playing) {
           return Container();
         } else {
           return buildSettingsButtons();

@@ -18,7 +18,6 @@ class Map extends StatefulWidget {
 class _MapState extends State<Map> {
 
   bool _isRebuilt = false;
-  bool _isReset = false;
 
   int _sqNbOfTiles = 1;
   late Widget _grid;
@@ -44,7 +43,6 @@ class _MapState extends State<Map> {
         {
           if (!_isRebuilt)
           {
-            gameHandlerNotifier.resetLevel();
             _sqNbOfTiles = gameHandlerNotifier.getSqNbOfTiles;
             computeGrid(gameHandlerNotifier);
             

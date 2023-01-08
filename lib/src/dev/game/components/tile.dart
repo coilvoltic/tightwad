@@ -41,13 +41,13 @@ class _TileState extends State<Tile> {
     if (owner == Player.algo) {
       textColor = PlayerColors.algo.withAlpha(200);
     } else if (isForbiddenMove) {
-      textColor = Colors.grey.withAlpha(50);
+      textColor = ThemeColors.labelColor.lightOrDark.withAlpha(50);
     } else if (owner == Player.user) {
       textColor = PlayerColors.user.withAlpha(200);
     } else if (Utils.shouldGlow()) {
-      textColor = Colors.white.withAlpha(170);
+      textColor = ThemeColors.labelColor.diamond.withAlpha(170);
     } else {
-      textColor = Colors.grey.withAlpha(200);
+      textColor = ThemeColors.labelColor.lightOrDark.withAlpha(200);
     }
 
     return GlowText(

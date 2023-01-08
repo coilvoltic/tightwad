@@ -83,6 +83,14 @@ class LabelNotPassed {
   Color get getDiamondColor => diamond;
 }
 
+class Label {
+  Color lightOrDark = Colors.grey;
+  Color diamond     = Colors.white;
+
+  Color get getLightColor   => lightOrDark;
+  Color get getDiamondColor => diamond;
+}
+
 class ThemeColors {
   static Background     background          = Background();
   static TileShadow     tileShadow          = TileShadow();
@@ -92,6 +100,7 @@ class ThemeColors {
   static NotPassed      notPassedColor      = NotPassed();
   static LabelPassed    labelPassedColor    = LabelPassed();
   static LabelNotPassed labelNotPassedColor = LabelNotPassed();
+  static Label          labelColor           = Label();
 }
 
 class PlayerColors {

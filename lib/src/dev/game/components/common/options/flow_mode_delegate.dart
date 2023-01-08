@@ -19,7 +19,7 @@ class FlowModeDelegate extends FlowDelegate {
   @override
   void paintChildren(FlowPaintingContext context) {
 
-    const double buttonSizeRatio = 1.8;
+    const double buttonSizeRatio = 1.5;
     final double radius = buttonSize * buttonSizeRatio * controller.value;
     final int n = context.childCount;
 

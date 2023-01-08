@@ -53,11 +53,6 @@ class _StatementState extends State<Statement> {
       _statement = winStatements[statementIndex];
       _sizeRatio = statementIndex == 2 ? 38 : 50;
     }
-    else if (notifier.getGameStatus == GameStatus.start)
-    {
-      _statement = "GO";
-      _sizeRatio = 80;
-    }
     else if (notifier.getGameStatus == GameStatus.nextlevel)
     {
       _statement = "TAP TO NEXT!";

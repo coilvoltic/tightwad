@@ -1,6 +1,6 @@
 enum GameTheme { dark, light, diamond, none }
 
-enum GameStatus { start, playing, lose, win, nextlevel, tryagain, finish }
+enum GameStatus { playing, lose, win, nextlevel, tryagain, finish }
 
 enum VolumeMode { up, off }
 

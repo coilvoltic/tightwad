@@ -22,6 +22,8 @@ class Utils {
   // ignore: constant_identifier_names
   static const int MULTIPLAYER_ENTITY_INDEX = 2;
 
+  static const int THEME_ANIMATION_DURATION_MS = 150;
+
 
   static Color getBackgroundColorFromTheme() {
     if (Database.getGameTheme() == LIGHT_THEME_INDEX) {
