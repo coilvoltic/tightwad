@@ -1,5 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_glow/flutter_glow.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -55,19 +56,20 @@ class SplashScreen extends StatelessWidget {
     return AnimatedSplashScreen(
       splash: SafeArea(
         child: Center(
-          child: Text('tightwad!',
+          child: GlowText('tightwad!',
+          blurRadius: 5.0,
             style: GoogleFonts.parisienne(
               decoration: TextDecoration.none,
               fontSize: 80.0,
               fontWeight: FontWeight.bold,
-              color: ThemeColors.background.getDarkColor,
+              color: Colors.white,
             ),
           ),
         ),
       ),
       nextScreen: const TightWadHome(),
-      backgroundColor: ThemeColors.background.getLightColor,
-      animationDuration: const Duration(milliseconds: 200),
+      backgroundColor: ThemeColors.background.getDiamondColor,
+      animationDuration: const Duration(milliseconds: 2000),
       splashIconSize: 250,
       splashTransition: SplashTransition.slideTransition,
     );

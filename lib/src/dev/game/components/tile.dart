@@ -119,24 +119,10 @@ class _TileState extends State<Tile> {
             margin: EdgeInsets.all(-0.6 * widget.sqNbOfTiles + 8),
             width: double.infinity,
             height: double.infinity,
-            decoration: BoxDecoration(
-              color: Utils.getBackgroundColorFromTheme(),
-              borderRadius: BorderRadius.circular(45.0 - 5 * widget.sqNbOfTiles),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 5.0,
-                  offset: -Offset(6.5 - widget.sqNbOfTiles / 2, 6.5 - widget.sqNbOfTiles / 2),
-                  color: Utils.getTileBrightessColorFromTheme(),
-                  inset: owner != Player.none,
-                ),
-                BoxShadow(
-                  blurRadius: 5.0,
-                  offset: Offset(6.5 - widget.sqNbOfTiles / 2, 6.5 - widget.sqNbOfTiles / 2),
-                  color: Utils.getTileShadowColorFromTheme(),
-                  inset: owner != Player.none,
-                ),
-              ]
-            ),
+            decoration: Utils.buildNeumorphismBox(45.0 - 5 * widget.sqNbOfTiles,
+                                                  5.0,
+                                                  6.5 - widget.sqNbOfTiles / 2,
+                                                  owner != Player.none),
             child: Center(
               child: createChild(
                 min(min(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height) / 1, MediaQuery.of(context).size.height / 1.7)

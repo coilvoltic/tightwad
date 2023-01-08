@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/utils/colors.dart';
+
+import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
 import 'common_enums.dart';
 
@@ -113,7 +115,7 @@ class Utils {
     return Database.getGameTheme() == DIAMOND_THEME_INDEX;
   }
 
-  static bool isPressedFromTheme(GameTheme buttonGameTheme) {
+  static bool isPressedFromTheme(final GameTheme buttonGameTheme) {
     if (Database.getGameTheme() == LIGHT_THEME_INDEX   && buttonGameTheme == GameTheme.light ||
         Database.getGameTheme() == DARK_THEME_INDEX    && buttonGameTheme == GameTheme.dark  ||
         Database.getGameTheme() == DIAMOND_THEME_INDEX && buttonGameTheme == GameTheme.diamond) {
@@ -122,12 +124,38 @@ class Utils {
     return false;
   }
 
-  static bool isPressedFromGameEntity(Entity gameEntity) {
+  static bool isPressedFromGameEntity(final Entity gameEntity) {
     if (Database.getGameEntity() == SINGLEPLAYER_ENTITY_INDEX && gameEntity == Entity.singleplayer ||
         Database.getGameEntity() == MULTIPLAYER_ENTITY_INDEX && gameEntity  == Entity.multiplayer) {
       return true;
     }
     return false;
+  }
+
+  /// Informations.
+  static BoxDecoration buildNeumorphismBox(final double borderRadius,
+                                           final double blurRadius,
+                                           final double offset,
+                                           final bool   isPressed) {
+
+    return BoxDecoration(
+      color: Utils.getBackgroundColorFromTheme(),
+      borderRadius: BorderRadius.circular(borderRadius),
+      boxShadow: [
+        BoxShadow(
+          blurRadius: blurRadius,
+          offset: -Offset(offset, offset),
+          color: Utils.getTileBrightessColorFromTheme(),
+          inset: isPressed,
+        ),
+        BoxShadow(
+          blurRadius: blurRadius,
+          offset: Offset(offset, offset),
+          color: Utils.getTileShadowColorFromTheme(),
+          inset: isPressed,
+        ),
+      ]
+    );
   }
 
 }

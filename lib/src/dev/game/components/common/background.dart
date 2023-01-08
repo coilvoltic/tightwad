@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/utils.dart';
 

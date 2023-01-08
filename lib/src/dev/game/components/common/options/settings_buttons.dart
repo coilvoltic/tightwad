@@ -89,24 +89,10 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
         duration: Duration(milliseconds: _animationDuration),
         width: _buttonSize,
         height: _buttonSize,
-        decoration: BoxDecoration(
-          color: Utils.getBackgroundColorFromTheme(),
-          borderRadius: BorderRadius.circular(_borderRadius),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: _blurRadius,
-              offset: -Offset(_offsetSize, _offsetSize),
-              color: Utils.getTileBrightessColorFromTheme(),
-              inset: optionButtonPackage.type == OptionButtonType.volume ? Database.getSoundSettingOn() : Utils.isPressedFromTheme(optionButtonPackage.theme),
-            ),
-            BoxShadow(
-              blurRadius: _blurRadius,
-              offset: Offset(_offsetSize, _offsetSize),
-              color: Utils.getTileShadowColorFromTheme(),
-              inset: optionButtonPackage.type == OptionButtonType.volume ? Database.getSoundSettingOn() : Utils.isPressedFromTheme(optionButtonPackage.theme),
-            ),
-          ]
-        ),
+        decoration: Utils.buildNeumorphismBox(_borderRadius,
+                                              _blurRadius,
+                                              _offsetSize,
+                                              optionButtonPackage.isPressed),
         child: Icon(
           optionButtonPackage.icon,
           color: Utils.getIconColorFromTheme(),

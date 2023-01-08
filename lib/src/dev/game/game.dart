@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tightwad/src/database/database.dart';
+import 'package:tightwad/src/dev/game/components/common/background.dart';
 
-import 'package:tightwad/src/dev/game/components/background.dart';
-import 'package:tightwad/src/dev/game/components/common/options/big_button.dart';
-import 'package:tightwad/src/dev/game/components/common/options/blur.dart';
+import 'package:tightwad/src/dev/game/components/common/big_button.dart';
+import 'package:tightwad/src/dev/game/components/common/blur.dart';
 import 'package:tightwad/src/dev/game/components/common/options/settings_buttons.dart';
 import 'package:tightwad/src/dev/game/components/confettis.dart';
 import 'package:tightwad/src/dev/game/components/level_path.dart';
 import 'package:tightwad/src/dev/game/components/map.dart';
+import 'package:tightwad/src/dev/game/components/multiplayer/room_lobby.dart';
 import 'package:tightwad/src/dev/game/components/scores.dart';
 import 'package:tightwad/src/dev/game/components/statement.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
-import 'package:tightwad/src/utils/common_enums.dart';
+import 'package:tightwad/src/utils/utils.dart';
 
 import 'components/common/options/modes_buttons.dart';
 
@@ -22,21 +24,36 @@ class Game extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-  EntityNotifier entityNotifier = Provider.of<EntityNotifier>(context, listen: true);
-    
-  return Stack(
-      children: [
-        const Background(),
-        (entityNotifier.getEntity == Entity.singleplayer) ? const LevelPath() : Container(),
-        const Scores(),
-        (entityNotifier.getEntity == Entity.singleplayer) ? const Map() : Container(),
-        (entityNotifier.getEntity == Entity.singleplayer) ? const Confettis() : Container(),
-        const Blur(),
-        (entityNotifier.getEntity == Entity.singleplayer) ? const Statement() : Container(),
-        const BigButton(),
-        const SettingsButtons(),
-        const ModesButtons(),
-      ],
+    return Consumer<EntityNotifier>(
+      builder: (context, _, __) {
+        print('KL parent rebuilt');
+        if (Database.getGameEntity() == Utils.MULTIPLAYER_ENTITY_INDEX) {
+          return Stack(
+            children: const [
+              Background(),
+              RoomLobby(),
+              Blur(),
+              BigButton(),
+              SettingsButtons(),
+              ModesButtons(),
+            ],
+          );
+        }
+        return Stack(
+          children: const [
+            Background(),
+            LevelPath(),
+            Scores(),
+            Map(),
+            Confettis(),
+            Blur(),
+            Statement(),
+            BigButton(),
+            SettingsButtons(),
+            ModesButtons(),
+          ],
+        );
+      }
     );
   }
 }

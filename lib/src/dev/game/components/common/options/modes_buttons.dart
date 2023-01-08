@@ -88,24 +88,10 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
         duration: Duration(milliseconds: _animationDuration),
         width: _buttonSize,
         height: _buttonSize,
-        decoration: BoxDecoration(
-          color: Utils.getBackgroundColorFromTheme(),
-          borderRadius: BorderRadius.circular(_borderRadius),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: _blurRadius,
-              offset: -Offset(_offsetSize, _offsetSize),
-              color: Utils.getTileBrightessColorFromTheme(),
-              inset: optionButtonPackage.isPressed,
-            ),
-            BoxShadow(
-              blurRadius: _blurRadius,
-              offset: Offset(_offsetSize, _offsetSize),
-              color: Utils.getTileShadowColorFromTheme(),
-              inset: optionButtonPackage.isPressed,
-            ),
-          ]
-        ),
+        decoration: Utils.buildNeumorphismBox(_borderRadius,
+                                              _blurRadius,
+                                              _offsetSize,
+                                              optionButtonPackage.isPressed),
         child: Icon(
           optionButtonPackage.icon,
           color: Utils.getIconColorFromTheme(),
