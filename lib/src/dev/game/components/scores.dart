@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,7 +50,7 @@ class _ScoresState extends State<Scores> {
     return FaIcon(
       FontAwesomeIcons.robot,
       size: gamePxSize / 12,
-      color: Utils.getIconColorFromTheme(),
+      color: Utils.getPassedColorFromTheme(),
     );
   }
 

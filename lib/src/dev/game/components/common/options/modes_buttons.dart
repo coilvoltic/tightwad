@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tightwad/src/database/database.dart';
+import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/dev/game/components/common/options/flow_mode_delegate.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 
@@ -25,6 +27,7 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
   late AnimationController _modeController;
   late EntityNotifier      _entityNotifier;
   late GameHandlerNotifier _gameHandlerNotifier;
+  late OptionsNotifier     _optionsNotifier;
   
   bool _isModeChanging = false;
 
@@ -44,16 +47,15 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
       duration: const Duration(milliseconds: 250),
       vsync: this,
     );
-    _entityNotifier  = EntityNotifier();
+    _entityNotifier = EntityNotifier();
     _gameHandlerNotifier = GameHandlerNotifier();
+    _optionsNotifier = OptionsNotifier();
     super.initState();
   }
 
   @override
   void dispose() {
     _modeController.dispose();
-    _entityNotifier.dispose();
-    _gameHandlerNotifier.dispose();
     super.dispose();
   }
 
@@ -85,8 +87,10 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
           _entityNotifier.updateModeChanging(),
         } else if (optionButtonPackage.type == OptionButtonType.mode) {
           _entityNotifier.updateModeChanging(),
-          _entityNotifier.changeGameEntity(optionButtonPackage.mode),
-          if (optionButtonPackage.mode == Entity.singleplayer) {
+          if (!optionButtonPackage.isPressed) {
+            _entityNotifier.changeGameEntity(optionButtonPackage.mode),
+          },
+          if (optionButtonPackage.mode == Entity.singleplayerwelcome) {
             _gameHandlerNotifier.resetLevel(),
           }
         }
@@ -116,8 +120,8 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
         xPos: MediaQuery.of(context).size.width  - _xMarginOffset - _buttonSize,
         yPos: MediaQuery.of(context).size.height - _yMarginOffset - _buttonSize),
       children: <OptionButtonPackage> [
-        OptionButtonPackage(icon: Icons.person, type: OptionButtonType.mode, mode: Entity.singleplayer, isPressed: Utils.isPressedFromGameEntity(Entity.singleplayer)),
-        OptionButtonPackage(icon: Icons.group, type: OptionButtonType.mode, mode: Entity.multiplayer, isPressed: Utils.isPressedFromGameEntity(Entity.multiplayer)),
+        OptionButtonPackage(icon: Icons.person, type: OptionButtonType.mode, mode: Entity.singleplayerwelcome, isPressed: Utils.isPressedFromGameEntity(Entity.singleplayergame)),
+        OptionButtonPackage(icon: Icons.group, type: OptionButtonType.mode, mode: Entity.multiplayerwelcome, isPressed: Utils.isPressedFromGameEntity(Entity.multiplayergame)),
         OptionButtonPackage(icon: _entityNotifier.getIsModeChanging ? Icons.close : Icons.home,
                             type: OptionButtonType.main),
       ].map<Widget>(buildModeButton).toList(),
@@ -127,21 +131,19 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     _entityNotifier      = Provider.of<EntityNotifier>(context, listen: true);
-    _gameHandlerNotifier = Provider.of<GameHandlerNotifier>(context, listen: false);
+    _gameHandlerNotifier = Provider.of<GameHandlerNotifier>(context, listen: true);
+    _optionsNotifier     = Provider.of<OptionsNotifier>(context, listen: true);
     
     constantsCalculation();
     if (_isModeChanging != _entityNotifier.getIsModeChanging) {
       updateModeController();
       _isModeChanging = _entityNotifier.getIsModeChanging;
     }
-    return Consumer2<OptionsNotifier, GameHandlerNotifier>(
-      builder: (context, optionsNotifier, gameHandlerNotifier, _) {
-        if (optionsNotifier.getAreSettingsChanging || gameHandlerNotifier.getGameStatus != GameStatus.playing) {
-          return Container();
-        } else {
-          return buildModesButtons();
-        }
+    if (_optionsNotifier.getAreSettingsChanging || _gameHandlerNotifier.getGameStatus != GameStatus.playing ||
+        (Database.getGameEntity() != Utils.SINGLEPLAYERGAME_ENTITY_INDEX && Database.getGameEntity() != Utils.MULTIPLAYERGAME_ENTITY_INDEX)) {
+        return Container();
+      } else {
+        return buildModesButtons();
       }
-    );
-  }
+    }
 }

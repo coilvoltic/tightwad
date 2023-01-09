@@ -8,7 +8,6 @@ class EntityNotifier extends ChangeNotifier {
 
   Entity entity = Entity.tutorial;
   TutorialPhase tutoPhase = TutorialPhase.welcome;
-
   bool _isModeChanging = false;
 
   void registerTutorialDone(int newGameEntity) async {
@@ -19,10 +18,14 @@ class EntityNotifier extends ChangeNotifier {
     entity = newGameEntity;
     if (entity == Entity.tutorial) {
       registerTutorialDone(Utils.TUTORIAL_ENTITY_INDEX);
-    } else if (entity == Entity.singleplayer) {
-      registerTutorialDone(Utils.SINGLEPLAYER_ENTITY_INDEX);
-    } else if (entity == Entity.multiplayer) {
-      registerTutorialDone(Utils.MULTIPLAYER_ENTITY_INDEX);
+    } else if (entity == Entity.singleplayergame) {
+      registerTutorialDone(Utils.SINGLEPLAYERGAME_ENTITY_INDEX);
+    } else if (entity == Entity.multiplayergame) {
+      registerTutorialDone(Utils.MULTIPLAYERGAME_ENTITY_INDEX);
+    } else if (entity == Entity.singleplayerwelcome) {
+      registerTutorialDone(Utils.SINGLEPLAYERWELCOME_ENTITY_INDEX);
+    } else if (entity == Entity.multiplayerwelcome) {
+      registerTutorialDone(Utils.MULTIPLAYERWELCOME_ENTITY_INDEX);
     }
     notifyListeners();
   }

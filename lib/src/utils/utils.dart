@@ -18,10 +18,15 @@ class Utils {
   // ignore: constant_identifier_names
   static const int TUTORIAL_ENTITY_INDEX = 0;
   // ignore: constant_identifier_names
-  static const int SINGLEPLAYER_ENTITY_INDEX = 1;
+  static const int SINGLEPLAYERGAME_ENTITY_INDEX = 1;
   // ignore: constant_identifier_names
-  static const int MULTIPLAYER_ENTITY_INDEX = 2;
+  static const int MULTIPLAYERGAME_ENTITY_INDEX = 2;
+  // ignore: constant_identifier_names
+  static const int SINGLEPLAYERWELCOME_ENTITY_INDEX = 3;
+  // ignore: constant_identifier_names
+  static const int MULTIPLAYERWELCOME_ENTITY_INDEX = 4;
 
+  // ignore: constant_identifier_names
   static const int THEME_ANIMATION_DURATION_MS = 150;
 
 
@@ -36,7 +41,7 @@ class Utils {
     return Colors.white;
   }
 
-  static Color getTileBrightessColorFromTheme() {
+  static Color getTileBrightnessColorFromTheme() {
     if (Database.getGameTheme() == LIGHT_THEME_INDEX) {
       return ThemeColors.tileBrightness.getLightColor;
     } else if (Database.getGameTheme() == DARK_THEME_INDEX) {
@@ -113,6 +118,16 @@ class Utils {
     return Colors.white;
   }
 
+  static Color getLabelColorFromTheme() {
+    if (Database.getGameTheme() == LIGHT_THEME_INDEX ||
+        Database.getGameTheme() == DARK_THEME_INDEX) {
+      return ThemeColors.labelColor.lightOrDark;
+    } else if (Database.getGameTheme() == DIAMOND_THEME_INDEX) {
+      return ThemeColors.labelColor.diamond;
+    }
+    return Colors.white;
+  }
+
   static bool shouldGlow() {
     return Database.getGameTheme() == DIAMOND_THEME_INDEX;
   }
@@ -127,8 +142,8 @@ class Utils {
   }
 
   static bool isPressedFromGameEntity(final Entity gameEntity) {
-    if (Database.getGameEntity() == SINGLEPLAYER_ENTITY_INDEX && gameEntity == Entity.singleplayer ||
-        Database.getGameEntity() == MULTIPLAYER_ENTITY_INDEX && gameEntity  == Entity.multiplayer) {
+    if (Database.getGameEntity() == SINGLEPLAYERGAME_ENTITY_INDEX && gameEntity == Entity.singleplayergame ||
+        Database.getGameEntity() == MULTIPLAYERGAME_ENTITY_INDEX && gameEntity  == Entity.multiplayergame) {
       return true;
     }
     return false;
@@ -147,7 +162,7 @@ class Utils {
         BoxShadow(
           blurRadius: blurRadius,
           offset: -Offset(offset, offset),
-          color: Utils.getTileBrightessColorFromTheme(),
+          color: Utils.getTileBrightnessColorFromTheme(),
           inset: isPressed,
         ),
         BoxShadow(

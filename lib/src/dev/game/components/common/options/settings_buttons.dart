@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/dev/game/components/common/options/flow_settings_delegate%20copy.dart';
+import 'package:tightwad/src/dev/game/game.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 
@@ -24,6 +25,8 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
 
   late AnimationController _settingsControler;
   late OptionsNotifier     _optionsNotifier;
+  late EntityNotifier      _entityNotifier;
+  late GameHandlerNotifier _gameHandlerNotifier;
   bool _areSettingsChanging = false;
 
   double _gamePxSize     = 0.0;
@@ -43,13 +46,14 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
       vsync: this,
     );
     _optionsNotifier = OptionsNotifier();
+    _entityNotifier = EntityNotifier();
+    _gameHandlerNotifier = GameHandlerNotifier();
     super.initState();
   }
 
   @override
   void dispose() {
     _settingsControler.dispose();
-    _optionsNotifier.dispose();
     super.dispose();
   }
 
@@ -124,19 +128,20 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     _optionsNotifier = Provider.of<OptionsNotifier>(context, listen: true);
+    _gameHandlerNotifier = Provider.of<GameHandlerNotifier>(context, listen: true);
+    _entityNotifier     = Provider.of<EntityNotifier>(context, listen: true);
+    
     constantsCalculation();
     if (_areSettingsChanging != _optionsNotifier.getAreSettingsChanging) {
       updateSettingsController();
       _areSettingsChanging = _optionsNotifier.getAreSettingsChanging;
     }
-    return Consumer2<EntityNotifier, GameHandlerNotifier>(
-      builder: (context, entityNotifier, gameHandlerNotifier, _) {
-        if (entityNotifier.getIsModeChanging || gameHandlerNotifier.getGameStatus != GameStatus.playing) {
-          return Container();
-        } else {
-          return buildSettingsButtons();
-        }
-      }
-    );
+
+    if (_entityNotifier.getIsModeChanging || _gameHandlerNotifier.getGameStatus != GameStatus.playing ||
+    (Database.getGameEntity() != Utils.SINGLEPLAYERGAME_ENTITY_INDEX && Database.getGameEntity() != Utils.MULTIPLAYERGAME_ENTITY_INDEX)) {
+      return Container();
+    } else {
+      return buildSettingsButtons();
+    }
   }
 }

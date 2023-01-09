@@ -6,7 +6,7 @@ enum VolumeMode { up, off }
 
 enum Player { user, algo, none }
 
-enum Entity { tutorial, singleplayer, multiplayer, none }
+enum Entity { tutorial, singleplayerwelcome, multiplayerwelcome, singleplayergame, multiplayergame, none }
 
 enum TutorialPhase { welcome, learning, finished }
 

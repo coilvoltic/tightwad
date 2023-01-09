@@ -281,7 +281,7 @@ class _LearningPagesState extends State<LearningPages> {
         Center(
           child: SizedBox.expand(
             child: TextButton(
-              onPressed: () => notifier.changeGameEntity(Entity.singleplayer),
+              onPressed: () => notifier.changeGameEntity(Entity.singleplayerwelcome),
               style: const ButtonStyle(
                 splashFactory: NoSplash.splashFactory,
               ),

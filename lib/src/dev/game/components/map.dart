@@ -63,15 +63,7 @@ class _MapState extends State<Map> {
               height: min(min(width, height) / 1, height / 1.7),
               child: Align(
                 alignment: Alignment.center,
-                child: Stack
-                (
-                  children: [
-                    Container(
-                      // color: PlayerColors.user,
-                    ),
-                    _grid,
-                  ]
-                ),
+                child: _grid
               ),
             ),
           ),
