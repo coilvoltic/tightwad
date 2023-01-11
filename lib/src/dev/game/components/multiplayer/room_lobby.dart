@@ -1,11 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:tightwad/src/database/database.dart';
+import 'package:tightwad/src/dev/game/components/multiplayer/create_room.dart';
+import 'package:tightwad/src/dev/game/components/multiplayer/join_room.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
-import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/utils/responsive.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
@@ -18,89 +19,82 @@ class RoomLobby extends StatefulWidget {
 
 class _RoomLobbyState extends State<RoomLobby> {
 
-  AnimatedContainer buildNeumorphicTextField(final String hintText) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
-      height: 50,
-      width: MediaQuery.of(context).size.width * 0.8,
-      decoration: Utils.buildNeumorphismBox(50.0, 5.0, 5.0, true),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 25.0),
-        child: TextField(
-          cursorColor: Database.getGameTheme() == Utils.DIAMOND_THEME_INDEX ?
-              ThemeColors.labelColor.diamond : ThemeColors.labelColor.lightOrDark,
-          style: GoogleFonts.montserrat(
-            color: Database.getGameTheme() == Utils.DIAMOND_THEME_INDEX ?
-              ThemeColors.labelColor.diamond : ThemeColors.labelColor.lightOrDark,
-          ),
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(
-              RegExp(r'(\w+)'),
-            ),
-          ],
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: hintText,
-            hintStyle: GoogleFonts.montserrat(
-            color: Database.getGameTheme() == Utils.DIAMOND_THEME_INDEX ?
-              ThemeColors.labelColor.diamond.withAlpha(70) : ThemeColors.labelColor.lightOrDark.withAlpha(100),
+  bool _isJoinRoom = false;
+
+  Widget buildIsJoinRoomStatement() {
+    return Text('room already\nexists?',
+      style: GoogleFonts.bebasNeue(
+        decoration: TextDecoration.none,
+        fontSize: min(min(MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).size.height),
+                  500) * 6 * 2 / 392.73,
+        fontWeight: FontWeight.bold,
+        color: Utils.getPassedColorFromTheme(),
+      ),
+      textAlign: TextAlign.right,
+    );
+  }
+
+  GestureDetector buildNeumorphicSwitch() {
+    return GestureDetector(
+      onTap: () => setState(() {
+          _isJoinRoom = !_isJoinRoom;
+      }),
+      child: Utils.buildNeumorphicSwitch(_isJoinRoom),
+    );
+  }
+
+  Widget buildJoinRoomChoiceOption() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * Utils.ROOM_LOBBY_ROOM_CHOICE_HEIGHT_RATIO,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          buildIsJoinRoomStatement(),
+          const SizedBox(width: 15.0),
+          buildNeumorphicSwitch(),
+          SizedBox(width: MediaQuery.of(context).size.width * (1 - Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO) / 2),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTitle() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * Utils.ROOM_LOBBY_TITLE_HEIGHT_RATIO,
+      child: Center(
+        child: Text(_isJoinRoom ? 'join room' : 'create room',
+          style: GoogleFonts.bebasNeue(
+            decoration: TextDecoration.none,
+            fontSize: min(min(MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height),
+                      500) * 35 * 2 / 392.73,
             fontWeight: FontWeight.bold,
-            ),
+            color: Utils.getPassedColorFromTheme(),
           ),
-          textInputAction: TextInputAction.done,
+          textAlign: TextAlign.center,
         ),
       ),
     );
   }
 
-  bool _switch = false;
-
-  GestureDetector buildNeumorphicSwitch() {
-    return GestureDetector(
-      onTap: () => setState(() {
-          _switch = !_switch;
-      }),
-      child: TweenAnimationBuilder<Alignment>(
-        tween: Tween<Alignment>(begin: Alignment.centerLeft, end: _switch ? Alignment.centerRight : Alignment.centerLeft),
-        duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS - 50),
-        builder: (_, alignment, __) {
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
-            height: 40,
-            width: 80,
-            decoration: Utils.buildNeumorphismBox(18.0, 3.0, 3.0, true),
-            alignment: alignment,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
-                height: 25,
-                width: 25,
-                decoration: Utils.buildNeumorphismBox(25.0, 3.0, 3.0, false),
-              ),
-            ),
-          );
-        }
-      ),
-    );
+  Widget buildChoosenRoomOptions() {
+    return _isJoinRoom ? const JoinRoom() : const CreateRoom();
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Responsive(
         child: Consumer<OptionsNotifier>(
           builder: (context, _, __) {
-            return Stack(
+            return Column(
               children: [
-                Center(
-                  child: buildNeumorphicTextField('ENTER YOUR NAME'),
-                ),
-                buildNeumorphicSwitch(),
-              ],
+                buildTitle(),
+                buildJoinRoomChoiceOption(),
+                buildChoosenRoomOptions(),
+              ]
             );
           }
         ),

@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
-import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
@@ -24,7 +23,7 @@ class Welcome extends StatefulWidget {
 
 class _WelcomeState extends State<Welcome> {
 
-  bool _reversed = false;
+  bool _isReversed = false;
   int _nbOfBouncing = 0;
 
   @override
@@ -71,7 +70,7 @@ class _WelcomeState extends State<Welcome> {
               ),
               TweenAnimationBuilder<double>(
                 duration: const Duration(milliseconds: 300),
-                tween: Tween<double>(begin: 0.0, end: _reversed ? -3.0 : 3.0),
+                tween: Tween<double>(begin: 0.0, end: _isReversed ? -3.0 : 3.0),
                 builder: (context, double statementPosition, _) {
                   return Visibility(
                     visible: _nbOfBouncing >= 8,
@@ -100,7 +99,7 @@ class _WelcomeState extends State<Welcome> {
                   );
                 },
                 onEnd: () => setState(() {
-                  _reversed = !_reversed;
+                  _isReversed = !_isReversed;
                   if (_nbOfBouncing < 8)
                   {
                     _nbOfBouncing++;
