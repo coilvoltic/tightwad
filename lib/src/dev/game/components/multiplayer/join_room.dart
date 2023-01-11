@@ -138,7 +138,7 @@ class _JoinRoomState extends State<JoinRoom> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.005),
               buildNameErrorMessage(),
               SizedBox(height: MediaQuery.of(context).size.height * 0.005),
-              Utils.buildNeumorphicTextField('ENTER GAME ID',
+              Utils.buildNeumorphicTextField('ENTER ROOM ID',
                                              MediaQuery.of(context).size.width * Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO,
                                              _idController),
               SizedBox(height: MediaQuery.of(context).size.height * 0.005),
