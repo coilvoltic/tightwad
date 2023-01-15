@@ -18,7 +18,6 @@ class LearningPages extends StatefulWidget {
 }
 
 class _LearningPagesState extends State<LearningPages> {
-
   final pageViewController = PageController();
   bool isLastPage = false;
   bool reversed = false;
@@ -32,33 +31,35 @@ class _LearningPagesState extends State<LearningPages> {
     super.dispose();
   }
 
-  Widget buildPage1Description()
-  {
+  Widget buildPage1Description() {
     return SafeArea(
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          padding: const EdgeInsets.only(
-            top: 40.0,
-          ),
-          child: Text('YOU START THE GAME\nBY PICKING ONE ELEMENT',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.bebasNeue(
-              decoration: TextDecoration.none,
-              fontSize: min(min(MediaQuery.of(context).size.width,
-                            MediaQuery.of(context).size.height),
-                        500) * 15 * 2 / 392.73,
-              fontWeight: FontWeight.bold,
-              color: ThemeColors.background.getDarkColor,
-            ),
+        child: Align(
+      alignment: Alignment.topCenter,
+      child: Container(
+        padding: const EdgeInsets.only(
+          top: 40.0,
+        ),
+        child: Text(
+          'YOU START THE GAME\nBY PICKING ONE ELEMENT',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.bebasNeue(
+            decoration: TextDecoration.none,
+            fontSize: min(
+                    min(MediaQuery.of(context).size.width,
+                        MediaQuery.of(context).size.height),
+                    500) *
+                15 *
+                2 /
+                392.73,
+            fontWeight: FontWeight.bold,
+            color: ThemeColors.background.getDarkColor,
           ),
         ),
-      )
-    );
+      ),
+    ));
   }
 
-  Widget buildPage1()
-  {
+  Widget buildPage1() {
     return Stack(
       children: [
         buildPage1Description(),
@@ -67,49 +68,56 @@ class _LearningPagesState extends State<LearningPages> {
     );
   }
 
-  Widget buildPage2Description()
-  {
+  Widget buildPage2Description() {
     return SafeArea(
-      child: Container(
-        padding: const EdgeInsets.only(
-          top: 40.0,
-          bottom: 80.0,
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('YOU CAN CHOOSE ONLY ONE\nELEMENT PER ROW AND COLUMN',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.bebasNeue(
-                  decoration: TextDecoration.none,
-                  fontSize: min(min(MediaQuery.of(context).size.width,
-                                MediaQuery.of(context).size.height),
-                            500) * 15 * 2 / 392.73,
-                  fontWeight: FontWeight.bold,
-                  color: ThemeColors.background.getDarkColor,
-                ),
+        child: Container(
+      padding: const EdgeInsets.only(
+        top: 40.0,
+        bottom: 80.0,
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'YOU CAN CHOOSE ONLY ONE\nELEMENT PER ROW AND COLUMN',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.bebasNeue(
+                decoration: TextDecoration.none,
+                fontSize: min(
+                        min(MediaQuery.of(context).size.width,
+                            MediaQuery.of(context).size.height),
+                        500) *
+                    15 *
+                    2 /
+                    392.73,
+                fontWeight: FontWeight.bold,
+                color: ThemeColors.background.getDarkColor,
               ),
-              Text('SO THERE WILL BE BLOCKED CELLS',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.bebasNeue(
-                  decoration: TextDecoration.none,
-                  fontSize: min(min(MediaQuery.of(context).size.width,
-                                MediaQuery.of(context).size.height),
-                            500) * 15 * 2 / 392.73,
-                  fontWeight: FontWeight.bold,
-                  color: ThemeColors.background.getDarkColor,
-                ),
+            ),
+            Text(
+              'SO THERE WILL BE BLOCKED CELLS',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.bebasNeue(
+                decoration: TextDecoration.none,
+                fontSize: min(
+                        min(MediaQuery.of(context).size.width,
+                            MediaQuery.of(context).size.height),
+                        500) *
+                    15 *
+                    2 /
+                    392.73,
+                fontWeight: FontWeight.bold,
+                color: ThemeColors.background.getDarkColor,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      )
-    );
+      ),
+    ));
   }
 
-  Widget buildPage2()
-  {
+  Widget buildPage2() {
     return Stack(
       children: [
         buildPage2Description(),
@@ -118,49 +126,56 @@ class _LearningPagesState extends State<LearningPages> {
     );
   }
 
-  Widget buildPage3Description()
-  {
+  Widget buildPage3Description() {
     return SafeArea(
-      child: Container(
-        padding: const EdgeInsets.only(
-          top: 40.0,
-          bottom: 80.0,
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('LOOK AT SOME COMBINATIONS\nYOU COULD OBTAIN AT THE END',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.bebasNeue(
-                  decoration: TextDecoration.none,
-                  fontSize: min(min(MediaQuery.of(context).size.width,
-                                MediaQuery.of(context).size.height),
-                            500) * 15 * 2 / 392.73,
-                  fontWeight: FontWeight.bold,
-                  color: ThemeColors.background.getDarkColor,
-                ),
+        child: Container(
+      padding: const EdgeInsets.only(
+        top: 40.0,
+        bottom: 80.0,
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'LOOK AT SOME COMBINATIONS\nYOU COULD OBTAIN AT THE END',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.bebasNeue(
+                decoration: TextDecoration.none,
+                fontSize: min(
+                        min(MediaQuery.of(context).size.width,
+                            MediaQuery.of(context).size.height),
+                        500) *
+                    15 *
+                    2 /
+                    392.73,
+                fontWeight: FontWeight.bold,
+                color: ThemeColors.background.getDarkColor,
               ),
-              Text('TRY TO HAVE IT AT SMALL AS POSSIBLE',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.bebasNeue(
-                  decoration: TextDecoration.none,
-                  fontSize: min(min(MediaQuery.of(context).size.width,
-                                MediaQuery.of(context).size.height),
-                            500) * 15 * 2 / 392.73,
-                  fontWeight: FontWeight.bold,
-                  color: ThemeColors.background.getDarkColor,
-                ),
+            ),
+            Text(
+              'TRY TO HAVE IT AT SMALL AS POSSIBLE',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.bebasNeue(
+                decoration: TextDecoration.none,
+                fontSize: min(
+                        min(MediaQuery.of(context).size.width,
+                            MediaQuery.of(context).size.height),
+                        500) *
+                    15 *
+                    2 /
+                    392.73,
+                fontWeight: FontWeight.bold,
+                color: ThemeColors.background.getDarkColor,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      )
-    );
+      ),
+    ));
   }
 
-  Widget buildPage3()
-  {
+  Widget buildPage3() {
     return Stack(
       children: [
         buildPage3Description(),
@@ -169,49 +184,56 @@ class _LearningPagesState extends State<LearningPages> {
     );
   }
 
-  Widget buildPage4Description()
-  {
+  Widget buildPage4Description() {
     return SafeArea(
-      child: Container(
-        padding: const EdgeInsets.only(
-          top: 40.0,
-          bottom: 80.0,
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('YOU AND AN ALGORITHM WILL\nCHOOSE AN ELEMENT ONE BY ONE',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.bebasNeue(
-                  decoration: TextDecoration.none,
-                  fontSize: min(min(MediaQuery.of(context).size.width,
-                                MediaQuery.of(context).size.height),
-                            500) * 15 * 2 / 392.73,
-                  fontWeight: FontWeight.bold,
-                  color: ThemeColors.background.getDarkColor,
-                ),
+        child: Container(
+      padding: const EdgeInsets.only(
+        top: 40.0,
+        bottom: 80.0,
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'YOU AND AN ALGORITHM WILL\nCHOOSE AN ELEMENT ONE BY ONE',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.bebasNeue(
+                decoration: TextDecoration.none,
+                fontSize: min(
+                        min(MediaQuery.of(context).size.width,
+                            MediaQuery.of(context).size.height),
+                        500) *
+                    15 *
+                    2 /
+                    392.73,
+                fontWeight: FontWeight.bold,
+                color: ThemeColors.background.getDarkColor,
               ),
-              Text('AT THE END, SMALLEST SUM WINS.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.bebasNeue(
-                  decoration: TextDecoration.none,
-                  fontSize: min(min(MediaQuery.of(context).size.width,
-                                MediaQuery.of(context).size.height),
-                            500) * 15 * 2 / 392.73,
-                  fontWeight: FontWeight.bold,
-                  color: ThemeColors.background.getDarkColor,
-                ),
+            ),
+            Text(
+              'AT THE END, SMALLEST SUM WINS.',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.bebasNeue(
+                decoration: TextDecoration.none,
+                fontSize: min(
+                        min(MediaQuery.of(context).size.width,
+                            MediaQuery.of(context).size.height),
+                        500) *
+                    15 *
+                    2 /
+                    392.73,
+                fontWeight: FontWeight.bold,
+                color: ThemeColors.background.getDarkColor,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      )
-    );
+      ),
+    ));
   }
 
-  Widget buildPage4()
-  {
+  Widget buildPage4() {
     return Stack(
       children: [
         buildPage4Description(),
@@ -220,68 +242,79 @@ class _LearningPagesState extends State<LearningPages> {
     );
   }
 
-  Widget buildPage5()
-  {
-    
+  Widget buildPage5() {
     EntityNotifier notifier = Provider.of<EntityNotifier>(context);
 
     return Stack(
       children: [
         Container(
-          color: ThemeColors.background.getLightColor,
-          child: SafeArea(
-            child: Stack(
-              children: [
-                Center(
-                  child: Text('GOT IT?',
-                    style: GoogleFonts.bebasNeue(
-                      decoration: TextDecoration.none,
-                      fontSize: min(min(MediaQuery.of(context).size.width,
+            color: ThemeColors.background.getLightColor,
+            child: SafeArea(
+              child: Stack(
+                children: [
+                  Center(
+                    child: Text(
+                      'GOT IT?',
+                      style: GoogleFonts.bebasNeue(
+                        decoration: TextDecoration.none,
+                        fontSize: min(
+                                min(MediaQuery.of(context).size.width,
                                     MediaQuery.of(context).size.height),
-                                500) * 60 * 2 / 392.73,
-                      fontWeight: FontWeight.bold,
-                      color: ThemeColors.background.getDarkColor,
+                                500) *
+                            60 *
+                            2 /
+                            392.73,
+                        fontWeight: FontWeight.bold,
+                        color: ThemeColors.background.getDarkColor,
+                      ),
                     ),
                   ),
-                ),
-                TweenAnimationBuilder<double>(
-                  duration: const Duration(milliseconds: 300),
-                  tween: Tween<double>(begin: 0.0, end: reversed ? -3.0 : 3.0),
-                  builder: (context, double statementPosition, _) {
-                    return Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        padding: const EdgeInsets.only(
-                          bottom: 150.0,
-                        ),
-                        child: Transform.translate(
-                          offset: Offset(0.0, statementPosition),
-                          child: Text('TAP TO PLAY!',
-                            style: GoogleFonts.bebasNeue(
-                              decoration: TextDecoration.none,
-                              fontSize: min(min(MediaQuery.of(context).size.width,
-                                            MediaQuery.of(context).size.height),
-                                        500) * 15 * 2 / 392.73,
-                              fontWeight: FontWeight.bold,
-                              color: ThemeColors.background.getDarkColor,
+                  TweenAnimationBuilder<double>(
+                    duration: const Duration(milliseconds: 300),
+                    tween:
+                        Tween<double>(begin: 0.0, end: reversed ? -3.0 : 3.0),
+                    builder: (context, double statementPosition, _) {
+                      return Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                              bottom: 150.0,
                             ),
-                          ),
-                        ),
-                      )
-                    );
-                  },
-                  onEnd: () => setState(() {
-                    reversed = !reversed;
-                  }),
-                ),
-              ],
-            ),
-          )
-        ),
+                            child: Transform.translate(
+                              offset: Offset(0.0, statementPosition),
+                              child: Text(
+                                'TAP TO PLAY!',
+                                style: GoogleFonts.bebasNeue(
+                                  decoration: TextDecoration.none,
+                                  fontSize: min(
+                                          min(
+                                              MediaQuery.of(context).size.width,
+                                              MediaQuery.of(context)
+                                                  .size
+                                                  .height),
+                                          500) *
+                                      15 *
+                                      2 /
+                                      392.73,
+                                  fontWeight: FontWeight.bold,
+                                  color: ThemeColors.background.getDarkColor,
+                                ),
+                              ),
+                            ),
+                          ));
+                    },
+                    onEnd: () => setState(() {
+                      reversed = !reversed;
+                    }),
+                  ),
+                ],
+              ),
+            )),
         Center(
           child: SizedBox.expand(
             child: TextButton(
-              onPressed: () => notifier.changeGameEntity(Entity.singleplayerwelcome),
+              onPressed: () =>
+                  notifier.changeGameEntity(Entity.singleplayergame),
               style: const ButtonStyle(
                 splashFactory: NoSplash.splashFactory,
               ),
@@ -293,42 +326,39 @@ class _LearningPagesState extends State<LearningPages> {
     );
   }
 
-
-  Widget buildPlayButton()
-  {
+  Widget buildPlayButton() {
     return TweenAnimationBuilder(
-      duration: const Duration(milliseconds: 300),
-      tween: Tween(begin: 0.0, end: reversed ? -3.0 : 3.0),
-      onEnd: () => {
-        setState(() {
-          reversed = !reversed;
-        }),
-      },
-      builder: (context, double statementPosition, child) {
-        return Transform.translate(
-          offset: Offset(0.0, statementPosition),
-          child: TextButton(
-            onPressed: () {},
-            style: TextButton.styleFrom(
-              splashFactory: NoSplash.splashFactory,
-              minimumSize: Size.fromHeight(bottomSheetHeight),
-            ),
-            child: Text('CLICK TO PLAY!',
-              style: GoogleFonts.righteous(
-                decoration: TextDecoration.none,
-                fontSize: 28.0,
-                fontWeight: FontWeight.bold,
-                color: ThemeColors.background.getDarkColor,
+        duration: const Duration(milliseconds: 300),
+        tween: Tween(begin: 0.0, end: reversed ? -3.0 : 3.0),
+        onEnd: () => {
+              setState(() {
+                reversed = !reversed;
+              }),
+            },
+        builder: (context, double statementPosition, child) {
+          return Transform.translate(
+            offset: Offset(0.0, statementPosition),
+            child: TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(
+                splashFactory: NoSplash.splashFactory,
+                minimumSize: Size.fromHeight(bottomSheetHeight),
+              ),
+              child: Text(
+                'CLICK TO PLAY!',
+                style: GoogleFonts.righteous(
+                  decoration: TextDecoration.none,
+                  fontSize: 28.0,
+                  fontWeight: FontWeight.bold,
+                  color: ThemeColors.background.getDarkColor,
+                ),
               ),
             ),
-          ),
-        );
-      }
-    );
+          );
+        });
   }
 
-  SmoothPageIndicator buildSmoothPageIndicator()
-  {
+  SmoothPageIndicator buildSmoothPageIndicator() {
     return SmoothPageIndicator(
       controller: pageViewController,
       count: 5,
@@ -368,7 +398,9 @@ class _LearningPagesState extends State<LearningPages> {
           height: bottomSheetHeight,
           width: MediaQuery.of(context).size.width,
           child: Center(
-            child: isLastPage ? Container(color: ThemeColors.background.getLightColor) : buildSmoothPageIndicator(),
+            child: isLastPage
+                ? Container(color: ThemeColors.background.getLightColor)
+                : buildSmoothPageIndicator(),
           ),
         ),
       ),

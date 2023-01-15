@@ -1,4 +1,4 @@
-package com.example.tightwad
+package com.voltic.tightwad
 
 import io.flutter.embedding.android.FlutterActivity
 

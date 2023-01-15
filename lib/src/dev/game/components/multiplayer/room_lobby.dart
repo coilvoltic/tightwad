@@ -18,16 +18,20 @@ class RoomLobby extends StatefulWidget {
 }
 
 class _RoomLobbyState extends State<RoomLobby> {
-
   bool _isJoinRoom = false;
 
   Widget buildIsJoinRoomStatement() {
-    return Text('room already\nexists?',
+    return Text(
+      'room already\nexists?',
       style: GoogleFonts.bebasNeue(
         decoration: TextDecoration.none,
-        fontSize: min(min(MediaQuery.of(context).size.width,
-                      MediaQuery.of(context).size.height),
-                  500) * 6 * 2 / 392.73,
+        fontSize: min(
+                min(MediaQuery.of(context).size.width,
+                    MediaQuery.of(context).size.height),
+                500) *
+            6 *
+            2 /
+            392.73,
         fontWeight: FontWeight.bold,
         color: Utils.getPassedColorFromTheme(),
       ),
@@ -38,7 +42,7 @@ class _RoomLobbyState extends State<RoomLobby> {
   GestureDetector buildNeumorphicSwitch() {
     return GestureDetector(
       onTap: () => setState(() {
-          _isJoinRoom = !_isJoinRoom;
+        _isJoinRoom = !_isJoinRoom;
       }),
       child: Utils.buildNeumorphicSwitch(_isJoinRoom),
     );
@@ -46,14 +50,18 @@ class _RoomLobbyState extends State<RoomLobby> {
 
   Widget buildJoinRoomChoiceOption() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * Utils.ROOM_LOBBY_ROOM_CHOICE_HEIGHT_RATIO,
+      height: MediaQuery.of(context).size.height *
+          Utils.ROOM_LOBBY_ROOM_CHOICE_HEIGHT_RATIO,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           buildIsJoinRoomStatement(),
           const SizedBox(width: 15.0),
           buildNeumorphicSwitch(),
-          SizedBox(width: MediaQuery.of(context).size.width * (1 - Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO) / 2),
+          SizedBox(
+              width: MediaQuery.of(context).size.width *
+                  (1 - Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO) /
+                  2),
         ],
       ),
     );
@@ -61,14 +69,20 @@ class _RoomLobbyState extends State<RoomLobby> {
 
   Widget buildTitle() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * Utils.ROOM_LOBBY_TITLE_HEIGHT_RATIO,
+      height: MediaQuery.of(context).size.height *
+          Utils.ROOM_LOBBY_TITLE_HEIGHT_RATIO,
       child: Center(
-        child: Text(_isJoinRoom ? 'join room' : 'create room',
+        child: Text(
+          _isJoinRoom ? 'join room' : 'create room',
           style: GoogleFonts.bebasNeue(
             decoration: TextDecoration.none,
-            fontSize: min(min(MediaQuery.of(context).size.width,
-                          MediaQuery.of(context).size.height),
-                      500) * 35 * 2 / 392.73,
+            fontSize: min(
+                    min(MediaQuery.of(context).size.width,
+                        MediaQuery.of(context).size.height),
+                    500) *
+                35 *
+                2 /
+                392.73,
             fontWeight: FontWeight.bold,
             color: Utils.getPassedColorFromTheme(),
           ),
@@ -86,18 +100,15 @@ class _RoomLobbyState extends State<RoomLobby> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
       body: Responsive(
-        child: Consumer<OptionsNotifier>(
-          builder: (context, _, __) {
-            return Column(
-              children: [
-                buildTitle(),
-                buildJoinRoomChoiceOption(),
-                buildChoosenRoomOptions(),
-              ]
-            );
-          }
-        ),
+        child: Consumer<OptionsNotifier>(builder: (context, _, __) {
+          return Column(children: [
+            buildTitle(),
+            buildJoinRoomChoiceOption(),
+            buildChoosenRoomOptions(),
+          ]);
+        }),
       ),
     );
   }

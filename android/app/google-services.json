@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "738466289587",
+    "project_id": "tightwad-80f9e",
+    "storage_bucket": "tightwad-80f9e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738466289587:android:810b475f02b3e069bd5dc6",
+        "android_client_info": {
+          "package_name": "com.voltic.tightwad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738466289587-jfan8e0hjkdue3t8onp2hetlo7jllfp2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlkorp8hogcUH6Yfcx0XDEPj9Gr04TtIc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738466289587-jfan8e0hjkdue3t8onp2hetlo7jllfp2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "738466289587-q1h3i60aiujvadrv6nhpa7ihiolpd4pi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.voltic.tightwad",
+                "app_store_id": "1632819102"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
