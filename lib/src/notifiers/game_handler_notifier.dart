@@ -45,7 +45,9 @@ class GameHandlerNotifier extends ChangeNotifier {
 
   /* '----------' INITIALIZATION '----------' */
   final player = AudioPlayer();
-  // player.audioCache.loadAll(['wow.wav, lose.wav']);
+  void playSound(final String soundPath) async {
+    await player.play(AssetSource(soundPath));
+  }
 
   void computeAllPermutations() {
     bool broken = false;
@@ -369,7 +371,7 @@ class GameHandlerNotifier extends ChangeNotifier {
     isNewLvl = true;
     Timer(const Duration(seconds: 1), () {
       if (Database.getSoundSettingOn()) {
-        player.play(AssetSource('wow.wav'));
+        playSound('wow.wav');
       }
       gameStatus = GameStatus.win;
       notifyListeners();
@@ -388,7 +390,7 @@ class GameHandlerNotifier extends ChangeNotifier {
   void setLose() {
     Timer(const Duration(seconds: 1), () {
       if (Database.getSoundSettingOn()) {
-        player.play(AssetSource('lose.wav'));
+        playSound('lose.wav');
       }
       gameStatus = GameStatus.lose;
       notifyListeners();
