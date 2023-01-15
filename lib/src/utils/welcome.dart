@@ -10,9 +10,8 @@ import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
 class Welcome extends StatefulWidget {
-  const Welcome({Key? key,
-                     required this.destination,
-                     this.entityDestination}) : super(key: key);
+  const Welcome({Key? key, required this.destination, this.entityDestination})
+      : super(key: key);
 
   final String destination;
   final Entity? entityDestination;
@@ -22,14 +21,13 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
-
   bool _isReversed = false;
   int _nbOfBouncing = 0;
 
   @override
   Widget build(BuildContext context) {
-
-    EntityNotifier notifier = Provider.of<EntityNotifier>(context, listen: false);
+    EntityNotifier notifier =
+        Provider.of<EntityNotifier>(context, listen: false);
 
     return Stack(
       children: [
@@ -43,24 +41,38 @@ class _WelcomeState extends State<Welcome> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('WELCOME TO',
-                      style: GoogleFonts.bebasNeue(
+                    Text(
+                      'WELCOME TO',
+                      style: TextStyle(
+                        fontFamily: 'BebasNeue',
                         decoration: TextDecoration.none,
-                        fontSize: min(min(MediaQuery.of(context).size.width,
-                                      MediaQuery.of(context).size.height),
-                                  500) * 40 * 2 / 392.73,
+                        fontSize: min(
+                                min(MediaQuery.of(context).size.width,
+                                    MediaQuery.of(context).size.height),
+                                500) *
+                            40 *
+                            2 /
+                            392.73,
                         fontWeight: FontWeight.bold,
                         color: Utils.getPassedColorFromTheme(),
                       ),
                     ),
-                    GlowText(widget.destination,
+                    GlowText(
+                      widget.destination,
                       blurRadius: Utils.shouldGlow() ? 2.5 : 0.0,
-                      glowColor: Utils.shouldGlow() ? Utils.getPassedColorFromTheme() : Colors.transparent,
-                      style: GoogleFonts.parisienne(
+                      glowColor: Utils.shouldGlow()
+                          ? Utils.getPassedColorFromTheme()
+                          : Colors.transparent,
+                      style: TextStyle(
+                        fontFamily: 'Parisienne',
                         decoration: TextDecoration.none,
-                        fontSize: min(min(MediaQuery.of(context).size.width,
-                                      MediaQuery.of(context).size.height),
-                                  500) * 30 * 2 / 392.73,
+                        fontSize: min(
+                                min(MediaQuery.of(context).size.width,
+                                    MediaQuery.of(context).size.height),
+                                500) *
+                            30 *
+                            2 /
+                            392.73,
                         fontWeight: FontWeight.bold,
                         color: Utils.getPassedColorFromTheme(),
                       ),
@@ -75,33 +87,39 @@ class _WelcomeState extends State<Welcome> {
                   return Visibility(
                     visible: _nbOfBouncing >= 8,
                     child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        padding: const EdgeInsets.only(
-                          bottom: 60.0,
-                        ),
-                        child: Transform.translate(
-                          offset: Offset(0.0, statementPosition),
-                          child: Text(Database.getGameEntity() == Utils.TUTORIAL_ENTITY_INDEX ?
-                          'TAP TO START TUTORIAL' : 'TAP TO PLAY',
-                            style: GoogleFonts.bebasNeue(
-                              decoration: TextDecoration.none,
-                              fontSize: min(min(MediaQuery.of(context).size.width,
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                            bottom: 60.0,
+                          ),
+                          child: Transform.translate(
+                            offset: Offset(0.0, statementPosition),
+                            child: Text(
+                              Database.getGameEntity() ==
+                                      Utils.TUTORIAL_ENTITY_INDEX
+                                  ? 'TAP TO START TUTORIAL'
+                                  : 'TAP TO PLAY',
+                              style: TextStyle(
+                                fontFamily: 'BebasNeue',
+                                decoration: TextDecoration.none,
+                                fontSize: min(
+                                        min(MediaQuery.of(context).size.width,
                                             MediaQuery.of(context).size.height),
-                                        500) * 10 * 2 / 392.73,
-                              fontWeight: FontWeight.bold,
-                              color: Utils.getPassedColorFromTheme(),
+                                        500) *
+                                    10 *
+                                    2 /
+                                    392.73,
+                                fontWeight: FontWeight.bold,
+                                color: Utils.getPassedColorFromTheme(),
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ),
+                        )),
                   );
                 },
                 onEnd: () => setState(() {
                   _isReversed = !_isReversed;
-                  if (_nbOfBouncing < 8)
-                  {
+                  if (_nbOfBouncing < 8) {
                     _nbOfBouncing++;
                   }
                 }),
@@ -115,11 +133,14 @@ class _WelcomeState extends State<Welcome> {
             child: SizedBox.expand(
               child: TextButton(
                 onPressed: () => {
-                  if (Database.getGameEntity() == Utils.TUTORIAL_ENTITY_INDEX) { 
-                    notifier.changeTutorialPhase(),
-                  } else {
-                    notifier.changeGameEntity(widget.entityDestination!),
-                  }
+                  if (Database.getGameEntity() == Utils.TUTORIAL_ENTITY_INDEX)
+                    {
+                      notifier.changeTutorialPhase(),
+                    }
+                  else
+                    {
+                      notifier.changeGameEntity(widget.entityDestination!),
+                    }
                 },
                 style: const ButtonStyle(
                   splashFactory: NoSplash.splashFactory,

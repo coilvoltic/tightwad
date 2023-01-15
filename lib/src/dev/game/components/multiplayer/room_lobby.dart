@@ -23,7 +23,8 @@ class _RoomLobbyState extends State<RoomLobby> {
   Widget buildIsJoinRoomStatement() {
     return Text(
       'room already\nexists?',
-      style: GoogleFonts.bebasNeue(
+      style: TextStyle(
+        fontFamily: 'BebasNeue',
         decoration: TextDecoration.none,
         fontSize: min(
                 min(MediaQuery.of(context).size.width,
@@ -74,7 +75,8 @@ class _RoomLobbyState extends State<RoomLobby> {
       child: Center(
         child: Text(
           _isJoinRoom ? 'join room' : 'create room',
-          style: GoogleFonts.bebasNeue(
+          style: TextStyle(
+            fontFamily: 'BebasNeue',
             decoration: TextDecoration.none,
             fontSize: min(
                     min(MediaQuery.of(context).size.width,

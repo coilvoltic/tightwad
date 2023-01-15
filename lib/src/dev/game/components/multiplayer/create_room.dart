@@ -74,7 +74,8 @@ class _CreateRoomState extends State<CreateRoom> {
                   offset: Offset(0.0, statementPosition),
                   child: Text(
                     'click to create!',
-                    style: GoogleFonts.bebasNeue(
+                    style: TextStyle(
+                      fontFamily: 'BebasNeue',
                       decoration: TextDecoration.none,
                       fontSize: min(
                               min(MediaQuery.of(context).size.width,
@@ -109,7 +110,8 @@ class _CreateRoomState extends State<CreateRoom> {
       height: MediaQuery.of(context).size.height * 0.025,
       child: Text(
         _nameErrorMessage!,
-        style: GoogleFonts.bebasNeue(
+        style: TextStyle(
+          fontFamily: 'BebasNeue',
           decoration: TextDecoration.none,
           fontSize: min(
                   min(MediaQuery.of(context).size.width,
@@ -196,7 +198,8 @@ class _CreateRoomState extends State<CreateRoom> {
         height: MediaQuery.of(context).size.height * 0.05,
         child: Text(
           'number of rounds: $_nbOfRounds',
-          style: GoogleFonts.bebasNeue(
+          style: TextStyle(
+            fontFamily: 'BebasNeue',
             decoration: TextDecoration.none,
             fontSize: min(
                     min(MediaQuery.of(context).size.width,

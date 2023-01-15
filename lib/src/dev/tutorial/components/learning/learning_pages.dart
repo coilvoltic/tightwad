@@ -42,7 +42,8 @@ class _LearningPagesState extends State<LearningPages> {
         child: Text(
           'YOU START THE GAME\nBY PICKING ONE ELEMENT',
           textAlign: TextAlign.center,
-          style: GoogleFonts.bebasNeue(
+          style: TextStyle(
+            fontFamily: 'BebasNeue',
             decoration: TextDecoration.none,
             fontSize: min(
                     min(MediaQuery.of(context).size.width,
@@ -82,7 +83,8 @@ class _LearningPagesState extends State<LearningPages> {
             Text(
               'YOU CAN CHOOSE ONLY ONE\nELEMENT PER ROW AND COLUMN',
               textAlign: TextAlign.center,
-              style: GoogleFonts.bebasNeue(
+              style: TextStyle(
+                fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: min(
                         min(MediaQuery.of(context).size.width,
@@ -98,7 +100,8 @@ class _LearningPagesState extends State<LearningPages> {
             Text(
               'SO THERE WILL BE BLOCKED CELLS',
               textAlign: TextAlign.center,
-              style: GoogleFonts.bebasNeue(
+              style: TextStyle(
+                fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: min(
                         min(MediaQuery.of(context).size.width,
@@ -140,7 +143,8 @@ class _LearningPagesState extends State<LearningPages> {
             Text(
               'LOOK AT SOME COMBINATIONS\nYOU COULD OBTAIN AT THE END',
               textAlign: TextAlign.center,
-              style: GoogleFonts.bebasNeue(
+              style: TextStyle(
+                fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: min(
                         min(MediaQuery.of(context).size.width,
@@ -156,7 +160,8 @@ class _LearningPagesState extends State<LearningPages> {
             Text(
               'TRY TO HAVE IT AT SMALL AS POSSIBLE',
               textAlign: TextAlign.center,
-              style: GoogleFonts.bebasNeue(
+              style: TextStyle(
+                fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: min(
                         min(MediaQuery.of(context).size.width,
@@ -198,7 +203,8 @@ class _LearningPagesState extends State<LearningPages> {
             Text(
               'YOU AND AN ALGORITHM WILL\nCHOOSE AN ELEMENT ONE BY ONE',
               textAlign: TextAlign.center,
-              style: GoogleFonts.bebasNeue(
+              style: TextStyle(
+                fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: min(
                         min(MediaQuery.of(context).size.width,
@@ -214,7 +220,8 @@ class _LearningPagesState extends State<LearningPages> {
             Text(
               'AT THE END, SMALLEST SUM WINS.',
               textAlign: TextAlign.center,
-              style: GoogleFonts.bebasNeue(
+              style: TextStyle(
+                fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: min(
                         min(MediaQuery.of(context).size.width,
@@ -255,7 +262,8 @@ class _LearningPagesState extends State<LearningPages> {
                   Center(
                     child: Text(
                       'GOT IT?',
-                      style: GoogleFonts.bebasNeue(
+                      style: TextStyle(
+                        fontFamily: 'BebasNeue',
                         decoration: TextDecoration.none,
                         fontSize: min(
                                 min(MediaQuery.of(context).size.width,
@@ -284,7 +292,8 @@ class _LearningPagesState extends State<LearningPages> {
                               offset: Offset(0.0, statementPosition),
                               child: Text(
                                 'TAP TO PLAY!',
-                                style: GoogleFonts.bebasNeue(
+                                style: TextStyle(
+                                  fontFamily: 'BebasNeue',
                                   decoration: TextDecoration.none,
                                   fontSize: min(
                                           min(
@@ -346,7 +355,8 @@ class _LearningPagesState extends State<LearningPages> {
               ),
               child: Text(
                 'CLICK TO PLAY!',
-                style: GoogleFonts.righteous(
+                style: TextStyle(
+                  fontFamily: 'Righteous',
                   decoration: TextDecoration.none,
                   fontSize: 28.0,
                   fontWeight: FontWeight.bold,

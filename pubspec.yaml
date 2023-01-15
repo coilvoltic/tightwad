@@ -69,6 +69,30 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+    # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/user.wav
+    - assets/algo.wav
+    - assets/lose.wav
+    - assets/wow.wav
+
+  fonts:
+    - family: BebasNeue
+      fonts:
+        - asset: fonts/BebasNeue.ttf
+    - family: Inter
+      fonts:
+        - asset: fonts/Inter.ttf
+    - family: Parisienne
+      fonts:
+        - asset: fonts/Parisienne.ttf
+    - family: Righteous
+      fonts:
+        - asset: fonts/Righteous.ttf
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat.ttf
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

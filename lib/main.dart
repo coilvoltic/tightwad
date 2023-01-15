@@ -56,12 +56,13 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-      splash: SafeArea(
+      splash: const SafeArea(
         child: Center(
           child: GlowText(
             'tightwad!',
             blurRadius: 5.0,
-            style: GoogleFonts.parisienne(
+            style: TextStyle(
+              fontFamily: 'Parisienne',
               decoration: TextDecoration.none,
               fontSize: 80.0,
               fontWeight: FontWeight.bold,

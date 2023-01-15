@@ -18,28 +18,26 @@ class LevelPath extends StatefulWidget {
 }
 
 class _LevelPathState extends State<LevelPath> {
-
-  double height          = 0.0;
-  double width           = 0.0;
-  double gamePxSize      = 0.0;
+  double height = 0.0;
+  double width = 0.0;
+  double gamePxSize = 0.0;
   double outGamePxHeight = 0.0;
-  double dashLength      = 0.0;
+  double dashLength = 0.0;
   double startOfPathLeft = 0.0;
-  double endOfPathRight  = 0.0;
+  double endOfPathRight = 0.0;
 
   final double pathThickness = 7.0;
   final int nbOfLvlPerLine = 4;
   final int nbOfLine = 3;
   final double endMarginPx = 50.0;
 
-  Color _passedColor         = Colors.white;
-  Color _notPassedColor      = Colors.white;
-  Color _hideColor           = Colors.white;
-  Color _labelPassedColor    = Colors.white;
+  Color _passedColor = Colors.white;
+  Color _notPassedColor = Colors.white;
+  Color _hideColor = Colors.white;
+  Color _labelPassedColor = Colors.white;
   Color _labelNotPassedColor = Colors.white;
 
-  AnimatedContainer buildLvl0()
-  {
+  AnimatedContainer buildLvl0() {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -55,7 +53,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '0',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -66,12 +65,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash1(bool isPassed)
-  {
+  AnimatedContainer buildDash1(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + 3 * dashLength,
       ),
       width: dashLength,
@@ -80,8 +78,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl1(bool isPassed)
-  {
+  AnimatedContainer buildLvl1(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -97,7 +94,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '1',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -108,12 +106,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash2(bool isPassed)
-  {
+  AnimatedContainer buildDash2(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + 2 * dashLength,
       ),
       width: dashLength,
@@ -122,8 +119,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl2(bool isPassed)
-  {
+  AnimatedContainer buildLvl2(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -139,7 +135,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '2',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -150,12 +147,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash3(bool isPassed)
-  {
+  AnimatedContainer buildDash3(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + dashLength,
       ),
       width: dashLength,
@@ -164,8 +160,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl3(bool isPassed)
-  {
+  AnimatedContainer buildLvl3(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -181,7 +176,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '3',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -192,16 +188,15 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash4(bool isPassed)
-  {
+  AnimatedContainer buildDash4(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft,
       ),
       width: dashLength,
-      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
+      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness / 2,
       decoration: BoxDecoration(
         color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
@@ -211,13 +206,12 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl4(bool isPassed)
-  {
+  AnimatedContainer buildLvl4(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
         top: 3 / 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
-        left: startOfPathLeft - outGamePxHeight / 14 + pathThickness/2,
+        left: startOfPathLeft - outGamePxHeight / 14 + pathThickness / 2,
       ),
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
@@ -228,7 +222,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '4',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -239,8 +234,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash5(bool isPassed)
-  {
+  AnimatedContainer buildDash5(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -248,7 +242,7 @@ class _LevelPathState extends State<LevelPath> {
         left: startOfPathLeft,
       ),
       width: dashLength,
-      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
+      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness / 2,
       decoration: BoxDecoration(
         color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
@@ -258,8 +252,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl5(bool isPassed)
-  {
+  AnimatedContainer buildLvl5(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -275,7 +268,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '5',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -286,8 +280,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildUpperLeftHidder()
-  {
+  AnimatedContainer buildUpperLeftHidder() {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -306,12 +299,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash6(bool isPassed)
-  {
+  AnimatedContainer buildDash6(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + dashLength,
       ),
       width: dashLength,
@@ -320,8 +312,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl6(bool isPassed)
-  {
+  AnimatedContainer buildLvl6(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -337,7 +328,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '6',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -348,12 +340,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash7(bool isPassed)
-  {
+  AnimatedContainer buildDash7(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + 2 * dashLength,
       ),
       width: dashLength,
@@ -362,8 +353,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl7(bool isPassed)
-  {
+  AnimatedContainer buildLvl7(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -379,7 +369,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '7',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -390,16 +381,15 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash8(bool isPassed)
-  {
+  AnimatedContainer buildDash8(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + 3 * dashLength + pathThickness,
       ),
       width: dashLength,
-      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
+      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness / 2,
       decoration: BoxDecoration(
         color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
@@ -409,8 +399,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl8(bool isPassed)
-  {
+  AnimatedContainer buildLvl8(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -426,7 +415,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '8',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -437,8 +427,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash9(bool isPassed)
-  {
+  AnimatedContainer buildDash9(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -446,7 +435,7 @@ class _LevelPathState extends State<LevelPath> {
         left: startOfPathLeft + 3 * dashLength + pathThickness,
       ),
       width: dashLength,
-      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
+      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness / 2,
       decoration: BoxDecoration(
         color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
@@ -456,8 +445,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl9(bool isPassed)
-  {
+  AnimatedContainer buildLvl9(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -473,7 +461,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '9',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -484,8 +473,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildUpperRightHidder()
-  {
+  AnimatedContainer buildUpperRightHidder() {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -504,12 +492,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash10(bool isPassed)
-  {
+  AnimatedContainer buildDash10(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + 2 * dashLength,
       ),
       width: dashLength,
@@ -518,8 +505,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl10(bool isPassed)
-  {
+  AnimatedContainer buildLvl10(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -535,7 +521,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '10',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -546,12 +533,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash11(bool isPassed)
-  {
+  AnimatedContainer buildDash11(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + dashLength,
       ),
       width: dashLength,
@@ -560,8 +546,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl11(bool isPassed)
-  {
+  AnimatedContainer buildLvl11(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -577,7 +562,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '11',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -588,12 +574,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash12(bool isPassed)
-  {
+  AnimatedContainer buildDash12(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft,
       ),
       width: dashLength,
@@ -602,13 +587,12 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl12(bool isPassed)
-  {
+  AnimatedContainer buildLvl12(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
-        left: startOfPathLeft - outGamePxHeight / 14 + pathThickness/2,
+        left: startOfPathLeft - outGamePxHeight / 14 + pathThickness / 2,
       ),
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
@@ -619,7 +603,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '12',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -630,12 +615,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash13U(bool isPassed)
-  {
+  AnimatedContainer buildDash13U(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
       ),
       width: startOfPathLeft,
       height: pathThickness,
@@ -643,8 +627,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl13(bool isPassed)
-  {
+  AnimatedContainer buildLvl13(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -660,7 +643,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '13',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -671,12 +655,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash13L(bool isPassed)
-  {
+  AnimatedContainer buildDash13L(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 4 * dashLength,
       ),
       width: startOfPathLeft,
@@ -685,12 +668,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash14(bool isPassed)
-  {
+  AnimatedContainer buildDash14(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 3 * dashLength,
       ),
       width: dashLength,
@@ -699,8 +681,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl14(bool isPassed)
-  {
+  AnimatedContainer buildLvl14(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -716,7 +697,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '14',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -727,12 +709,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash15(bool isPassed)
-  {
+  AnimatedContainer buildDash15(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 2 * dashLength,
       ),
       width: dashLength,
@@ -741,8 +722,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl15(bool isPassed)
-  {
+  AnimatedContainer buildLvl15(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -758,7 +738,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '15',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -769,12 +750,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash16(bool isPassed)
-  {
+  AnimatedContainer buildDash16(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + dashLength,
       ),
       width: dashLength,
@@ -783,8 +763,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl16(bool isPassed)
-  {
+  AnimatedContainer buildLvl16(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -800,7 +779,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '16',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -811,16 +791,15 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash17(bool isPassed)
-  {
+  AnimatedContainer buildDash17(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx,
       ),
       width: dashLength,
-      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
+      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness / 2,
       decoration: BoxDecoration(
         color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
@@ -830,13 +809,12 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl17(bool isPassed)
-  {
+  AnimatedContainer buildLvl17(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
         top: 3 / 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
-        left: endMarginPx - outGamePxHeight / 14 + pathThickness/2,
+        left: endMarginPx - outGamePxHeight / 14 + pathThickness / 2,
       ),
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
@@ -847,7 +825,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '17',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -858,8 +837,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash18(bool isPassed)
-  {
+  AnimatedContainer buildDash18(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -867,7 +845,7 @@ class _LevelPathState extends State<LevelPath> {
         left: endMarginPx,
       ),
       width: dashLength,
-      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
+      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness / 2,
       decoration: BoxDecoration(
         color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
@@ -877,8 +855,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl18(bool isPassed)
-  {
+  AnimatedContainer buildLvl18(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -894,7 +871,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '18',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -905,8 +883,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLowerLeftHidder()
-  {
+  AnimatedContainer buildLowerLeftHidder() {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -925,12 +902,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash19(bool isPassed)
-  {
+  AnimatedContainer buildDash19(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + dashLength,
       ),
       width: dashLength,
@@ -939,8 +915,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl19(bool isPassed)
-  {
+  AnimatedContainer buildLvl19(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -956,7 +931,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '19',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -967,12 +943,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash20(bool isPassed)
-  {
+  AnimatedContainer buildDash20(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 2 * dashLength,
       ),
       width: dashLength,
@@ -981,8 +956,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl20(bool isPassed)
-  {
+  AnimatedContainer buildLvl20(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -998,7 +972,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '20',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -1009,16 +984,15 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash21(bool isPassed)
-  {
+  AnimatedContainer buildDash21(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 3 * dashLength + pathThickness,
       ),
       width: dashLength,
-      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
+      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness / 2,
       decoration: BoxDecoration(
         color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
@@ -1028,8 +1002,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl21(bool isPassed)
-  {
+  AnimatedContainer buildLvl21(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -1045,7 +1018,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '21',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -1056,8 +1030,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash22(bool isPassed)
-  {
+  AnimatedContainer buildDash22(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -1065,7 +1038,7 @@ class _LevelPathState extends State<LevelPath> {
         left: endMarginPx + 3 * dashLength + pathThickness,
       ),
       width: dashLength,
-      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness/2,
+      height: outGamePxHeight / (2 * (nbOfLine + 1)) + pathThickness / 2,
       decoration: BoxDecoration(
         color: isPassed ? _passedColor : _notPassedColor,
         borderRadius: const BorderRadius.only(
@@ -1075,8 +1048,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl22(bool isPassed)
-  {
+  AnimatedContainer buildLvl22(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -1092,7 +1064,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '22',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -1103,8 +1076,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLowerRightHidder()
-  {
+  AnimatedContainer buildLowerRightHidder() {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -1123,12 +1095,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash23(bool isPassed)
-  {
+  AnimatedContainer buildDash23(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 2 * dashLength,
       ),
       width: dashLength,
@@ -1137,8 +1108,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl23(bool isPassed)
-  {
+  AnimatedContainer buildLvl23(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -1154,7 +1124,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '23',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -1165,12 +1136,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash24(bool isPassed)
-  {
+  AnimatedContainer buildDash24(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + dashLength,
       ),
       width: dashLength,
@@ -1179,8 +1149,7 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl24(bool isPassed)
-  {
+  AnimatedContainer buildLvl24(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
@@ -1196,7 +1165,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '24',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -1207,12 +1177,11 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildDash25(bool isPassed)
-  {
+  AnimatedContainer buildDash25(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
-        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness/2,
+        top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx,
       ),
       width: dashLength,
@@ -1221,13 +1190,12 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-  AnimatedContainer buildLvl25(bool isPassed)
-  {
+  AnimatedContainer buildLvl25(bool isPassed) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
-        left: endMarginPx - outGamePxHeight / 14 + pathThickness/2,
+        left: endMarginPx - outGamePxHeight / 14 + pathThickness / 2,
       ),
       width: outGamePxHeight / 7,
       height: outGamePxHeight / 7,
@@ -1238,7 +1206,8 @@ class _LevelPathState extends State<LevelPath> {
       child: Center(
         child: Text(
           '25',
-          style: GoogleFonts.inter(
+          style: TextStyle(
+            fontFamily: 'Inter',
             decoration: TextDecoration.none,
             fontSize: outGamePxHeight / 12,
             fontWeight: FontWeight.bold,
@@ -1249,120 +1218,117 @@ class _LevelPathState extends State<LevelPath> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-    height          = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
-    width           = MediaQuery.of(context).size.width;
-    gamePxSize      = min(min(width, height) / 1, height / 1.7);
+    height = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    width = MediaQuery.of(context).size.width;
+    gamePxSize = min(min(width, height) / 1, height / 1.7);
     outGamePxHeight = (height - gamePxSize / 5) / 2 - 200;
 
     startOfPathLeft = gamePxSize / 3.3 + 10;
-    endOfPathRight  = width - endMarginPx;
-    
+    endOfPathRight = width - endMarginPx;
+
     dashLength = (endOfPathRight - startOfPathLeft) / nbOfLvlPerLine;
 
     return Consumer2<GameHandlerNotifier, OptionsNotifier>(
-      builder: (context, gameHandlerNotifier, optionsNotifier, _) {
+        builder: (context, gameHandlerNotifier, optionsNotifier, _) {
+      _hideColor = Utils.getBackgroundColorFromTheme();
+      _passedColor = Utils.getPassedColorFromTheme();
+      _notPassedColor = Utils.getNotPassedColorFromTheme();
+      _labelPassedColor = Utils.getLabelPassedColorFromTheme();
+      _labelNotPassedColor = Utils.getLabelNotPassedColorFromTheme();
 
-        _hideColor           = Utils.getBackgroundColorFromTheme    ();
-        _passedColor         = Utils.getPassedColorFromTheme        ();
-        _notPassedColor      = Utils.getNotPassedColorFromTheme     ();
-        _labelPassedColor    = Utils.getLabelPassedColorFromTheme   ();
-        _labelNotPassedColor = Utils.getLabelNotPassedColorFromTheme();
-
-        return SafeArea(
-
-          child: Stack(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-
-                  Stack(
-                    children: [
-                      buildDash1   (gameHandlerNotifier.getLvl > 1),
-                      buildDash2   (gameHandlerNotifier.getLvl > 2),
-                      buildDash3   (gameHandlerNotifier.getLvl > 3),
-                      buildDash4   (gameHandlerNotifier.getLvl > 4),
-                      buildDash5   (gameHandlerNotifier.getLvl > 5),
-                      buildDash6   (gameHandlerNotifier.getLvl > 6),
-                      buildDash7   (gameHandlerNotifier.getLvl > 7),
-                      buildDash8   (gameHandlerNotifier.getLvl > 8),
-                      buildDash9   (gameHandlerNotifier.getLvl > 9),
-                      buildDash10  (gameHandlerNotifier.getLvl > 10),
-                      buildDash11  (gameHandlerNotifier.getLvl > 11),
-                      buildDash12  (gameHandlerNotifier.getLvl > 12),
-                      buildDash13U (gameHandlerNotifier.getLvl > 13),
-                          
-                      buildUpperLeftHidder (),
-                      buildUpperRightHidder(),
-                          
-                      buildLvl0  (),
-                      buildLvl1  (gameHandlerNotifier.getLvl > 1),
-                      buildLvl2  (gameHandlerNotifier.getLvl > 2),
-                      buildLvl3  (gameHandlerNotifier.getLvl > 3),
-                      buildLvl4  (gameHandlerNotifier.getLvl > 4),
-                      buildLvl5  (gameHandlerNotifier.getLvl > 5),
-                      buildLvl6  (gameHandlerNotifier.getLvl > 6),
-                      buildLvl7  (gameHandlerNotifier.getLvl > 7),
-                      buildLvl8  (gameHandlerNotifier.getLvl > 8),
-                      buildLvl9  (gameHandlerNotifier.getLvl > 9),
-                      buildLvl10 (gameHandlerNotifier.getLvl > 10),
-                      buildLvl11 (gameHandlerNotifier.getLvl > 11),
-                      buildLvl12 (gameHandlerNotifier.getLvl > 12),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Stack(
-                    children: [
-                      buildDash13L(gameHandlerNotifier.getLvl > 13),
-                      buildDash14 (gameHandlerNotifier.getLvl > 14),
-                      buildDash15 (gameHandlerNotifier.getLvl > 15),
-                      buildDash16 (gameHandlerNotifier.getLvl > 16),
-                      buildDash17 (gameHandlerNotifier.getLvl > 17),
-                      buildDash18 (gameHandlerNotifier.getLvl > 18),
-                      buildDash19 (gameHandlerNotifier.getLvl > 19),
-                      buildDash20 (gameHandlerNotifier.getLvl > 20),
-                      buildDash21 (gameHandlerNotifier.getLvl > 21),
-                      buildDash22 (gameHandlerNotifier.getLvl > 22),
-                      buildDash23 (gameHandlerNotifier.getLvl > 23),
-                      buildDash24 (gameHandlerNotifier.getLvl > 24),
-                      buildDash25 (gameHandlerNotifier.getGameStatus == GameStatus.win && gameHandlerNotifier.getLvl > 24 ||
-                                   gameHandlerNotifier.getGameStatus == GameStatus.finish),
-                      buildLowerLeftHidder (),
-                      buildLowerRightHidder(),
-                      buildLvl13(gameHandlerNotifier.getLvl > 13),
-                      buildLvl14(gameHandlerNotifier.getLvl > 14),
-                      buildLvl15(gameHandlerNotifier.getLvl > 15),
-                      buildLvl16(gameHandlerNotifier.getLvl > 16),
-                      buildLvl17(gameHandlerNotifier.getLvl > 17),
-                      buildLvl18(gameHandlerNotifier.getLvl > 18),
-                      buildLvl19(gameHandlerNotifier.getLvl > 19),
-                      buildLvl20(gameHandlerNotifier.getLvl > 20),
-                      buildLvl21(gameHandlerNotifier.getLvl > 21),
-                      buildLvl22(gameHandlerNotifier.getLvl > 22),
-                      buildLvl23(gameHandlerNotifier.getLvl > 23),
-                      buildLvl24(gameHandlerNotifier.getLvl > 24),
-                      buildLvl25(gameHandlerNotifier.getGameStatus == GameStatus.win && gameHandlerNotifier.getLvl > 24 ||
-                                 gameHandlerNotifier.getGameStatus == GameStatus.finish),
-                    ],
-                  ),
-                
+      return SafeArea(
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+                    buildDash1(gameHandlerNotifier.getLvl > 1),
+                    buildDash2(gameHandlerNotifier.getLvl > 2),
+                    buildDash3(gameHandlerNotifier.getLvl > 3),
+                    buildDash4(gameHandlerNotifier.getLvl > 4),
+                    buildDash5(gameHandlerNotifier.getLvl > 5),
+                    buildDash6(gameHandlerNotifier.getLvl > 6),
+                    buildDash7(gameHandlerNotifier.getLvl > 7),
+                    buildDash8(gameHandlerNotifier.getLvl > 8),
+                    buildDash9(gameHandlerNotifier.getLvl > 9),
+                    buildDash10(gameHandlerNotifier.getLvl > 10),
+                    buildDash11(gameHandlerNotifier.getLvl > 11),
+                    buildDash12(gameHandlerNotifier.getLvl > 12),
+                    buildDash13U(gameHandlerNotifier.getLvl > 13),
+                    buildUpperLeftHidder(),
+                    buildUpperRightHidder(),
+                    buildLvl0(),
+                    buildLvl1(gameHandlerNotifier.getLvl > 1),
+                    buildLvl2(gameHandlerNotifier.getLvl > 2),
+                    buildLvl3(gameHandlerNotifier.getLvl > 3),
+                    buildLvl4(gameHandlerNotifier.getLvl > 4),
+                    buildLvl5(gameHandlerNotifier.getLvl > 5),
+                    buildLvl6(gameHandlerNotifier.getLvl > 6),
+                    buildLvl7(gameHandlerNotifier.getLvl > 7),
+                    buildLvl8(gameHandlerNotifier.getLvl > 8),
+                    buildLvl9(gameHandlerNotifier.getLvl > 9),
+                    buildLvl10(gameHandlerNotifier.getLvl > 10),
+                    buildLvl11(gameHandlerNotifier.getLvl > 11),
+                    buildLvl12(gameHandlerNotifier.getLvl > 12),
+                  ],
+                ),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Stack(
+                  children: [
+                    buildDash13L(gameHandlerNotifier.getLvl > 13),
+                    buildDash14(gameHandlerNotifier.getLvl > 14),
+                    buildDash15(gameHandlerNotifier.getLvl > 15),
+                    buildDash16(gameHandlerNotifier.getLvl > 16),
+                    buildDash17(gameHandlerNotifier.getLvl > 17),
+                    buildDash18(gameHandlerNotifier.getLvl > 18),
+                    buildDash19(gameHandlerNotifier.getLvl > 19),
+                    buildDash20(gameHandlerNotifier.getLvl > 20),
+                    buildDash21(gameHandlerNotifier.getLvl > 21),
+                    buildDash22(gameHandlerNotifier.getLvl > 22),
+                    buildDash23(gameHandlerNotifier.getLvl > 23),
+                    buildDash24(gameHandlerNotifier.getLvl > 24),
+                    buildDash25(gameHandlerNotifier.getGameStatus ==
+                                GameStatus.win &&
+                            gameHandlerNotifier.getLvl > 24 ||
+                        gameHandlerNotifier.getGameStatus == GameStatus.finish),
+                    buildLowerLeftHidder(),
+                    buildLowerRightHidder(),
+                    buildLvl13(gameHandlerNotifier.getLvl > 13),
+                    buildLvl14(gameHandlerNotifier.getLvl > 14),
+                    buildLvl15(gameHandlerNotifier.getLvl > 15),
+                    buildLvl16(gameHandlerNotifier.getLvl > 16),
+                    buildLvl17(gameHandlerNotifier.getLvl > 17),
+                    buildLvl18(gameHandlerNotifier.getLvl > 18),
+                    buildLvl19(gameHandlerNotifier.getLvl > 19),
+                    buildLvl20(gameHandlerNotifier.getLvl > 20),
+                    buildLvl21(gameHandlerNotifier.getLvl > 21),
+                    buildLvl22(gameHandlerNotifier.getLvl > 22),
+                    buildLvl23(gameHandlerNotifier.getLvl > 23),
+                    buildLvl24(gameHandlerNotifier.getLvl > 24),
+                    buildLvl25(gameHandlerNotifier.getGameStatus ==
+                                GameStatus.win &&
+                            gameHandlerNotifier.getLvl > 24 ||
+                        gameHandlerNotifier.getGameStatus == GameStatus.finish),
+                  ],
+                ),
                 SizedBox(
                   height: outGamePxHeight / (nbOfLine + 2) - pathThickness / 2,
                 ),
-                ],
-              ),
-            ],
-          ),
-        );
-      }
-    );
+              ],
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

@@ -15,110 +15,95 @@ class Statement extends StatefulWidget {
 }
 
 class _StatementState extends State<Statement> {
-
-  String       _statement = "";
-  int          _sizeRatio = 0;
-  List<String> winStatements = [
-    "GREAT!",
-    "WOW!",
-    "PERFECT!"
-  ];
+  String _statement = "";
+  int _sizeRatio = 0;
+  List<String> winStatements = ["GREAT!", "WOW!", "PERFECT!"];
   int statementIndex = 0;
   bool _isDisplayedStatement = false;
 
-  bool reversed            = false;
+  bool reversed = false;
   bool isStatementBouncing = false;
   int currentLvl = -1;
 
-  void computeStatementVisibilityStatus(GameHandlerNotifier notifier)
-  {
+  void computeStatementVisibilityStatus(GameHandlerNotifier notifier) {
     _isDisplayedStatement = notifier.getGameStatus != GameStatus.playing;
   }
 
-  void computeStatement(GameHandlerNotifier notifier)
-  {
-    if (notifier.getGameStatus == GameStatus.lose)
-    {
+  void computeStatement(GameHandlerNotifier notifier) {
+    if (notifier.getGameStatus == GameStatus.lose) {
       _statement = "YOU LOSE";
       _sizeRatio = 45;
-    }
-    else if (notifier.getGameStatus == GameStatus.win)
-    {
-      if (currentLvl != notifier.getLvl)
-      {
+    } else if (notifier.getGameStatus == GameStatus.win) {
+      if (currentLvl != notifier.getLvl) {
         Random random = Random();
         statementIndex = random.nextInt(3);
         currentLvl = notifier.getLvl;
       }
       _statement = winStatements[statementIndex];
       _sizeRatio = statementIndex == 2 ? 38 : 50;
-    }
-    else if (notifier.getGameStatus == GameStatus.nextlevel)
-    {
+    } else if (notifier.getGameStatus == GameStatus.nextlevel) {
       _statement = "TAP TO NEXT!";
       _sizeRatio = 35;
-    }
-    else if (notifier.getGameStatus == GameStatus.tryagain)
-    {
+    } else if (notifier.getGameStatus == GameStatus.tryagain) {
       _statement = "TRY AGAIN!";
       _sizeRatio = 45;
-    }
-    else if (notifier.getGameStatus == GameStatus.finish)
-    {
+    } else if (notifier.getGameStatus == GameStatus.finish) {
       _statement = "YOU'RE A HERO!";
       _sizeRatio = 40;
     }
   }
 
-  void computeStatementBouncingStatus(GameHandlerNotifier notifier)
-  {
+  void computeStatementBouncingStatus(GameHandlerNotifier notifier) {
     isStatementBouncing = notifier.getGameStatus == GameStatus.nextlevel ||
-                          notifier.getGameStatus == GameStatus.tryagain  ||
-                          notifier.getGameStatus == GameStatus.finish;
+        notifier.getGameStatus == GameStatus.tryagain ||
+        notifier.getGameStatus == GameStatus.finish;
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return Consumer<GameHandlerNotifier>(
-      builder: (context, notifier, _) {
-        computeStatementVisibilityStatus(notifier);
-        return Visibility(
-          visible: _isDisplayedStatement,
-          child: TweenAnimationBuilder(
-            duration: const Duration(milliseconds: 300),
-            tween: Tween(begin: 0.0, end: reversed ? -5.0 : 5.0),
-            builder: (context, double statementPosition, child) {
-              computeStatement(notifier);
-              computeStatementBouncingStatus(notifier);
-              return SafeArea(
-                child: Center(
-                  child: Transform.translate(
-                    offset: Offset(0.0, isStatementBouncing ? statementPosition : 0.0),
-                    child: Text(
-                      _statement,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.righteous(
-                        decoration: TextDecoration.none,
-                        fontSize: min(min(MediaQuery.of(context).size.width,
-                                      MediaQuery.of(context).size.height),
-                                  500) * _sizeRatio * 2 / 392.73,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
+    return Consumer<GameHandlerNotifier>(builder: (context, notifier, _) {
+      computeStatementVisibilityStatus(notifier);
+      return Visibility(
+        visible: _isDisplayedStatement,
+        child: TweenAnimationBuilder(
+          duration: const Duration(milliseconds: 300),
+          tween: Tween(begin: 0.0, end: reversed ? -5.0 : 5.0),
+          builder: (context, double statementPosition, child) {
+            computeStatement(notifier);
+            computeStatementBouncingStatus(notifier);
+            return SafeArea(
+              child: Center(
+                child: Transform.translate(
+                  offset: Offset(
+                      0.0, isStatementBouncing ? statementPosition : 0.0),
+                  child: Text(
+                    _statement,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Righteous',
+                      decoration: TextDecoration.none,
+                      fontSize: min(
+                              min(MediaQuery.of(context).size.width,
+                                  MediaQuery.of(context).size.height),
+                              500) *
+                          _sizeRatio *
+                          2 /
+                          392.73,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
                     ),
                   ),
                 ),
-              );
-            },
-            onEnd: () => {
-              setState(() {
-                reversed = !reversed;
-              }),
-            },
-          ),
-        );
-      }
-    );
+              ),
+            );
+          },
+          onEnd: () => {
+            setState(() {
+              reversed = !reversed;
+            }),
+          },
+        ),
+      );
+    });
   }
 }

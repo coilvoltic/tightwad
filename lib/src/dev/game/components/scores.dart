@@ -19,9 +19,7 @@ class Scores extends StatefulWidget {
 }
 
 class _ScoresState extends State<Scores> {
-
-  Widget buildUserIcon(OptionsNotifier optionsNotifier, double gamePxSize)
-  {
+  Widget buildUserIcon(OptionsNotifier optionsNotifier, double gamePxSize) {
     return FaIcon(
       FontAwesomeIcons.userLarge,
       size: gamePxSize / 12,
@@ -29,13 +27,14 @@ class _ScoresState extends State<Scores> {
     );
   }
 
-  Widget buildUserScore(GameHandlerNotifier gameHandlerNotifier, double gamePxSize)
-  {
+  Widget buildUserScore(
+      GameHandlerNotifier gameHandlerNotifier, double gamePxSize) {
     return Container(
       margin: EdgeInsets.only(top: gamePxSize / 240),
       child: Text(
         '${gameHandlerNotifier.getUserScore}',
-        style: GoogleFonts.inter(
+        style: TextStyle(
+          fontFamily: 'Inter',
           decoration: TextDecoration.none,
           fontSize: gamePxSize / 14,
           fontWeight: FontWeight.bold,
@@ -45,8 +44,7 @@ class _ScoresState extends State<Scores> {
     );
   }
 
-  Widget buildAlgoIcon(OptionsNotifier optionsNotifier, double gamePxSize)
-  {
+  Widget buildAlgoIcon(OptionsNotifier optionsNotifier, double gamePxSize) {
     return FaIcon(
       FontAwesomeIcons.robot,
       size: gamePxSize / 12,
@@ -54,13 +52,14 @@ class _ScoresState extends State<Scores> {
     );
   }
 
-  Widget buildAlgoScore(GameHandlerNotifier gameHandlerNotifier, double gamePxSize)
-  {
+  Widget buildAlgoScore(
+      GameHandlerNotifier gameHandlerNotifier, double gamePxSize) {
     return Container(
       margin: EdgeInsets.only(top: gamePxSize / 120),
       child: Text(
         '${gameHandlerNotifier.getAlgoScore}',
-        style: GoogleFonts.inter(
+        style: TextStyle(
+          fontFamily: 'Inter',
           decoration: TextDecoration.none,
           fontSize: gamePxSize / 14,
           fontWeight: FontWeight.bold,
@@ -72,70 +71,64 @@ class _ScoresState extends State<Scores> {
 
   @override
   Widget build(BuildContext context) {
-
     final double height = MediaQuery.of(context).size.height;
-    final double width  = MediaQuery.of(context).size.width;
+    final double width = MediaQuery.of(context).size.width;
     final double gamePxSize = min(min(width, height) / 1, height / 1.7);
 
     return Consumer2<GameHandlerNotifier, OptionsNotifier>(
-      builder: (context, gameHandlerNotifier, optionsNotifier, _) {
-        return SafeArea(
-          child: SizedBox(
-            height: gamePxSize / 3.3,
-            child: Column(
+        builder: (context, gameHandlerNotifier, optionsNotifier, _) {
+      return SafeArea(
+        child: SizedBox(
+          height: gamePxSize / 3.3,
+          child: Column(children: [
+            SizedBox(
+              height: gamePxSize / 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: gamePxSize / 30,
+                  width: gamePxSize / 30,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [    
-                    SizedBox(
-                      width: gamePxSize / 30,
-                    ), 
-                    Container(
-                      height: gamePxSize / 10,
-                      width: gamePxSize / 8,
-                      alignment: Alignment.center,
-                      child: buildUserIcon(optionsNotifier, gamePxSize),
-                    ),
-                    SizedBox(
-                      width: gamePxSize / 100,
-                    ),
-                    Container(
-                      height: gamePxSize / 10,
-                      alignment: Alignment.centerLeft,
-                      child: buildUserScore(gameHandlerNotifier, gamePxSize)
-                    ),
-                  ],
+                Container(
+                  height: gamePxSize / 10,
+                  width: gamePxSize / 8,
+                  alignment: Alignment.center,
+                  child: buildUserIcon(optionsNotifier, gamePxSize),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: gamePxSize / 30,
-                    ),
-                    Container(
-                      height: gamePxSize / 10,
-                      width: gamePxSize / 8,
-                      alignment: Alignment.center,
-                      child: buildAlgoIcon(optionsNotifier, gamePxSize),
-                    ),
-                    SizedBox(
-                      width: gamePxSize / 100,
-                    ),
-                    Container(
-                      height: gamePxSize / 10,
-                      alignment: Alignment.centerLeft,
-                      child: buildAlgoScore(gameHandlerNotifier, gamePxSize)
-                    ),
-                  ],
+                SizedBox(
+                  width: gamePxSize / 100,
                 ),
-              ]
+                Container(
+                    height: gamePxSize / 10,
+                    alignment: Alignment.centerLeft,
+                    child: buildUserScore(gameHandlerNotifier, gamePxSize)),
+              ],
             ),
-          ),
-        );
-      }
-    );
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: gamePxSize / 30,
+                ),
+                Container(
+                  height: gamePxSize / 10,
+                  width: gamePxSize / 8,
+                  alignment: Alignment.center,
+                  child: buildAlgoIcon(optionsNotifier, gamePxSize),
+                ),
+                SizedBox(
+                  width: gamePxSize / 100,
+                ),
+                Container(
+                    height: gamePxSize / 10,
+                    alignment: Alignment.centerLeft,
+                    child: buildAlgoScore(gameHandlerNotifier, gamePxSize)),
+              ],
+            ),
+          ]),
+        ),
+      );
+    });
   }
 }
