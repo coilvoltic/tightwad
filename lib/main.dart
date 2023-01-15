@@ -1,7 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -14,7 +13,14 @@ import 'package:tightwad/src/database/database.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: 'AIzaSyDaAMCOCv6GK56W3r3hLvAA4ez4N-6PrNY',
+      appId: '1:738466289587:web:3b769cb181f5b2a4bd5dc6',
+      messagingSenderId: '738466289587',
+      projectId: 'tightwad-80f9e',
+    ),
+  );
   await Database.init();
   runApp(const Tightwad());
 }

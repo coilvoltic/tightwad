@@ -42,6 +42,23 @@
 </head>
 
 <body>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDaAMCOCv6GK56W3r3hLvAA4ez4N-6PrNY",
+      authDomain: "tightwad-80f9e.firebaseapp.com",
+      projectId: "tightwad-80f9e",
+      storageBucket: "tightwad-80f9e.appspot.com",
+      messagingSenderId: "738466289587",
+      appId: "1:738466289587:web:3b769cb181f5b2a4bd5dc6",
+      measurementId: "G-9PZ6J6RM4Y"
+    };
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
   <script>
     window.addEventListener('load', function (ev) {
       // Download main.dart.js
@@ -55,21 +72,6 @@
         return appRunner.runApp();
       });
     });
-  </script>
-  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-store.js"></script>
-  <script>
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyDaAMCOCv6GK56W3r3hLvAA4ez4N-6PrNY",
-      authDomain: "tightwad-80f9e.firebaseapp.com",
-      projectId: "tightwad-80f9e",
-      storageBucket: "tightwad-80f9e.appspot.com",
-      messagingSenderId: "738466289587",
-      appId: "1:738466289587:web:b3c261f87f090152bd5dc6"
-    };
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
   </script>
 </body>
 

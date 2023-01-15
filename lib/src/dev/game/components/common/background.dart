@@ -9,15 +9,13 @@ class Background extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OptionsNotifier>(
-      builder: (context, notifier, _) {
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          height: double.infinity,
-          width: double.infinity,
-          color: Utils.getBackgroundColorFromTheme(),
-        );
-      }
-    );
+    return Consumer<OptionsNotifier>(builder: (context, notifier, _) {
+      return AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        height: double.infinity,
+        width: double.infinity,
+        color: Utils.getBackgroundColorFromTheme(),
+      );
+    });
   }
 }

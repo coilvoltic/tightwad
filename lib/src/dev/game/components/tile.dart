@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_glow/flutter_glow.dart';
+import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/colors.dart';
@@ -8,12 +10,11 @@ import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/coordinates.dart';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
 class Tile extends StatefulWidget {
-  const Tile({
+  Tile({
     Key? key,
     required this.sqNbOfTiles,
     required this.number,
@@ -23,6 +24,7 @@ class Tile extends StatefulWidget {
   final int sqNbOfTiles;
   final int number;
   final Coordinates tileCoordinates;
+  final player = AudioPlayer();
 
   @override
   State<Tile> createState() => _TileState();
@@ -33,6 +35,11 @@ class _TileState extends State<Tile> {
   Player owner = Player.none;
   bool isForbiddenMove = false;
   bool isRebuilt = false;
+  bool isAlgoSoundPlayed = false;
+
+  void playSound(final String soundPath) async {
+    await widget.player.play(AssetSource(soundPath));
+  }
 
   Widget createChild(double minDimension) {
     Color textColor = Colors.white;
@@ -64,9 +71,13 @@ class _TileState extends State<Tile> {
     );
   }
 
-  void checkAlgoPress(GameHandlerNotifier gameHandlerNotifier) {
+  void checkAlgoPress(GameHandlerNotifier gameHandlerNotifier) async {
     if (widget.tileCoordinates.x == gameHandlerNotifier.getAlgoPress.x &&
         widget.tileCoordinates.y == gameHandlerNotifier.getAlgoPress.y) {
+      if (!isAlgoSoundPlayed && Database.getSoundSettingOn()) {
+        playSound('algo.wav');
+        isAlgoSoundPlayed = true;
+      }
       owner = Player.algo;
     }
   }
@@ -95,6 +106,9 @@ class _TileState extends State<Tile> {
           if (!isForbiddenMove &&
               !(owner == Player.user) &&
               gameHandlerNotifier.canUserMove) {
+            if (Database.getSoundSettingOn()) {
+              playSound('user.wav');
+            }
             owner = Player.user;
             lastAnimationWasPressing = true;
             gameHandlerNotifier.registerUserMove(widget.tileCoordinates);
