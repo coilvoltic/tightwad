@@ -1,10 +1,8 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
-import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:flutter/material.dart';
 import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/dev/game/components/common/options/flow_settings_delegate%20copy.dart';
-import 'package:tightwad/src/dev/game/game.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 

@@ -36,7 +36,7 @@ class Database {
     await _preferences?.remove(_keyLevel);
   }
 
-  static int   getGameEntity()     => _preferences?.getInt (_keyGameEntity)   ?? Utils.TUTORIAL_ENTITY_INDEX;
+  static int   getGameEntity()     => _preferences?.getInt (_keyGameEntity)   ?? Utils.SINGLEPLAYERWELCOME_ENTITY_INDEX;
   static int   getLevel()          => _preferences?.getInt (_keyLevel)        ?? 0;
   static int   getGameTheme()      => _preferences?.getInt (_keyGameTheme)    ?? Utils.LIGHT_THEME_INDEX;
   static bool  getSoundSettingOn() => _preferences?.getBool(_keySoundSetting) ?? true;

@@ -1,8 +1,4 @@
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/utils.dart';
@@ -21,39 +17,15 @@ class _CreateRoomState extends State<CreateRoom> {
   double _sliderValue = 0.0;
   double _customThumbPadding = 15.0;
   int _nbOfRounds = 2;
+  bool _isPressedButton = false;
 
   final TextEditingController _nameController = TextEditingController();
 
-  Future creatRoomInFirebase() async {
-    final Random random = Random();
-    final int roomId = random.nextInt(999999);
 
-    final docUser =
-        FirebaseFirestore.instance.collection('rooms').doc('room-$roomId');
-    final json = {
-      'roomId': roomId,
-      'nbOfRounds': _nbOfRounds,
-      'creatorName': _nameController.text,
-      'guestName': '',
-      'creatorTurn': true,
-      'guestTurn': false,
-    };
-    await docUser.set(json);
-  }
-
-  Widget buildValidationButton() {
+  Widget buildValidationButton(VoidCallback onTap) {
     return GestureDetector(
-      onTap: () => {
-        if (_nameController.text.length < 3 || _nameController.text.length > 10)
-          {
-            _nameErrorMessage = "Please enter a name with 3-10 chars.",
-            _nameTextFieldSizeWhenPb = _nameController.text.length,
-          }
-        else
-          {
-            creatRoomInFirebase(),
-          }
-      },
+
+      onTap: onTap,
       child: AnimatedContainer(
         duration:
             const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
@@ -61,7 +33,7 @@ class _CreateRoomState extends State<CreateRoom> {
         width: MediaQuery.of(context).size.width *
             Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO /
             2,
-        decoration: Utils.buildNeumorphismBox(25.0, 5.0, 5.0, false),
+        decoration: Utils.buildNeumorphismBox(25.0, 5.0, 5.0, _isPressedButton),
         child: Center(
           child: TweenAnimationBuilder<double>(
               onEnd: () => setState(() {
@@ -77,13 +49,7 @@ class _CreateRoomState extends State<CreateRoom> {
                     style: TextStyle(
                       fontFamily: 'BebasNeue',
                       decoration: TextDecoration.none,
-                      fontSize: min(
-                              min(MediaQuery.of(context).size.width,
-                                  MediaQuery.of(context).size.height),
-                              500) *
-                          10 *
-                          2 /
-                          392.73,
+                      fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 10),
                       fontWeight: FontWeight.bold,
                       color: Utils.getPassedColorFromTheme(),
                     ),
@@ -113,13 +79,7 @@ class _CreateRoomState extends State<CreateRoom> {
         style: TextStyle(
           fontFamily: 'BebasNeue',
           decoration: TextDecoration.none,
-          fontSize: min(
-                  min(MediaQuery.of(context).size.width,
-                      MediaQuery.of(context).size.height),
-                  500) *
-              7 *
-              2 /
-              392.73,
+          fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 7),
           fontWeight: FontWeight.bold,
           color: Colors.red,
         ),
@@ -201,13 +161,7 @@ class _CreateRoomState extends State<CreateRoom> {
           style: TextStyle(
             fontFamily: 'BebasNeue',
             decoration: TextDecoration.none,
-            fontSize: min(
-                    min(MediaQuery.of(context).size.width,
-                        MediaQuery.of(context).size.height),
-                    500) *
-                10 *
-                2 /
-                392.73,
+            fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 10),
             fontWeight: FontWeight.bold,
             color: Utils.getPassedColorFromTheme(),
           ),
@@ -238,7 +192,15 @@ class _CreateRoomState extends State<CreateRoom> {
             SizedBox(height: MediaQuery.of(context).size.height * 0.005),
             buildNbOfRoundsStatement(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.055),
-            buildValidationButton(),
+            buildValidationButton(() {
+              // print('KL');
+              if (_nameController.text.length < 3 || _nameController.text.length > 10) {
+                _nameErrorMessage = "Please enter a name with 3-10 chars.";
+                _nameTextFieldSizeWhenPb = _nameController.text.length;
+              } else {
+                Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
+              }
+            }),
           ],
         ),
       );

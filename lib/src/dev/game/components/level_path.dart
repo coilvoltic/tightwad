@@ -2,12 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
-import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
 class LevelPath extends StatefulWidget {

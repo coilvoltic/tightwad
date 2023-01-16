@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
@@ -9,6 +6,7 @@ import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/dev/tutorial/components/learning/utils/mock_map.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
+import 'package:tightwad/src/utils/utils.dart';
 
 class LearningPages extends StatefulWidget {
   const LearningPages({Key? key}) : super(key: key);
@@ -45,13 +43,7 @@ class _LearningPagesState extends State<LearningPages> {
           style: TextStyle(
             fontFamily: 'BebasNeue',
             decoration: TextDecoration.none,
-            fontSize: min(
-                    min(MediaQuery.of(context).size.width,
-                        MediaQuery.of(context).size.height),
-                    500) *
-                15 *
-                2 /
-                392.73,
+            fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
             fontWeight: FontWeight.bold,
             color: ThemeColors.background.getDarkColor,
           ),
@@ -86,13 +78,7 @@ class _LearningPagesState extends State<LearningPages> {
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
-                fontSize: min(
-                        min(MediaQuery.of(context).size.width,
-                            MediaQuery.of(context).size.height),
-                        500) *
-                    15 *
-                    2 /
-                    392.73,
+                fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
                 color: ThemeColors.background.getDarkColor,
               ),
@@ -103,13 +89,7 @@ class _LearningPagesState extends State<LearningPages> {
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
-                fontSize: min(
-                        min(MediaQuery.of(context).size.width,
-                            MediaQuery.of(context).size.height),
-                        500) *
-                    15 *
-                    2 /
-                    392.73,
+                fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
                 color: ThemeColors.background.getDarkColor,
               ),
@@ -146,13 +126,7 @@ class _LearningPagesState extends State<LearningPages> {
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
-                fontSize: min(
-                        min(MediaQuery.of(context).size.width,
-                            MediaQuery.of(context).size.height),
-                        500) *
-                    15 *
-                    2 /
-                    392.73,
+                fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
                 color: ThemeColors.background.getDarkColor,
               ),
@@ -163,13 +137,7 @@ class _LearningPagesState extends State<LearningPages> {
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
-                fontSize: min(
-                        min(MediaQuery.of(context).size.width,
-                            MediaQuery.of(context).size.height),
-                        500) *
-                    15 *
-                    2 /
-                    392.73,
+                fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
                 color: ThemeColors.background.getDarkColor,
               ),
@@ -206,13 +174,7 @@ class _LearningPagesState extends State<LearningPages> {
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
-                fontSize: min(
-                        min(MediaQuery.of(context).size.width,
-                            MediaQuery.of(context).size.height),
-                        500) *
-                    15 *
-                    2 /
-                    392.73,
+                fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
                 color: ThemeColors.background.getDarkColor,
               ),
@@ -223,13 +185,7 @@ class _LearningPagesState extends State<LearningPages> {
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
-                fontSize: min(
-                        min(MediaQuery.of(context).size.width,
-                            MediaQuery.of(context).size.height),
-                        500) *
-                    15 *
-                    2 /
-                    392.73,
+                fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
                 color: ThemeColors.background.getDarkColor,
               ),
@@ -265,13 +221,7 @@ class _LearningPagesState extends State<LearningPages> {
                       style: TextStyle(
                         fontFamily: 'BebasNeue',
                         decoration: TextDecoration.none,
-                        fontSize: min(
-                                min(MediaQuery.of(context).size.width,
-                                    MediaQuery.of(context).size.height),
-                                500) *
-                            60 *
-                            2 /
-                            392.73,
+                        fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 60),
                         fontWeight: FontWeight.bold,
                         color: ThemeColors.background.getDarkColor,
                       ),
@@ -295,16 +245,7 @@ class _LearningPagesState extends State<LearningPages> {
                                 style: TextStyle(
                                   fontFamily: 'BebasNeue',
                                   decoration: TextDecoration.none,
-                                  fontSize: min(
-                                          min(
-                                              MediaQuery.of(context).size.width,
-                                              MediaQuery.of(context)
-                                                  .size
-                                                  .height),
-                                          500) *
-                                      15 *
-                                      2 /
-                                      392.73,
+                                  fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                                   fontWeight: FontWeight.bold,
                                   color: ThemeColors.background.getDarkColor,
                                 ),

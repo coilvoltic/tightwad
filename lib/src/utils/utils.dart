@@ -1,5 +1,7 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/utils/colors.dart';
 
@@ -335,4 +337,27 @@ class Utils {
           );
         });
   }
+
+  static double getSizeFromContext(final Size size,
+                                   final double value) {
+    return min(min(size.width, size.height), 500) * value * 2 / 392.73;
+  }
+
+  static Future createRoomInFirebase(final String name, final int nbOfRounds) async {
+    final Random random = Random();
+    final int roomId = random.nextInt(999999);
+
+    final docUser =
+        FirebaseFirestore.instance.collection('rooms').doc('room-$roomId');
+    final json = {
+      'roomId': roomId,
+      'nbOfRounds': nbOfRounds,
+      'creatorName': name,
+      'guestName': '',
+      'creatorTurn': true,
+      'guestTurn': false,
+    };
+    await docUser.set(json);
+  }
+
 }

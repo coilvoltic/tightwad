@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:flutter/material.dart';
@@ -61,13 +58,7 @@ class _JoinRoomState extends State<JoinRoom> {
                     style: TextStyle(
                       fontFamily: 'BebasNeue',
                       decoration: TextDecoration.none,
-                      fontSize: min(
-                              min(MediaQuery.of(context).size.width,
-                                  MediaQuery.of(context).size.height),
-                              500) *
-                          10 *
-                          2 /
-                          392.73,
+                      fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 10),
                       fontWeight: FontWeight.bold,
                       color: Utils.getPassedColorFromTheme(),
                     ),
@@ -97,13 +88,7 @@ class _JoinRoomState extends State<JoinRoom> {
         style: TextStyle(
           fontFamily: 'BebasNeue',
           decoration: TextDecoration.none,
-          fontSize: min(
-                  min(MediaQuery.of(context).size.width,
-                      MediaQuery.of(context).size.height),
-                  500) *
-              7 *
-              2 /
-              392.73,
+          fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 7),
           fontWeight: FontWeight.bold,
           color: Colors.red,
         ),
@@ -129,13 +114,7 @@ class _JoinRoomState extends State<JoinRoom> {
         style: TextStyle(
           fontFamily: 'BebasNeue',
           decoration: TextDecoration.none,
-          fontSize: min(
-                  min(MediaQuery.of(context).size.width,
-                      MediaQuery.of(context).size.height),
-                  500) *
-              7 *
-              2 /
-              392.73,
+          fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 7),
           fontWeight: FontWeight.bold,
           color: Colors.red,
         ),

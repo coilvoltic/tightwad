@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
@@ -46,13 +43,7 @@ class _WelcomeState extends State<Welcome> {
                       style: TextStyle(
                         fontFamily: 'BebasNeue',
                         decoration: TextDecoration.none,
-                        fontSize: min(
-                                min(MediaQuery.of(context).size.width,
-                                    MediaQuery.of(context).size.height),
-                                500) *
-                            40 *
-                            2 /
-                            392.73,
+                        fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 40),
                         fontWeight: FontWeight.bold,
                         color: Utils.getPassedColorFromTheme(),
                       ),
@@ -66,13 +57,7 @@ class _WelcomeState extends State<Welcome> {
                       style: TextStyle(
                         fontFamily: 'Parisienne',
                         decoration: TextDecoration.none,
-                        fontSize: min(
-                                min(MediaQuery.of(context).size.width,
-                                    MediaQuery.of(context).size.height),
-                                500) *
-                            30 *
-                            2 /
-                            392.73,
+                        fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 30),
                         fontWeight: FontWeight.bold,
                         color: Utils.getPassedColorFromTheme(),
                       ),
@@ -102,13 +87,7 @@ class _WelcomeState extends State<Welcome> {
                               style: TextStyle(
                                 fontFamily: 'BebasNeue',
                                 decoration: TextDecoration.none,
-                                fontSize: min(
-                                        min(MediaQuery.of(context).size.width,
-                                            MediaQuery.of(context).size.height),
-                                        500) *
-                                    10 *
-                                    2 /
-                                    392.73,
+                                fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 10),
                                 fontWeight: FontWeight.bold,
                                 color: Utils.getPassedColorFromTheme(),
                               ),

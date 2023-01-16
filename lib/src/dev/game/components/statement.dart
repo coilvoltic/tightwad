@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
+import 'package:tightwad/src/utils/utils.dart';
 
 class Statement extends StatefulWidget {
   const Statement({Key? key}) : super(key: key);
@@ -82,13 +82,7 @@ class _StatementState extends State<Statement> {
                     style: TextStyle(
                       fontFamily: 'Righteous',
                       decoration: TextDecoration.none,
-                      fontSize: min(
-                              min(MediaQuery.of(context).size.width,
-                                  MediaQuery.of(context).size.height),
-                              500) *
-                          _sizeRatio *
-                          2 /
-                          392.73,
+                      fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, _sizeRatio.toDouble()),
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,
                     ),

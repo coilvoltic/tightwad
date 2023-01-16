@@ -19,7 +19,7 @@ class _TightWadHomeState extends State<TightWadHome> {
   Widget build(BuildContext context) {
     return Consumer<EntityNotifier>(builder: (context, entityNotifier, _) {
       if (Database.getGameEntity() == Utils.TUTORIAL_ENTITY_INDEX) {
-        return const Game();
+        return const Tutorial();
       } else {
         return const Game();
       }

@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/create_room.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/join_room.dart';
@@ -26,13 +23,7 @@ class _RoomLobbyState extends State<RoomLobby> {
       style: TextStyle(
         fontFamily: 'BebasNeue',
         decoration: TextDecoration.none,
-        fontSize: min(
-                min(MediaQuery.of(context).size.width,
-                    MediaQuery.of(context).size.height),
-                500) *
-            6 *
-            2 /
-            392.73,
+        fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 6),
         fontWeight: FontWeight.bold,
         color: Utils.getPassedColorFromTheme(),
       ),
@@ -78,13 +69,7 @@ class _RoomLobbyState extends State<RoomLobby> {
           style: TextStyle(
             fontFamily: 'BebasNeue',
             decoration: TextDecoration.none,
-            fontSize: min(
-                    min(MediaQuery.of(context).size.width,
-                        MediaQuery.of(context).size.height),
-                    500) *
-                35 *
-                2 /
-                392.73,
+            fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 35),
             fontWeight: FontWeight.bold,
             color: Utils.getPassedColorFromTheme(),
           ),

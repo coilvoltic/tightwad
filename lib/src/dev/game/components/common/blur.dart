@@ -1,13 +1,11 @@
 import 'dart:ui';
 
-import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tightwad/src/utils/utils.dart';
 
 class Blur extends StatefulWidget {
   const Blur({Key? key}) : super(key: key);

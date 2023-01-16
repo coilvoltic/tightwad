@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
