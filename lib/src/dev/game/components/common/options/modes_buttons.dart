@@ -137,7 +137,7 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
       _isModeChanging = _entityNotifier.getIsModeChanging;
     }
     if (_optionsNotifier.getAreSettingsChanging || _gameHandlerNotifier.getGameStatus != GameStatus.playing ||
-        (Database.getGameEntity() != Utils.SINGLEPLAYERGAME_ENTITY_INDEX && Database.getGameEntity() != Utils.MULTIPLAYERGAME_ENTITY_INDEX)) {
+        (Database.getGameEntity() != Utils.SINGLEPLAYERGAME_ENTITY_INDEX && Database.getGameEntity() != Utils.LOBBY_ENTITY_INDEX)) {
         return Container();
       } else {
         return buildModesButtons();

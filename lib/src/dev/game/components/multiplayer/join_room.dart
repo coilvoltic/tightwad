@@ -17,12 +17,22 @@ class _JoinRoomState extends State<JoinRoom> {
   String? _nameErrorMessage;
   int _idTextFieldSizeWhenPb = 0;
   int _nameTextFieldSizeWhenPb = 0;
+  bool _isPressedButton = false;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
 
   Widget buildValidationButton() {
-    return GestureDetector(
+    return InkWell(
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      splashFactory: NoSplash.splashFactory,
+      onTapDown: (_) => setState(() {
+        _isPressedButton = true;
+      }),
+      onTapUp: (_) => setState(() {
+        _isPressedButton = false;
+      }),
       onTap: () => {
         if (_idController.text != "123")
           {
@@ -42,12 +52,12 @@ class _JoinRoomState extends State<JoinRoom> {
         width: MediaQuery.of(context).size.width *
             Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO /
             2,
-        decoration: Utils.buildNeumorphismBox(25.0, 5.0, 5.0, false),
+        decoration: Utils.buildNeumorphismBox(25.0, 5.0, 5.0, _isPressedButton),
         child: Center(
           child: TweenAnimationBuilder<double>(
               onEnd: () => setState(() {
-                    _isReversed = !_isReversed;
-                  }),
+                _isReversed = !_isReversed;
+              }),
               duration: const Duration(milliseconds: 250),
               tween: Tween<double>(begin: 0.0, end: _isReversed ? -2.5 : 2.5),
               builder: (context, double statementPosition, _) {

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,11 +24,15 @@ class Utils {
   // ignore: constant_identifier_names
   static const int SINGLEPLAYERGAME_ENTITY_INDEX = 1;
   // ignore: constant_identifier_names
-  static const int MULTIPLAYERGAME_ENTITY_INDEX = 2;
+  static const int LOBBY_ENTITY_INDEX = 2;
   // ignore: constant_identifier_names
   static const int SINGLEPLAYERWELCOME_ENTITY_INDEX = 3;
   // ignore: constant_identifier_names
   static const int MULTIPLAYERWELCOME_ENTITY_INDEX = 4;
+  // ignore: constant_identifier_names
+  static const int WAITINGOPPONENT_ENTITY_INDEX = 5;
+  // ignore: constant_identifier_names
+  static const int LOADING_ENTITY_INDEX = 6;
 
   // ignore: constant_identifier_names
   static const int THEME_ANIMATION_DURATION_MS = 150;
@@ -197,7 +202,7 @@ class Utils {
   static bool isPressedFromGameEntity(final Entity gameEntity) {
     if (Database.getGameEntity() == SINGLEPLAYERGAME_ENTITY_INDEX &&
             gameEntity == Entity.singleplayergame ||
-        Database.getGameEntity() == MULTIPLAYERGAME_ENTITY_INDEX &&
+        Database.getGameEntity() == LOBBY_ENTITY_INDEX &&
             gameEntity == Entity.multiplayergame) {
       return true;
     }
@@ -343,21 +348,25 @@ class Utils {
     return min(min(size.width, size.height), 500) * value * 2 / 392.73;
   }
 
+  static int roomId = 0;
+
   static Future createRoomInFirebase(final String name, final int nbOfRounds) async {
     final Random random = Random();
     final int roomId = random.nextInt(999999);
 
-    final docUser =
-        FirebaseFirestore.instance.collection('rooms').doc('room-$roomId');
-    final json = {
-      'roomId': roomId,
-      'nbOfRounds': nbOfRounds,
-      'creatorName': name,
-      'guestName': '',
-      'creatorTurn': true,
-      'guestTurn': false,
-    };
-    await docUser.set(json);
+    // final docUser =
+    //     FirebaseFirestore.instance.collection('rooms').doc('room-$roomId');
+    // final json = {
+    //   'roomId': roomId,
+    //   'nbOfRounds': nbOfRounds,
+    //   'creatorName': name,
+    //   'guestName': '',
+    //   'creatorTurn': true,
+    //   'guestTurn': false,
+    // };
+    // await docUser.set(json);
+    await Future.delayed(const Duration(seconds: 5));
+    Utils.roomId = roomId;
   }
 
 }

@@ -5,11 +5,13 @@ import 'package:tightwad/src/dev/game/components/common/background.dart';
 
 import 'package:tightwad/src/dev/game/components/common/big_button.dart';
 import 'package:tightwad/src/dev/game/components/common/blur.dart';
+import 'package:tightwad/src/dev/game/components/common/loading.dart';
 import 'package:tightwad/src/dev/game/components/common/options/settings_buttons.dart';
 import 'package:tightwad/src/dev/game/components/confettis.dart';
 import 'package:tightwad/src/dev/game/components/level_path.dart';
 import 'package:tightwad/src/dev/game/components/map.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/room_lobby.dart';
+import 'package:tightwad/src/dev/game/components/multiplayer/waiting_opponent.dart';
 import 'package:tightwad/src/dev/game/components/scores.dart';
 import 'package:tightwad/src/dev/game/components/statement.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
@@ -23,11 +25,24 @@ import 'components/common/options/modes_buttons.dart';
 class Game extends StatelessWidget {
   const Game({Key? key}) : super(key: key);
 
-  Stack buildMultiPlayerGame() {
+  Stack buildLobby() {
     return Stack(
       children: const [
         Background(),
         RoomLobby(),
+        Blur(),
+        BigButton(),
+        SettingsButtons(),
+        ModesButtons(),
+      ],
+    );
+  }
+
+  Stack buildWaitingOpponent() {
+    return Stack(
+      children: const [
+        Background(),
+        WaitingOpponent(),
         Blur(),
         BigButton(),
         SettingsButtons(),
@@ -58,10 +73,14 @@ class Game extends StatelessWidget {
 
     return Consumer<EntityNotifier>(
       builder: (context, entityNotifier, __) {
-        if (Database.getGameEntity() == Utils.MULTIPLAYERGAME_ENTITY_INDEX) {
-          return buildMultiPlayerGame();
+        if (Database.getGameEntity() == Utils.LOBBY_ENTITY_INDEX) {
+          return buildLobby();
+        } else if (Database.getGameEntity() == Utils.WAITINGOPPONENT_ENTITY_INDEX) {
+          return buildWaitingOpponent();
         } else if (Database.getGameEntity() == Utils.SINGLEPLAYERGAME_ENTITY_INDEX) {
           return buildSinglePlayerGame();
+        } else if (Database.getGameEntity() == Utils.LOADING_ENTITY_INDEX) {
+          return const Loading();
         } else if (Database.getGameEntity() == Utils.SINGLEPLAYERWELCOME_ENTITY_INDEX) {
           return const Welcome(destination: 'singleplayer', entityDestination: Entity.singleplayergame);
         } else if (Database.getGameEntity() == Utils.MULTIPLAYERWELCOME_ENTITY_INDEX) {

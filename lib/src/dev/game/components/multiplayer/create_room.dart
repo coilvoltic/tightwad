@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
+import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
 class CreateRoom extends StatefulWidget {
@@ -11,6 +13,7 @@ class CreateRoom extends StatefulWidget {
 }
 
 class _CreateRoomState extends State<CreateRoom> {
+
   bool _isReversed = false;
   String? _nameErrorMessage;
   int _nameTextFieldSizeWhenPb = 0;
@@ -18,13 +21,21 @@ class _CreateRoomState extends State<CreateRoom> {
   double _customThumbPadding = 15.0;
   int _nbOfRounds = 2;
   bool _isPressedButton = false;
+  bool _isLoading = false;
 
   final TextEditingController _nameController = TextEditingController();
 
-
   Widget buildValidationButton(VoidCallback onTap) {
-    return GestureDetector(
-
+    return InkWell(
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      splashFactory: NoSplash.splashFactory,
+      onTapDown: (_) => setState(() {
+        _isPressedButton = true;
+      }),
+      onTapUp: (_) => setState(() {
+        _isPressedButton = false;
+      }),
       onTap: onTap,
       child: AnimatedContainer(
         duration:
@@ -36,27 +47,28 @@ class _CreateRoomState extends State<CreateRoom> {
         decoration: Utils.buildNeumorphismBox(25.0, 5.0, 5.0, _isPressedButton),
         child: Center(
           child: TweenAnimationBuilder<double>(
-              onEnd: () => setState(() {
-                    _isReversed = !_isReversed;
-                  }),
-              duration: const Duration(milliseconds: 250),
-              tween: Tween<double>(begin: 0.0, end: _isReversed ? -2.5 : 2.5),
-              builder: (context, double statementPosition, _) {
-                return Transform.translate(
-                  offset: Offset(0.0, statementPosition),
-                  child: Text(
-                    'click to create!',
-                    style: TextStyle(
-                      fontFamily: 'BebasNeue',
-                      decoration: TextDecoration.none,
-                      fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 10),
-                      fontWeight: FontWeight.bold,
-                      color: Utils.getPassedColorFromTheme(),
-                    ),
-                    textAlign: TextAlign.center,
+            onEnd: () => setState(() {
+                  _isReversed = !_isReversed;
+                }),
+            duration: const Duration(milliseconds: 300),
+            tween: Tween<double>(begin: 0.0, end: _isReversed ? -2.5 : 2.5),
+            builder: (context, double statementPosition, _) {
+              return Transform.translate(
+                offset: Offset(0.0, statementPosition),
+                child: Text(
+                  'click to create!',
+                  style: TextStyle(
+                    fontFamily: 'BebasNeue',
+                    decoration: TextDecoration.none,
+                    fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 10),
+                    fontWeight: FontWeight.bold,
+                    color: Utils.getPassedColorFromTheme(),
                   ),
-                );
-              }),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
+          ),
         ),
       ),
     );
@@ -94,17 +106,11 @@ class _CreateRoomState extends State<CreateRoom> {
       return;
     }
     if ((_sliderValue - 1.0).abs() < Utils.ZERO_PLUS) {
-      _customThumbPadding = MediaQuery.of(context).size.width *
-              Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO -
-          46.0;
+      _customThumbPadding = MediaQuery.of(context).size.width * Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO - 46.0;
       return;
     }
-    _customThumbPadding = 15.0 +
-        _sliderValue *
-            (MediaQuery.of(context).size.width *
-                    Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO -
-                31.0 -
-                15.0);
+    _customThumbPadding = 15.0 + _sliderValue *
+                          (MediaQuery.of(context).size.width * Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO - 31.0 - 15.0);
   }
 
   Widget buildRoundsGauge() {
@@ -171,7 +177,7 @@ class _CreateRoomState extends State<CreateRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OptionsNotifier>(builder: (context, _, __) {
+    return Consumer2<OptionsNotifier, EntityNotifier>(builder: (context, _, entityNotifier, __) {
       return SizedBox(
         height: MediaQuery.of(context).size.height *
             Utils.ROOM_LOBBY_OPTIONS_HEIGHT_RATIO,
@@ -192,13 +198,14 @@ class _CreateRoomState extends State<CreateRoom> {
             SizedBox(height: MediaQuery.of(context).size.height * 0.005),
             buildNbOfRoundsStatement(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.055),
-            buildValidationButton(() {
-              // print('KL');
+            buildValidationButton(() async {
               if (_nameController.text.length < 3 || _nameController.text.length > 10) {
                 _nameErrorMessage = "Please enter a name with 3-10 chars.";
                 _nameTextFieldSizeWhenPb = _nameController.text.length;
               } else {
-                Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
+                entityNotifier.changeGameEntity(Entity.loading);
+                await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
+                entityNotifier.changeGameEntity(Entity.waitingopponent);
               }
             }),
           ],

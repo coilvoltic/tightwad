@@ -20,12 +20,16 @@ class EntityNotifier extends ChangeNotifier {
       registerTutorialDone(Utils.TUTORIAL_ENTITY_INDEX);
     } else if (entity == Entity.singleplayergame) {
       registerTutorialDone(Utils.SINGLEPLAYERGAME_ENTITY_INDEX);
-    } else if (entity == Entity.multiplayergame) {
-      registerTutorialDone(Utils.MULTIPLAYERGAME_ENTITY_INDEX);
+    } else if (entity == Entity.lobby) {
+      registerTutorialDone(Utils.LOBBY_ENTITY_INDEX);
+    } else if (entity == Entity.loading) {
+      registerTutorialDone(Utils.LOADING_ENTITY_INDEX);
     } else if (entity == Entity.singleplayerwelcome) {
       registerTutorialDone(Utils.SINGLEPLAYERWELCOME_ENTITY_INDEX);
     } else if (entity == Entity.multiplayerwelcome) {
       registerTutorialDone(Utils.MULTIPLAYERWELCOME_ENTITY_INDEX);
+    } else if (entity == Entity.waitingopponent) {
+      registerTutorialDone(Utils.WAITINGOPPONENT_ENTITY_INDEX);
     }
     notifyListeners();
   }
