@@ -10,15 +10,27 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
+
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Utils.getBackgroundColorFromTheme(),
-      body: SpinKitSquareCircle(
-        color: Utils.getIconColorFromTheme(),
-        size: 50.0,
-        controller: AnimationController(vsync: this, duration: const Duration(seconds: 1)),
-      ),
+    return SpinKitSquareCircle(
+      color: Utils.getIconColorFromTheme(),
+      size: 50.0,
+      controller: _controller,
     );
   }
 }

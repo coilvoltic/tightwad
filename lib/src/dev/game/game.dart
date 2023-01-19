@@ -15,6 +15,7 @@ import 'package:tightwad/src/dev/game/components/multiplayer/waiting_opponent.da
 import 'package:tightwad/src/dev/game/components/scores.dart';
 import 'package:tightwad/src/dev/game/components/statement.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
+import 'package:tightwad/src/notifiers/loading_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';
 import 'package:tightwad/src/utils/welcome.dart';
@@ -71,24 +72,37 @@ class Game extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Consumer<EntityNotifier>(
-      builder: (context, entityNotifier, __) {
-        if (Database.getGameEntity() == Utils.LOBBY_ENTITY_INDEX) {
-          return buildLobby();
-        } else if (Database.getGameEntity() == Utils.WAITINGOPPONENT_ENTITY_INDEX) {
-          return buildWaitingOpponent();
-        } else if (Database.getGameEntity() == Utils.SINGLEPLAYERGAME_ENTITY_INDEX) {
-          return buildSinglePlayerGame();
-        } else if (Database.getGameEntity() == Utils.LOADING_ENTITY_INDEX) {
-          return const Loading();
-        } else if (Database.getGameEntity() == Utils.SINGLEPLAYERWELCOME_ENTITY_INDEX) {
-          return const Welcome(destination: 'singleplayer', entityDestination: Entity.singleplayergame);
-        } else if (Database.getGameEntity() == Utils.MULTIPLAYERWELCOME_ENTITY_INDEX) {
-          return const Welcome(destination: 'multiplayer', entityDestination: Entity.multiplayergame);
-        }
-        return Container();
-      }
+    return Stack(
+      children: [
+        Consumer<EntityNotifier>(
+          builder: (context, entityNotifier, __) {
+            if (Database.getGameEntity() == Utils.LOBBY_ENTITY_INDEX) {
+              return buildLobby();
+            } else if (Database.getGameEntity() == Utils.WAITINGOPPONENT_ENTITY_INDEX) {
+              return buildWaitingOpponent();
+            } else if (Database.getGameEntity() == Utils.SINGLEPLAYERGAME_ENTITY_INDEX) {
+              return buildSinglePlayerGame();
+            } else if (Database.getGameEntity() == Utils.SINGLEPLAYERWELCOME_ENTITY_INDEX) {
+              return const Welcome(destination: 'singleplayer', entityDestination: Entity.singleplayergame);
+            } else if (Database.getGameEntity() == Utils.MULTIPLAYERWELCOME_ENTITY_INDEX) {
+              return const Welcome(destination: 'multiplayer', entityDestination: Entity.lobby);
+            }
+            return Container();
+          }
+        ),
+        Consumer<LoadingNotifier>(
+          builder: (context, loadingNotifier, __) {
+            return Visibility(
+              visible: loadingNotifier.getIsLoading,
+              child: Container(
+                color: Utils.getBackgroundColorFromTheme(),
+                child: const Loading()
+              ),
+            );
+          }
+        ),
+      ],
     );
-
   }
 }
+

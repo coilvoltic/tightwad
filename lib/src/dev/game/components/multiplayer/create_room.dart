@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
+import 'package:tightwad/src/notifiers/loading_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';
@@ -177,7 +178,7 @@ class _CreateRoomState extends State<CreateRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<OptionsNotifier, EntityNotifier>(builder: (context, _, entityNotifier, __) {
+    return Consumer3<OptionsNotifier, EntityNotifier, LoadingNotifier>(builder: (context, _, entityNotifier, loadingNotifier, __) {
       return SizedBox(
         height: MediaQuery.of(context).size.height *
             Utils.ROOM_LOBBY_OPTIONS_HEIGHT_RATIO,
@@ -203,9 +204,10 @@ class _CreateRoomState extends State<CreateRoom> {
                 _nameErrorMessage = "Please enter a name with 3-10 chars.";
                 _nameTextFieldSizeWhenPb = _nameController.text.length;
               } else {
-                entityNotifier.changeGameEntity(Entity.loading);
+                loadingNotifier.setIsLoading();
                 await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
                 entityNotifier.changeGameEntity(Entity.waitingopponent);
+                loadingNotifier.unsetIsLoading();
               }
             }),
           ],

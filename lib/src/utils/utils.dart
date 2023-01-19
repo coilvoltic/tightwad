@@ -264,7 +264,7 @@ class Utils {
   }
 
   static AnimatedContainer buildNeumorphicTextField(final String hintText,
-      final double width, final TextEditingController controller) {
+      final double width, final TextEditingController controller, { bool shouldBeOnlyDigit = false }) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       height: Utils.TEXT_FIELD_HEIGHT,
@@ -285,10 +285,7 @@ class Utils {
           ),
           inputFormatters: [
             FilteringTextInputFormatter.allow(
-              RegExp(r'(\w+)'),
-            ),
-            FilteringTextInputFormatter.deny(
-              RegExp(r'(\w{,8})'),
+              shouldBeOnlyDigit ? RegExp(r'(\d+)') : RegExp(r'(\w+)'),
             ),
           ],
           decoration: InputDecoration(
@@ -348,25 +345,52 @@ class Utils {
     return min(min(size.width, size.height), 500) * value * 2 / 392.73;
   }
 
+  static bool areAllFieldsConformal(final String name, final String roomId) {
+    return Utils.isNameFormatConformal(name) && Utils.isRoomIdFormatConformal(roomId);
+  }
+
+  static bool isNameFormatConformal(final String name) {
+    return name.length >= 3 || name.length <= 10;
+  }
+
+  static bool isRoomIdFormatConformal(final String roomId) {
+    return roomId.length == 6;
+  }
+
   static int roomId = 0;
 
   static Future createRoomInFirebase(final String name, final int nbOfRounds) async {
-    final Random random = Random();
-    final int roomId = random.nextInt(999999);
 
-    // final docUser =
-    //     FirebaseFirestore.instance.collection('rooms').doc('room-$roomId');
-    // final json = {
-    //   'roomId': roomId,
-    //   'nbOfRounds': nbOfRounds,
-    //   'creatorName': name,
-    //   'guestName': '',
-    //   'creatorTurn': true,
-    //   'guestTurn': false,
-    // };
-    // await docUser.set(json);
-    await Future.delayed(const Duration(seconds: 5));
-    Utils.roomId = roomId;
+    final Random random = Random();
+    Utils.roomId = random.nextInt(999999);
+
+    FirebaseFirestore.instance.collection('rooms').doc('room-$roomId').set({
+      'roomId': roomId,
+      'creatorName': name,
+      'guestName': '',
+      'creatorTurn': true,
+      'guestTurn': false,
+    });
+
+    await Future.delayed(const Duration(seconds: 2));
+  }
+
+  static Future<String?> joinRoom(final String name, final String roomId) async {
+
+    String? error;
+
+    await FirebaseFirestore.instance.collection('rooms').doc('room-$roomId').get().then((doc) {
+      if (!doc.exists) {
+        error = "This room id doesn't exist.";
+      }
+    }).catchError((error) {
+      error = "An unexcepted error occured. Try again!";
+    });
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    return error;
+
   }
 
 }

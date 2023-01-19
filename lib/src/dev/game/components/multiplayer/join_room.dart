@@ -1,7 +1,10 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
+import 'package:tightwad/src/notifiers/entity_notifier.dart';
+import 'package:tightwad/src/notifiers/loading_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
 class JoinRoom extends StatefulWidget {
@@ -12,6 +15,7 @@ class JoinRoom extends StatefulWidget {
 }
 
 class _JoinRoomState extends State<JoinRoom> {
+  
   bool _isReversed = false;
   String? _idErrorMessage;
   String? _nameErrorMessage;
@@ -22,7 +26,7 @@ class _JoinRoomState extends State<JoinRoom> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
 
-  Widget buildValidationButton() {
+  Widget buildValidationButton(VoidCallback onTap) {
     return InkWell(
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
@@ -33,18 +37,7 @@ class _JoinRoomState extends State<JoinRoom> {
       onTapUp: (_) => setState(() {
         _isPressedButton = false;
       }),
-      onTap: () => {
-        if (_idController.text != "123")
-          {
-            _idErrorMessage = "Please enter a valid room id.",
-            _idTextFieldSizeWhenPb = _idController.text.length,
-          },
-        if (_nameController.text.length < 3 || _nameController.text.length > 10)
-          {
-            _nameErrorMessage = "Please enter a name with 3-10 chars.",
-            _nameTextFieldSizeWhenPb = _nameController.text.length,
-          }
-      },
+      onTap: onTap,
       child: AnimatedContainer(
         duration:
             const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
@@ -135,7 +128,7 @@ class _JoinRoomState extends State<JoinRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OptionsNotifier>(builder: (context, _, __) {
+    return Consumer2<OptionsNotifier, LoadingNotifier>(builder: (context, _, loadingNotifier, __) {
       return SizedBox(
         height: MediaQuery.of(context).size.height *
             Utils.ROOM_LOBBY_OPTIONS_HEIGHT_RATIO,
@@ -153,14 +146,33 @@ class _JoinRoomState extends State<JoinRoom> {
             buildNameErrorMessage(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.005),
             Utils.buildNeumorphicTextField(
-                'ENTER ROOM ID',
-                MediaQuery.of(context).size.width *
-                    Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO,
-                _idController),
+                'ENTER ROOM ID', MediaQuery.of(context).size.width * Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO,
+                _idController, shouldBeOnlyDigit: true),
             SizedBox(height: MediaQuery.of(context).size.height * 0.005),
             buildIdErrorMessage(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-            buildValidationButton(),
+            buildValidationButton(() async {
+              if (!Utils.areAllFieldsConformal(_nameController.text, _idController.text)) {
+                if (!Utils.isNameFormatConformal(_nameController.text)) {
+                  _nameErrorMessage = "Please enter a name with 3-10 chars.";
+                  _nameTextFieldSizeWhenPb = _nameController.text.length;
+                }
+                if (!Utils.isRoomIdFormatConformal(_idController.text)) {
+                  _idErrorMessage = "Please enter a room id with 6 digits.";
+                  _idTextFieldSizeWhenPb = _idController.text.length;
+                }
+              } else {
+                loadingNotifier.setIsLoading();
+                String? errorWhileJoining = await Utils.joinRoom(_nameController.text, _idController.text);
+                if (errorWhileJoining == null) {
+                  print("You joined the room!!!!");
+                } else {
+                  loadingNotifier.unsetIsLoading();
+                  _idErrorMessage = errorWhileJoining;
+                  _idTextFieldSizeWhenPb = _idController.text.length;
+                }
+              }
+            }),
           ],
         ),
       );
