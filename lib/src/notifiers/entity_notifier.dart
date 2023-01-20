@@ -10,26 +10,26 @@ class EntityNotifier extends ChangeNotifier {
   TutorialPhase tutoPhase = TutorialPhase.welcome;
   bool _isModeChanging = false;
 
-  void registerTutorialDone(int newGameEntity) async {
-    await Database.registerTutorialDone(newGameEntity);
+  void registerGameEntity(int newGameEntity) async {
+    await Database.registerGameEntity(newGameEntity);
   }
 
   void changeGameEntity(Entity newGameEntity) {
     entity = newGameEntity;
     if (entity == Entity.tutorial) {
-      registerTutorialDone(Utils.TUTORIAL_ENTITY_INDEX);
+      registerGameEntity(Utils.TUTORIAL_ENTITY_INDEX);
     } else if (entity == Entity.singleplayergame) {
-      registerTutorialDone(Utils.SINGLEPLAYERGAME_ENTITY_INDEX);
+      registerGameEntity(Utils.SINGLEPLAYERGAME_ENTITY_INDEX);
     } else if (entity == Entity.lobby) {
-      registerTutorialDone(Utils.LOBBY_ENTITY_INDEX);
-    } else if (entity == Entity.loading) {
-      registerTutorialDone(Utils.LOADING_ENTITY_INDEX);
+      registerGameEntity(Utils.LOBBY_ENTITY_INDEX);
     } else if (entity == Entity.singleplayerwelcome) {
-      registerTutorialDone(Utils.SINGLEPLAYERWELCOME_ENTITY_INDEX);
+      registerGameEntity(Utils.SINGLEPLAYERWELCOME_ENTITY_INDEX);
     } else if (entity == Entity.multiplayerwelcome) {
-      registerTutorialDone(Utils.MULTIPLAYERWELCOME_ENTITY_INDEX);
+      registerGameEntity(Utils.MULTIPLAYERWELCOME_ENTITY_INDEX);
+    } else if (entity == Entity.multiplayergame) {
+      registerGameEntity(Utils.MULTIPLAYERGAME_ENTITY_INDEX);
     } else if (entity == Entity.waitingopponent) {
-      registerTutorialDone(Utils.WAITINGOPPONENT_ENTITY_INDEX);
+      registerGameEntity(Utils.WAITINGOPPONENT_ENTITY_INDEX);
     }
     notifyListeners();
   }

@@ -136,7 +136,9 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
     }
 
     if (_entityNotifier.getIsModeChanging || _gameHandlerNotifier.getGameStatus != GameStatus.playing ||
-    (Database.getGameEntity() != Utils.SINGLEPLAYERGAME_ENTITY_INDEX && Database.getGameEntity() != Utils.LOBBY_ENTITY_INDEX)) {
+    (Database.getGameEntity() != Utils.SINGLEPLAYERGAME_ENTITY_INDEX &&
+     Database.getGameEntity() != Utils.MULTIPLAYERGAME_ENTITY_INDEX &&
+     Database.getGameEntity() != Utils.LOBBY_ENTITY_INDEX)) {
       return Container();
     } else {
       return buildSettingsButtons();

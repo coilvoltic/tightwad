@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tightwad/src/dev/game/components/multiplayer/validation_button.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/loading_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
@@ -15,65 +16,13 @@ class CreateRoom extends StatefulWidget {
 
 class _CreateRoomState extends State<CreateRoom> {
 
-  bool _isReversed = false;
   String? _nameErrorMessage;
   int _nameTextFieldSizeWhenPb = 0;
   double _sliderValue = 0.0;
   double _customThumbPadding = 15.0;
   int _nbOfRounds = 2;
-  bool _isPressedButton = false;
-  bool _isLoading = false;
 
   final TextEditingController _nameController = TextEditingController();
-
-  Widget buildValidationButton(VoidCallback onTap) {
-    return InkWell(
-      highlightColor: Colors.transparent,
-      hoverColor: Colors.transparent,
-      splashFactory: NoSplash.splashFactory,
-      onTapDown: (_) => setState(() {
-        _isPressedButton = true;
-      }),
-      onTapUp: (_) => setState(() {
-        _isPressedButton = false;
-      }),
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration:
-            const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
-        height: Utils.TEXT_FIELD_HEIGHT,
-        width: MediaQuery.of(context).size.width *
-            Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO /
-            2,
-        decoration: Utils.buildNeumorphismBox(25.0, 5.0, 5.0, _isPressedButton),
-        child: Center(
-          child: TweenAnimationBuilder<double>(
-            onEnd: () => setState(() {
-                  _isReversed = !_isReversed;
-                }),
-            duration: const Duration(milliseconds: 300),
-            tween: Tween<double>(begin: 0.0, end: _isReversed ? -2.5 : 2.5),
-            builder: (context, double statementPosition, _) {
-              return Transform.translate(
-                offset: Offset(0.0, statementPosition),
-                child: Text(
-                  'click to create!',
-                  style: TextStyle(
-                    fontFamily: 'BebasNeue',
-                    decoration: TextDecoration.none,
-                    fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 10),
-                    fontWeight: FontWeight.bold,
-                    color: Utils.getPassedColorFromTheme(),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              );
-            }
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget buildNameErrorMessage() {
     if (_nameErrorMessage == null ||
@@ -199,17 +148,23 @@ class _CreateRoomState extends State<CreateRoom> {
             SizedBox(height: MediaQuery.of(context).size.height * 0.005),
             buildNbOfRoundsStatement(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.055),
-            buildValidationButton(() async {
+            ValidationButton(onTap: () async {
               if (_nameController.text.length < 3 || _nameController.text.length > 10) {
                 _nameErrorMessage = "Please enter a name with 3-10 chars.";
                 _nameTextFieldSizeWhenPb = _nameController.text.length;
               } else {
                 loadingNotifier.setIsLoading();
-                await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
-                entityNotifier.changeGameEntity(Entity.waitingopponent);
+                String? errorWhileCreatingRoom = await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
                 loadingNotifier.unsetIsLoading();
+                if (errorWhileCreatingRoom == null) {
+                  entityNotifier.changeGameEntity(Entity.waitingopponent);
+                } else {
+                  _nameErrorMessage = errorWhileCreatingRoom;
+                  _nameTextFieldSizeWhenPb = _nameController.text.length;
+                }
               }
-            }),
+            },
+            text: 'click to create!'),
           ],
         ),
       );

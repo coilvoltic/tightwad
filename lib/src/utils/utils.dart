@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:tightwad/src/database/database.dart';
+import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/utils/colors.dart';
 
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
@@ -32,7 +33,7 @@ class Utils {
   // ignore: constant_identifier_names
   static const int WAITINGOPPONENT_ENTITY_INDEX = 5;
   // ignore: constant_identifier_names
-  static const int LOADING_ENTITY_INDEX = 6;
+  static const int MULTIPLAYERGAME_ENTITY_INDEX = 6;
 
   // ignore: constant_identifier_names
   static const int THEME_ANIMATION_DURATION_MS = 150;
@@ -51,6 +52,8 @@ class Utils {
   static const double ROOM_LOOBY_WIDTH_LIMIT_RATIO = 0.8;
   // ignore: constant_identifier_names
   static const double TEXT_FIELD_HEIGHT = 50;
+  // ignore: constant_identifier_names
+  static const int REQUEST_TIME_OUT = 10;
 
   static Color getBackgroundColorFromTheme() {
     if (Database.getGameTheme() == LIGHT_THEME_INDEX) {
@@ -202,7 +205,8 @@ class Utils {
   static bool isPressedFromGameEntity(final Entity gameEntity) {
     if (Database.getGameEntity() == SINGLEPLAYERGAME_ENTITY_INDEX &&
             gameEntity == Entity.singleplayergame ||
-        Database.getGameEntity() == LOBBY_ENTITY_INDEX &&
+       (Database.getGameEntity() == LOBBY_ENTITY_INDEX ||
+        Database.getGameEntity() == MULTIPLAYERGAME_ENTITY_INDEX) &&
             gameEntity == Entity.multiplayergame) {
       return true;
     }
@@ -357,40 +361,62 @@ class Utils {
     return roomId.length == 6;
   }
 
-  static int roomId = 0;
-
-  static Future createRoomInFirebase(final String name, final int nbOfRounds) async {
-
-    final Random random = Random();
-    Utils.roomId = random.nextInt(999999);
-
-    FirebaseFirestore.instance.collection('rooms').doc('room-$roomId').set({
-      'roomId': roomId,
+  static Future<String?> createRoomInFirebase(final String name, final int nbOfRounds) async {
+    String? error;
+    MultiplayerNotifier.generateRoomId();
+    FirebaseFirestore.instance.collection('rooms').doc('room-${MultiplayerNotifier.roomId}').set(<String, dynamic>{
+      'roomId': MultiplayerNotifier.roomId,
+      'nbOfRounds': nbOfRounds,
       'creatorName': name,
       'guestName': '',
       'creatorTurn': true,
       'guestTurn': false,
+      'gameStarted': false,
+    }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
+      error = "Request timed out. Please try again!";
+    }).onError((error, stackTrace) {
+      error = "An unexcepted error occured. Try again!";
     });
-
     await Future.delayed(const Duration(seconds: 2));
+    return error;
+  }
+
+  static Future<String?> checkTheRoomIsNotFull(final String roomId) async {
+    String? error;
+    await FirebaseFirestore.instance.collection('rooms').doc('room-$roomId')
+      .get()
+        .then((doc) {
+          if (!doc.exists) {
+            error = "This room id doesn't exist.";
+          } else if (doc.get('gameStarted') == true) {
+            error = "This room is already full.";
+          }
+        }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
+          error = "Request timed out. Please try again!";
+        }).onError((error, stackTrace) {
+          error = "An unexcepted error occured. Try again!";
+        });
+    return error;
   }
 
   static Future<String?> joinRoom(final String name, final String roomId) async {
-
     String? error;
-
-    await FirebaseFirestore.instance.collection('rooms').doc('room-$roomId').get().then((doc) {
-      if (!doc.exists) {
-        error = "This room id doesn't exist.";
-      }
-    }).catchError((error) {
-      error = "An unexcepted error occured. Try again!";
-    });
-
+    error = await checkTheRoomIsNotFull(roomId);
+    MultiplayerNotifier.roomId = roomId;
+    if (error == null) {
+      await FirebaseFirestore.instance.collection('rooms').doc('room-$roomId')
+        .update({
+          'guestName': name,
+          'gameStarted': true,
+        })
+        .timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
+          error = "Request timed out. Please try again!";
+        }).onError((error, stackTrace) {
+          error = "An unexcepted error occured. Try again!";
+        });
+    }
     await Future.delayed(const Duration(seconds: 2));
-
     return error;
-
   }
 
 }

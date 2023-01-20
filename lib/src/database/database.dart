@@ -12,7 +12,7 @@ class Database {
   static Future init() async =>
     _preferences = await SharedPreferences.getInstance();
 
-  static Future registerTutorialDone(int newGameEntity) async {
+  static Future registerGameEntity(int newGameEntity) async {
     await _preferences?.setInt(_keyGameEntity, newGameEntity);
   }
 

@@ -45,7 +45,8 @@ class Tightwad extends StatelessWidget {
         ),
         ChangeNotifierProvider<LoadingNotifier>(
           create: (_) => LoadingNotifier(),
-        ),      ],
+        ),
+      ],
       child: MaterialApp(
         theme: ThemeData(
           bottomSheetTheme: BottomSheetThemeData(

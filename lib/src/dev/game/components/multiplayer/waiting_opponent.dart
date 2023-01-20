@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import 'package:tightwad/src/dev/game/components/multiplayer/validation_button.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
+import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/responsive.dart';
@@ -21,12 +25,12 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
   final double ratioLoader = 0.15;
   final double ratioRoomIdStatement = 0.2;
 
-  bool _isPressedButton = false;
-  bool _isReversed = false;
+  late DocumentReference<Map<String, dynamic>> _room;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _room = FirebaseFirestore.instance.collection('rooms').doc('room-${MultiplayerNotifier.roomId}');
     super.initState();
   }
 
@@ -34,56 +38,6 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-
-  Widget buildValidationButton(VoidCallback onTap) {
-    return InkWell(
-      highlightColor: Colors.transparent,
-      hoverColor: Colors.transparent,
-      splashFactory: NoSplash.splashFactory,
-      onTapDown: (_) => setState(() {
-        _isPressedButton = true;
-      }),
-      onTapUp: (_) => setState(() {
-        _isPressedButton = false;
-      }),
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration:
-            const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
-        height: Utils.TEXT_FIELD_HEIGHT,
-        width: MediaQuery.of(context).size.width *
-            Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO /
-            2,
-        decoration: Utils.buildNeumorphismBox(25.0, 5.0, 5.0, _isPressedButton),
-        child: Center(
-          child: TweenAnimationBuilder<double>(
-            onEnd: () => setState(() {
-                  _isReversed = !_isReversed;
-                }),
-            duration: const Duration(milliseconds: 300),
-            tween: Tween<double>(begin: 0.0, end: _isReversed ? -2.5 : 2.5),
-            builder: (context, double statementPosition, _) {
-              return Transform.translate(
-                offset: Offset(0.0, statementPosition),
-                child: Text(
-                  'quit',
-                  style: TextStyle(
-                    fontFamily: 'BebasNeue',
-                    decoration: TextDecoration.none,
-                    fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 10),
-                    fontWeight: FontWeight.bold,
-                    color: Utils.getPassedColorFromTheme(),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              );
-            }
-          ),
-        ),
-      ),
-    );
   }
 
   Widget buildWaitingOpponentStatement() {
@@ -134,7 +88,7 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
             ),
           ),
           Text(
-            '${Utils.roomId}',
+            MultiplayerNotifier.roomId,
             style: TextStyle(
               fontFamily: 'BebasNeue',
               decoration: TextDecoration.none,
@@ -161,10 +115,20 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
   
   @override
   Widget build(BuildContext context) {
+
+    EntityNotifier entityNotifier = Provider.of<EntityNotifier>(context, listen: true);
+    _room.snapshots().listen(
+      (event) => {
+        if (event.get('gameStarted') == true) {
+          entityNotifier.changeGameEntity(Entity.multiplayergame),
+        }
+      },
+    );
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Responsive(
-        child: Consumer2<OptionsNotifier, EntityNotifier>(builder: (context, _, entityNotifier, __) {
+        child: Consumer<OptionsNotifier>(builder: (context, _, __) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -172,9 +136,10 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
                 buildLoader(),
                 buildRoomIdStatement(),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                buildValidationButton(() {
+                ValidationButton(onTap: () {
                   entityNotifier.changeGameEntity(Entity.lobby);
-                }),
+                },
+                text: 'quit!'),
               ],
             );
           }

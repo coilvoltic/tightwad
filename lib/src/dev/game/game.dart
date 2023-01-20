@@ -10,6 +10,7 @@ import 'package:tightwad/src/dev/game/components/common/options/settings_buttons
 import 'package:tightwad/src/dev/game/components/confettis.dart';
 import 'package:tightwad/src/dev/game/components/level_path.dart';
 import 'package:tightwad/src/dev/game/components/map.dart';
+import 'package:tightwad/src/dev/game/components/multiplayer/map2.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/room_lobby.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/waiting_opponent.dart';
 import 'package:tightwad/src/dev/game/components/scores.dart';
@@ -69,6 +70,19 @@ class Game extends StatelessWidget {
     );
   }
 
+  Stack buildMultiPlayerGame() {
+    return Stack(
+      children: const [
+        Background(),
+        Map2(),
+        Blur(),
+        BigButton(),
+        SettingsButtons(),
+        ModesButtons(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -86,6 +100,8 @@ class Game extends StatelessWidget {
               return const Welcome(destination: 'singleplayer', entityDestination: Entity.singleplayergame);
             } else if (Database.getGameEntity() == Utils.MULTIPLAYERWELCOME_ENTITY_INDEX) {
               return const Welcome(destination: 'multiplayer', entityDestination: Entity.lobby);
+            } else if (Database.getGameEntity() == Utils.MULTIPLAYERGAME_ENTITY_INDEX) {
+              return buildMultiPlayerGame();
             }
             return Container();
           }
