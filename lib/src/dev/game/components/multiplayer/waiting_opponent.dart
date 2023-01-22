@@ -40,6 +40,7 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
   @override
   void dispose() {
     _controller.dispose();
+    _room.delete();
     super.dispose();
   }
 
@@ -119,16 +120,19 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
 
-    EntityNotifier entityNotifier   = Provider.of<EntityNotifier>(context, listen: true);
+    EntityNotifier  entityNotifier  = Provider.of<EntityNotifier>(context,  listen: true);
     LoadingNotifier loadingNotifier = Provider.of<LoadingNotifier>(context, listen: false);
+
     _room.snapshots().listen(
       (event) async => {
-        if (event.get('gameStarted') == true) {
-          loadingNotifier.setIsLoading(),
-          await Future.delayed(const Duration(seconds: Utils.LOADING_DURATION)),
-          loadingNotifier.unsetIsLoading(),
-
-          entityNotifier.changeGameEntity(Entity.multiplayergame),
+        print('listen'),
+        if (event.exists) {
+          if (event.get('gameStarted') == true) {
+            loadingNotifier.setIsLoading(),
+            await Future.delayed(const Duration(seconds: Utils.LOADING_DURATION)),
+            loadingNotifier.unsetIsLoading(),
+            entityNotifier.changeGameEntity(Entity.multiplayergame),
+          }
         }
       },
     );
