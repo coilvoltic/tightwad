@@ -56,18 +56,19 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<void> waitForGuestToReceiveMatrix() async {
-    final Random random = Random();
-    final int sqDim = random.nextInt(GameUtils.MULTIPLAYER_SQ_DIM_MAX - GameUtils.MULTIPLAYER_SQ_DIM_MIN) + GameUtils.MULTIPLAYER_SQ_DIM_MIN;
-
-    matrix = GameUtils.computeRandomMatrix(sqDim);
-
+    bool matrixReceived = false;
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
-      .update({
-        'matrix': matrix,
+      .get()
+      .then((doc) => {
+        if (doc.get('matrixReceived') == true) {
+          matrixReceived = true,
+        }
       })
       .whenComplete(() => {
-        _gameStatus = GameStatus.playing,
-        notifyListeners(),
+        if (matrixReceived) {
+          _gameStatus = GameStatus.playing,
+          notifyListeners(),
+        }
       });
   }
 

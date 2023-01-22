@@ -6,8 +6,8 @@ import 'package:tightwad/src/dev/game/components/multiplayer/tile2.dart';
 import 'package:tightwad/src/notifiers/loading_notifier.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
+import 'package:tightwad/src/utils/computation.dart';
 
-import '../../../../utils/computation.dart';
 
 class Map2 extends StatelessWidget {
   const Map2({Key? key}) : super(key: key);
