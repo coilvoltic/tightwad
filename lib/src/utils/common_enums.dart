@@ -1,6 +1,6 @@
 enum GameTheme { dark, light, diamond, none }
 
-enum GameStatus { playing, lose, win, nextlevel, tryagain, finish }
+enum GameStatus { playing, lose, win, nextlevel, tryagain, finish, none }
 
 enum VolumeMode { up, off }
 
@@ -11,3 +11,5 @@ enum Entity { tutorial, singleplayerwelcome, multiplayerwelcome, singleplayergam
 enum TutorialPhase { welcome, learning, finished }
 
 enum OptionButtonType { main, theme, mode, volume }
+
+enum MultiPlayerStatus { creator, guest, none }

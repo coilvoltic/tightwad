@@ -7,6 +7,7 @@ import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
+
 class CreateRoom extends StatefulWidget {
   const CreateRoom({Key? key}) : super(key: key);
 
@@ -17,7 +18,6 @@ class CreateRoom extends StatefulWidget {
 class _CreateRoomState extends State<CreateRoom> {
 
   String? _nameErrorMessage;
-  int _nameTextFieldSizeWhenPb = 0;
   double _sliderValue = 0.0;
   double _customThumbPadding = 15.0;
   int _nbOfRounds = 2;
@@ -25,11 +25,7 @@ class _CreateRoomState extends State<CreateRoom> {
   final TextEditingController _nameController = TextEditingController();
 
   Widget buildNameErrorMessage() {
-    if (_nameErrorMessage == null ||
-        _nameController.text.length != _nameTextFieldSizeWhenPb) {
-      if (_nameController.text.length != _nameTextFieldSizeWhenPb) {
-        _nameErrorMessage = null;
-      }
+    if (_nameErrorMessage == null) {
       return SizedBox(
         height: MediaQuery.of(context).size.height * 0.025,
       );
@@ -127,6 +123,7 @@ class _CreateRoomState extends State<CreateRoom> {
 
   @override
   Widget build(BuildContext context) {
+    print('rebuilt');
     return Consumer3<OptionsNotifier, EntityNotifier, LoadingNotifier>(builder: (context, _, entityNotifier, loadingNotifier, __) {
       return SizedBox(
         height: MediaQuery.of(context).size.height *
@@ -137,10 +134,14 @@ class _CreateRoomState extends State<CreateRoom> {
           children: [
             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
             Utils.buildNeumorphicTextField(
-                'ENTER YOUR NAME',
-                MediaQuery.of(context).size.width *
-                    Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO,
-                _nameController),
+              'ENTER YOUR NAME',
+              MediaQuery.of(context).size.width *
+                  Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO,
+              _nameController, (String s) {
+                setState(() {
+                  _nameErrorMessage = null;
+                });
+              }),
             SizedBox(height: MediaQuery.of(context).size.height * 0.005),
             buildNameErrorMessage(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.005),
@@ -149,22 +150,24 @@ class _CreateRoomState extends State<CreateRoom> {
             buildNbOfRoundsStatement(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.055),
             ValidationButton(onTap: () async {
-              if (_nameController.text.length < 3 || _nameController.text.length > 10) {
-                _nameErrorMessage = "Please enter a name with 3-10 chars.";
-                _nameTextFieldSizeWhenPb = _nameController.text.length;
-              } else {
-                loadingNotifier.setIsLoading();
-                await Utils.deleteRoomIfExists();
-                String? errorWhileCreatingRoom = await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
-                loadingNotifier.unsetIsLoading();
-                if (errorWhileCreatingRoom == null) {
-                  entityNotifier.changeGameEntity(Entity.waitingopponent);
+                if (_nameController.text.length < 3 || _nameController.text.length > 10) {
+                  setState(() {
+                    _nameErrorMessage = "Please enter a name with 3-10 chars.";
+                  });
                 } else {
-                  _nameErrorMessage = errorWhileCreatingRoom;
-                  _nameTextFieldSizeWhenPb = _nameController.text.length;
+                  loadingNotifier.setIsLoading();
+                  await Utils.deleteRoomIfExists();
+                  String? errorWhileCreatingRoom = await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
+                  loadingNotifier.unsetIsLoading();
+                  if (errorWhileCreatingRoom == null) {
+                    entityNotifier.changeGameEntity(Entity.waitingopponent);
+                  } else {
+                    setState(() {
+                      _nameErrorMessage = errorWhileCreatingRoom;
+                    });
+                  }
                 }
-              }
-            },
+              },
             text: 'click to create!'),
           ],
         ),

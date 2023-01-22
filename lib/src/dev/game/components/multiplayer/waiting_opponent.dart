@@ -40,7 +40,6 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
   @override
   void dispose() {
     _controller.dispose();
-    _room.delete();
     super.dispose();
   }
 
@@ -125,7 +124,6 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
 
     _room.snapshots().listen(
       (event) async => {
-        print('listen'),
         if (event.exists) {
           if (event.get('gameStarted') == true) {
             loadingNotifier.setIsLoading(),

@@ -19,18 +19,12 @@ class _JoinRoomState extends State<JoinRoom> {
   
   String? _idErrorMessage;
   String? _nameErrorMessage;
-  int _idTextFieldSizeWhenPb = 0;
-  int _nameTextFieldSizeWhenPb = 0;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
 
   Widget buildNameErrorMessage() {
-    if (_nameErrorMessage == null ||
-        _nameController.text.length != _nameTextFieldSizeWhenPb) {
-      if (_nameController.text.length != _nameTextFieldSizeWhenPb) {
-        _nameErrorMessage = null;
-      }
+    if (_nameErrorMessage == null) {
       return SizedBox(
         height: MediaQuery.of(context).size.height * 0.025,
       );
@@ -52,11 +46,7 @@ class _JoinRoomState extends State<JoinRoom> {
   }
 
   Widget buildIdErrorMessage() {
-    if (_idErrorMessage == null ||
-        _idController.text.length != _idTextFieldSizeWhenPb) {
-      if (_idController.text.length != _idTextFieldSizeWhenPb) {
-        _idErrorMessage = null;
-      }
+    if (_idErrorMessage == null) {
       return SizedBox(
         height: MediaQuery.of(context).size.height * 0.025,
       );
@@ -92,46 +82,59 @@ class _JoinRoomState extends State<JoinRoom> {
                 'ENTER YOUR NAME',
                 MediaQuery.of(context).size.width *
                     Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO,
-                _nameController),
+                _nameController, (String s) {
+                setState(() {
+                  _nameErrorMessage = null;
+                });
+              }),
             SizedBox(height: MediaQuery.of(context).size.height * 0.005),
             buildNameErrorMessage(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.005),
             Utils.buildNeumorphicTextField(
                 'ENTER ROOM ID', MediaQuery.of(context).size.width * Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO,
-                _idController, shouldBeOnlyDigit: true),
+                _idController, (String s) {
+                setState(() {
+                  _idErrorMessage = null;
+                });
+              }, shouldBeOnlyDigit: true),
             SizedBox(height: MediaQuery.of(context).size.height * 0.005),
             buildIdErrorMessage(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.08),
             ValidationButton(onTap: () async {
               if (!Utils.areAllFieldsConformal(_nameController.text, _idController.text)) {
                 if (!Utils.isNameFormatConformal(_nameController.text)) {
-                  _nameErrorMessage = "Please enter a name with 3-10 chars.";
-                  _nameTextFieldSizeWhenPb = _nameController.text.length;
+                  setState(() {
+                    _nameErrorMessage = "Please enter a name with 3-10 chars.";
+                  });
                 }
                 if (!Utils.isRoomIdFormatConformal(_idController.text)) {
-                  _idErrorMessage = "Please enter a room id with 6 digits.";
-                  _idTextFieldSizeWhenPb = _idController.text.length;
+                  setState(() {
+                    _idErrorMessage = "Please enter a room id with 6 digits.";
+                  });
                 }
               } else {
                 loadingNotifier.setIsLoading();
                 String? checkRoomIsFull = await Utils.checkTheRoomIsNotFull(_idController.text);
                 if (checkRoomIsFull != null) {
-                  _idErrorMessage = checkRoomIsFull;
-                  _idTextFieldSizeWhenPb = _idController.text.length;
+                  setState(() {
+                    _idErrorMessage = checkRoomIsFull;
+                  });
                   loadingNotifier.unsetIsLoading();
                   return;
                 }
                 String? checkNamesAreNotTheSame = await Utils.checkNamesAreNotTheSame(_nameController.text, _idController.text);
                 if (checkNamesAreNotTheSame != null) {
-                  _nameErrorMessage = checkNamesAreNotTheSame;
-                  _nameTextFieldSizeWhenPb = _nameController.text.length;
+                  setState(() {
+                    _nameErrorMessage = checkNamesAreNotTheSame;
+                  });
                   loadingNotifier.unsetIsLoading();
                   return;
                 }
                 String? errorWhileJoining = await Utils.joinRoom(_nameController.text, _idController.text);
                 if (errorWhileJoining != null) {
-                  _idErrorMessage = errorWhileJoining;
-                  _idTextFieldSizeWhenPb = _idController.text.length;
+                  setState(() {
+                    _idErrorMessage = errorWhileJoining;
+                  });
                   loadingNotifier.unsetIsLoading();
                   return;
                 }

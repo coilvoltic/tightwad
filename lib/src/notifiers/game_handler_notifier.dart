@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:tightwad/src/utils/coordinates.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
+import 'package:tightwad/src/utils/game_utils.dart';
 import 'package:tightwad/src/utils/level_handler_factory.dart';
 import 'package:tightwad/src/database/database.dart';
 
@@ -34,10 +35,10 @@ class GameHandlerNotifier extends ChangeNotifier {
 
   GameHandlerNotifier() {
     computeAllPermutations();
-    computeRandomMatrix(
+    matrix = GameUtils.computeRandomMatrix(
         levels[lvl].getSqNbOfTiles,
-        levels[lvl].getMatrixElementMaxValue,
-        levels[lvl].getSmallMatrixElementMaxValue);
+        matrixElementMaxValue: levels[lvl].getMatrixElementMaxValue,
+        smallMatrixElementMaxValue: levels[lvl].getSmallMatrixElementMaxValue);
     canUserMove = levels[lvl].getFirstPlayer == Player.user;
     initializeAlgoMove();
     initializeUserPossibleMoves();
@@ -291,62 +292,6 @@ class GameHandlerNotifier extends ChangeNotifier {
     }
   }
 
-  List<int> computeRow(int sqDim, int stSmallIndex, int ndSmallIndex,
-      int matrixElementMaxValue, int smallMatrixElementMaxValue) {
-    List<int> vector = List.filled(sqDim, 0, growable: false);
-    Random random = Random();
-
-    for (int j = 0; j < sqDim; j++) {
-      if (j == stSmallIndex || j == ndSmallIndex) {
-        vector[j] = random.nextInt(smallMatrixElementMaxValue) + 1;
-        // vector[j] = 2;
-      } else {
-        vector[j] = random.nextInt(matrixElementMaxValue) + 1;
-        // vector[j] = random.nextInt(2) + 1;
-      }
-    }
-
-    return vector;
-  }
-
-  void computeRandomMatrix(
-      int sqDim, int matrixElementMaxValue, int smallMatrixElementMaxValue) {
-    List<int> stSmall = List.filled(sqDim, 0, growable: false);
-    List<int> ndSmall = List.filled(sqDim, 0, growable: false);
-    List<int> baseElements = List.empty(growable: true);
-
-    for (int i = 0; i < sqDim; i++) {
-      baseElements.add(i + 1);
-    }
-
-    for (int i = 0; i < sqDim; i++) {
-      Random random = Random();
-      int randomNbInSqDim = 0;
-      randomNbInSqDim = random.nextInt(baseElements.length);
-      if (i == sqDim - 1 - 1 &&
-          baseElements.any((element) => element == sqDim)) {
-        int indexOfGreatestBaseElement = baseElements.indexOf(sqDim);
-        stSmall[i] = baseElements[indexOfGreatestBaseElement];
-        baseElements[indexOfGreatestBaseElement] = 0;
-      } else {
-        while (randomNbInSqDim == i || baseElements[randomNbInSqDim] == 0) {
-          randomNbInSqDim = random.nextInt(baseElements.length);
-        }
-        stSmall[i] = baseElements[randomNbInSqDim];
-        baseElements[randomNbInSqDim] = 0;
-      }
-    }
-
-    for (int i = 0; i < sqDim; i++) {
-      ndSmall[i] = stSmall[stSmall[i] - 1];
-    }
-
-    for (int i = 0; i < sqDim; i++) {
-      matrix.add(computeRow(sqDim, stSmall[i] - 1, ndSmall[i] - 1,
-          matrixElementMaxValue, smallMatrixElementMaxValue));
-    }
-  }
-
   int getMatrixElement(Coordinates move) {
     return matrix.elementAt(move.x - 1).elementAt(move.y - 1);
   }
@@ -419,10 +364,10 @@ class GameHandlerNotifier extends ChangeNotifier {
 
     initializeUserPossibleMoves();
     computeAllPermutations();
-    computeRandomMatrix(
+    matrix = GameUtils.computeRandomMatrix(
         levels[lvl].getSqNbOfTiles,
-        levels[lvl].getMatrixElementMaxValue,
-        levels[lvl].getSmallMatrixElementMaxValue);
+        matrixElementMaxValue: levels[lvl].getMatrixElementMaxValue,
+        smallMatrixElementMaxValue: levels[lvl].getSmallMatrixElementMaxValue);
     initializeAlgoMove();
   }
 

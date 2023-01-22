@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
@@ -270,7 +271,7 @@ abstract class Utils {
   }
 
   static AnimatedContainer buildNeumorphicTextField(final String hintText,
-      final double width, final TextEditingController controller, { bool shouldBeOnlyDigit = false }) {
+      final double width, final TextEditingController controller, Function(String) onChanged, { bool shouldBeOnlyDigit = false }) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       height: Utils.TEXT_FIELD_HEIGHT,
@@ -279,6 +280,7 @@ abstract class Utils {
       child: Padding(
         padding: const EdgeInsets.only(left: 25.0),
         child: TextField(
+          onChanged: onChanged,
           controller: controller,
           cursorColor: Database.getGameTheme() == Utils.DIAMOND_THEME_INDEX
               ? ThemeColors.labelColor.diamond
@@ -356,7 +358,7 @@ abstract class Utils {
   }
 
   static bool isNameFormatConformal(final String name) {
-    return name.length >= 3 || name.length <= 10;
+    return name.length >= 3 && name.length <= 10;
   }
 
   static bool isRoomIdFormatConformal(final String roomId) {
@@ -365,7 +367,7 @@ abstract class Utils {
 
   static Future<String?> createRoomInFirebase(final String name, final int nbOfRounds) async {
     String? error;
-    MultiplayerNotifier.generateAndSetRoomId();
+    MultiPlayerNotifier.generateAndSetRoomId();
     FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').set(<String, dynamic>{
       'roomId': Database.getRoomId(),
       'nbOfRounds': nbOfRounds,
@@ -374,6 +376,10 @@ abstract class Utils {
       'creatorTurn': true,
       'guestTurn': false,
       'gameStarted': false,
+      'matrix': '',
+      'matrixReceived': false
+    }).whenComplete(() => {
+      MultiPlayerNotifier.multiPlayerStatus = MultiPlayerStatus.creator,
     }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
       error = "Request timed out. Please try again!";
     }).onError((errorObj, stackTrace) {
@@ -406,7 +412,7 @@ abstract class Utils {
     await FirebaseFirestore.instance.collection('rooms').doc('room-$roomId')
       .get()
         .then((doc) {
-          if (doc.get('creatorName') == name) {
+          if (doc.get('creatorName').toString().toLowerCase() == name.toLowerCase()) {
             error = "You can't have the same name as your opponent.";
           }
         }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
@@ -424,12 +430,15 @@ abstract class Utils {
         'guestName': name,
         'gameStarted': true,
       })
+      .whenComplete(() => {
+        MultiPlayerNotifier.multiPlayerStatus = MultiPlayerStatus.guest,
+        MultiPlayerNotifier.setRoomId(roomId),
+      })
       .timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
         error = "Request timed out. Please try again!";
       }).onError((errorObj, stackTrace) {
         error = "An unexcepted error occured. Try again!";
       });
-    MultiplayerNotifier.setRoomId(roomId);
     await Future.delayed(const Duration(seconds: LOADING_DURATION));
     return error;
   }
@@ -442,7 +451,8 @@ abstract class Utils {
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .delete()
       .whenComplete(() => {
-        MultiplayerNotifier.setRoomId('-1'),
+        MultiPlayerNotifier.multiPlayerStatus = MultiPlayerStatus.none,
+        MultiPlayerNotifier.setRoomId('-1'),
       })
       .timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
         error = "Request timed out. Please try again!";
