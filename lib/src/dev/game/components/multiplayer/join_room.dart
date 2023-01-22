@@ -114,14 +114,29 @@ class _JoinRoomState extends State<JoinRoom> {
                 }
               } else {
                 loadingNotifier.setIsLoading();
+                String? checkRoomIsFull = await Utils.checkTheRoomIsNotFull(_idController.text);
+                if (checkRoomIsFull != null) {
+                  _idErrorMessage = checkRoomIsFull;
+                  _idTextFieldSizeWhenPb = _idController.text.length;
+                  loadingNotifier.unsetIsLoading();
+                  return;
+                }
+                String? checkNamesAreNotTheSame = await Utils.checkNamesAreNotTheSame(_nameController.text, _idController.text);
+                if (checkNamesAreNotTheSame != null) {
+                  _nameErrorMessage = checkNamesAreNotTheSame;
+                  _nameTextFieldSizeWhenPb = _nameController.text.length;
+                  loadingNotifier.unsetIsLoading();
+                  return;
+                }
                 String? errorWhileJoining = await Utils.joinRoom(_nameController.text, _idController.text);
-                loadingNotifier.unsetIsLoading();
-                if (errorWhileJoining == null) {
-                  entityNotifier.changeGameEntity(Entity.multiplayergame);
-                } else {
+                if (errorWhileJoining != null) {
                   _idErrorMessage = errorWhileJoining;
                   _idTextFieldSizeWhenPb = _idController.text.length;
+                  loadingNotifier.unsetIsLoading();
+                  return;
                 }
+                entityNotifier.changeGameEntity(Entity.multiplayergame);
+                loadingNotifier.unsetIsLoading();
               }
             },
             text: 'click to join!'),

@@ -111,18 +111,18 @@ class _CreateRoomState extends State<CreateRoom> {
 
   Widget buildNbOfRoundsStatement() {
     return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.05,
-        child: Text(
-          'number of rounds: $_nbOfRounds',
-          style: TextStyle(
-            fontFamily: 'BebasNeue',
-            decoration: TextDecoration.none,
-            fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 10),
-            fontWeight: FontWeight.bold,
-            color: Utils.getPassedColorFromTheme(),
-          ),
-          textAlign: TextAlign.center,
-        ));
+      height: MediaQuery.of(context).size.height * 0.05,
+      child: Text(
+        'number of rounds: $_nbOfRounds',
+        style: TextStyle(
+          fontFamily: 'BebasNeue',
+          decoration: TextDecoration.none,
+          fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 10),
+          fontWeight: FontWeight.bold,
+          color: Utils.getPassedColorFromTheme(),
+        ),
+        textAlign: TextAlign.center,
+      ));
   }
 
   @override
@@ -154,6 +154,7 @@ class _CreateRoomState extends State<CreateRoom> {
                 _nameTextFieldSizeWhenPb = _nameController.text.length;
               } else {
                 loadingNotifier.setIsLoading();
+                await Utils.deleteRoomIfExists();
                 String? errorWhileCreatingRoom = await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
                 loadingNotifier.unsetIsLoading();
                 if (errorWhileCreatingRoom == null) {

@@ -3,8 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import 'package:tightwad/src/database/database.dart';
+import 'package:tightwad/src/dev/game/components/common/loading.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/validation_button.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
+import 'package:tightwad/src/notifiers/loading_notifier.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
@@ -30,7 +33,7 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
   @override
   void initState() {
     _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
-    _room = FirebaseFirestore.instance.collection('rooms').doc('room-${MultiplayerNotifier.roomId}');
+    _room = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}');
     super.initState();
   }
 
@@ -88,7 +91,7 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
             ),
           ),
           Text(
-            MultiplayerNotifier.roomId,
+            Database.getRoomId(),
             style: TextStyle(
               fontFamily: 'BebasNeue',
               decoration: TextDecoration.none,
@@ -116,10 +119,15 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
 
-    EntityNotifier entityNotifier = Provider.of<EntityNotifier>(context, listen: true);
+    EntityNotifier entityNotifier   = Provider.of<EntityNotifier>(context, listen: true);
+    LoadingNotifier loadingNotifier = Provider.of<LoadingNotifier>(context, listen: false);
     _room.snapshots().listen(
-      (event) => {
+      (event) async => {
         if (event.get('gameStarted') == true) {
+          loadingNotifier.setIsLoading(),
+          await Future.delayed(const Duration(seconds: Utils.LOADING_DURATION)),
+          loadingNotifier.unsetIsLoading(),
+
           entityNotifier.changeGameEntity(Entity.multiplayergame),
         }
       },
@@ -129,6 +137,9 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
       backgroundColor: Colors.transparent,
       body: Responsive(
         child: Consumer<OptionsNotifier>(builder: (context, _, __) {
+
+            LoadingNotifier loadingNotifier = Provider.of<LoadingNotifier>(context, listen: false);
+
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -136,8 +147,11 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
                 buildLoader(),
                 buildRoomIdStatement(),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                ValidationButton(onTap: () {
+                ValidationButton(onTap: () async {
+                  loadingNotifier.setIsLoading();
+                  await Utils.deleteRoomIfExists();
                   entityNotifier.changeGameEntity(Entity.lobby);
+                  loadingNotifier.unsetIsLoading();
                 },
                 text: 'quit!'),
               ],

@@ -12,7 +12,7 @@ import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
 import 'common_enums.dart';
 
-class Utils {
+abstract class Utils {
   // ignore: constant_identifier_names
   static const int LIGHT_THEME_INDEX = 0;
   // ignore: constant_identifier_names
@@ -54,6 +54,8 @@ class Utils {
   static const double TEXT_FIELD_HEIGHT = 50;
   // ignore: constant_identifier_names
   static const int REQUEST_TIME_OUT = 10;
+  // ignore: constant_identifier_names
+  static const int LOADING_DURATION = 2;
 
   static Color getBackgroundColorFromTheme() {
     if (Database.getGameTheme() == LIGHT_THEME_INDEX) {
@@ -363,9 +365,9 @@ class Utils {
 
   static Future<String?> createRoomInFirebase(final String name, final int nbOfRounds) async {
     String? error;
-    MultiplayerNotifier.generateRoomId();
-    FirebaseFirestore.instance.collection('rooms').doc('room-${MultiplayerNotifier.roomId}').set(<String, dynamic>{
-      'roomId': MultiplayerNotifier.roomId,
+    MultiplayerNotifier.generateAndSetRoomId();
+    FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').set(<String, dynamic>{
+      'roomId': Database.getRoomId(),
       'nbOfRounds': nbOfRounds,
       'creatorName': name,
       'guestName': '',
@@ -374,10 +376,10 @@ class Utils {
       'gameStarted': false,
     }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
       error = "Request timed out. Please try again!";
-    }).onError((error, stackTrace) {
+    }).onError((errorObj, stackTrace) {
       error = "An unexcepted error occured. Try again!";
     });
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: LOADING_DURATION));
     return error;
   }
 
@@ -393,7 +395,23 @@ class Utils {
           }
         }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
           error = "Request timed out. Please try again!";
-        }).onError((error, stackTrace) {
+        }).onError((errorObj, stackTrace) {
+          error = "An unexcepted error occured. Try again!";
+        });
+    return error;
+  }
+
+  static Future<String?> checkNamesAreNotTheSame(final String name, final String roomId) async {
+    String? error;
+    await FirebaseFirestore.instance.collection('rooms').doc('room-$roomId')
+      .get()
+        .then((doc) {
+          if (doc.get('creatorName') == name) {
+            error = "You can't have the same name as your opponent.";
+          }
+        }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
+          error = "Request timed out. Please try again!";
+        }).onError((errorObj, stackTrace) {
           error = "An unexcepted error occured. Try again!";
         });
     return error;
@@ -401,22 +419,42 @@ class Utils {
 
   static Future<String?> joinRoom(final String name, final String roomId) async {
     String? error;
-    error = await checkTheRoomIsNotFull(roomId);
-    MultiplayerNotifier.roomId = roomId;
-    if (error == null) {
-      await FirebaseFirestore.instance.collection('rooms').doc('room-$roomId')
-        .update({
-          'guestName': name,
-          'gameStarted': true,
-        })
-        .timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
-          error = "Request timed out. Please try again!";
-        }).onError((error, stackTrace) {
-          error = "An unexcepted error occured. Try again!";
-        });
-    }
-    await Future.delayed(const Duration(seconds: 2));
+    await FirebaseFirestore.instance.collection('rooms').doc('room-$roomId')
+      .update({
+        'guestName': name,
+        'gameStarted': true,
+      })
+      .timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
+        error = "Request timed out. Please try again!";
+      }).onError((errorObj, stackTrace) {
+        error = "An unexcepted error occured. Try again!";
+      });
+    MultiplayerNotifier.setRoomId(roomId);
+    await Future.delayed(const Duration(seconds: LOADING_DURATION));
     return error;
+  }
+
+  static Future<String?> deleteRoomIfExists() async {
+    String? error;
+    if (!isRoomExists(Database.getRoomId())) {
+      return error;
+    }
+    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+      .delete()
+      .whenComplete(() => {
+        MultiplayerNotifier.setRoomId('-1'),
+      })
+      .timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
+        error = "Request timed out. Please try again!";
+      }).onError((errorObj, stackTrace) {
+        error = "An unexcepted error occured. Try again!";
+      });
+    await Future.delayed(const Duration(seconds: LOADING_DURATION));
+    return error;
+  }
+
+  static bool isRoomExists(String roomId) {
+    return roomId != '-1';
   }
 
 }
