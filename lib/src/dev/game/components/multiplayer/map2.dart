@@ -16,10 +16,31 @@ class Map2 extends StatefulWidget {
 
 class _Map2State extends State<Map2> {
 
+  late MultiPlayerNotifier _mpNotifier;
+
+  @override
+  void initState() async {
+    _mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: true);
+    if (_mpNotifier.getGameStatus == GameStatus.loading) {
+      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+        if (!_mpNotifier.getIsMatrixCreated) {
+          await _mpNotifier.generateAndPushNewMatrix();
+        }
+        await _mpNotifier.waitForGuestToReceiveMatrix();
+      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
+        await _mpNotifier.waitForMatrixToBeAvailable();
+        if (_mpNotifier.getIsMatrixAvailable) {
+          await _mpNotifier.notifyMatrixReceived();
+        }
+      }
+    }
+    super.initState();
+  }
+
   double _height = 0.0;
   double _width  = 0.0;
 
-  Widget buildMap(final MultiPlayerNotifier mpNotifier) {
+  Widget buildMap() {
     return SafeArea(
       child: Align(
         alignment: Alignment.center,
@@ -29,11 +50,11 @@ class _Map2State extends State<Map2> {
           child: Align(
             alignment: Alignment.center,
             child: GridView.count(
-              crossAxisCount: mpNotifier.getSqDim(),
+              crossAxisCount: _mpNotifier.getSqDim(),
               children: [
-                for (int i = 0; i < pow(mpNotifier.getSqDim(), 2); i++)
-                  Tile2(sqNbOfTiles:    mpNotifier.getSqDim(),
-                        number:         mpNotifier.getMatrixElement(indexToCoordinates(i, mpNotifier.getSqDim())),),
+                for (int i = 0; i < pow(_mpNotifier.getSqDim(), 2); i++)
+                  Tile2(sqNbOfTiles:    _mpNotifier.getSqDim(),
+                        number:         _mpNotifier.getMatrixElement(indexToCoordinates(i, _mpNotifier.getSqDim())),),
               ],
             ),
           ),
@@ -44,27 +65,9 @@ class _Map2State extends State<Map2> {
 
   @override
   Widget build(BuildContext context) {
-    
-    MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: true);
-
-    if (mpNotifier.getGameStatus == GameStatus.loading) {
-      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
-        if (!mpNotifier.getIsMatrixCreated) {
-          mpNotifier.generateAndPushNewMatrix();
-        }
-        mpNotifier.waitForGuestToReceiveMatrix();
-      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
-        mpNotifier.waitForMatrixToBeAvailable();
-        if (mpNotifier.getIsMatrixAvailable) {
-          mpNotifier.notifyMatrixReceived();
-        }
-      }
-      return Container();
-    } else {
-      _height = MediaQuery.of(context).size.height;
-      _width  = MediaQuery.of(context).size.width;
-      return buildMap(mpNotifier);
-    }
+    _height = MediaQuery.of(context).size.height;
+    _width  = MediaQuery.of(context).size.width;
+    return buildMap();
   }
 
 }
