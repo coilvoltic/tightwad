@@ -16,7 +16,7 @@ import 'package:tightwad/src/dev/game/components/multiplayer/waiting_opponent.da
 import 'package:tightwad/src/dev/game/components/scores.dart';
 import 'package:tightwad/src/dev/game/components/statement.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
-import 'package:tightwad/src/notifiers/loading_notifier.dart';
+import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';
 import 'package:tightwad/src/utils/welcome.dart';
@@ -106,10 +106,10 @@ class Game extends StatelessWidget {
             return Container();
           }
         ),
-        Consumer<LoadingNotifier>(
-          builder: (context, loadingNotifier, __) {
+        Consumer<MultiPlayerNotifier>(
+          builder: (context, multiPlayerNotifier, __) {
             return Visibility(
-              visible: loadingNotifier.getIsLoading,
+              visible: multiPlayerNotifier.getGameStatus == GameStatus.loading,
               child: Container(
                 color: Utils.getBackgroundColorFromTheme(),
                 child: const Loading()

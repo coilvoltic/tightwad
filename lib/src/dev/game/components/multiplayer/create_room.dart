@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/validation_button.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
-import 'package:tightwad/src/notifiers/loading_notifier.dart';
+import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';
@@ -123,8 +123,8 @@ class _CreateRoomState extends State<CreateRoom> {
 
   @override
   Widget build(BuildContext context) {
-    print('rebuilt');
-    return Consumer3<OptionsNotifier, EntityNotifier, LoadingNotifier>(builder: (context, _, entityNotifier, loadingNotifier, __) {
+    MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: false);
+    return Consumer2<OptionsNotifier, EntityNotifier>(builder: (context, _, entityNotifier, __) {
       return SizedBox(
         height: MediaQuery.of(context).size.height *
             Utils.ROOM_LOBBY_OPTIONS_HEIGHT_RATIO,
@@ -155,10 +155,10 @@ class _CreateRoomState extends State<CreateRoom> {
                     _nameErrorMessage = "Please enter a name with 3-10 chars.";
                   });
                 } else {
-                  loadingNotifier.setIsLoading();
+                  mpNotifier.setGameStatus(GameStatus.loading);
                   await Utils.deleteRoomIfExists();
                   String? errorWhileCreatingRoom = await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
-                  loadingNotifier.unsetIsLoading();
+                  mpNotifier.setGameStatus(GameStatus.none);
                   if (errorWhileCreatingRoom == null) {
                     entityNotifier.changeGameEntity(Entity.waitingopponent);
                   } else {

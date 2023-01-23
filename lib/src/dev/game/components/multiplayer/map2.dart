@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/tile2.dart';
-import 'package:tightwad/src/notifiers/loading_notifier.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/computation.dart';
@@ -46,11 +45,9 @@ class _Map2State extends State<Map2> {
   @override
   Widget build(BuildContext context) {
     
-    LoadingNotifier     loadingNotifier = Provider.of<LoadingNotifier>(context, listen: false);
-    MultiPlayerNotifier mpNotifier      = Provider.of<MultiPlayerNotifier>(context, listen: true);
+    MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: true);
 
-    if (mpNotifier.getGameStatus == GameStatus.none) {
-      loadingNotifier.setIsLoading();
+    if (mpNotifier.getGameStatus == GameStatus.loading) {
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
         mpNotifier.generateAndPushNewMatrix();
         mpNotifier.waitForGuestToReceiveMatrix();
@@ -61,12 +58,11 @@ class _Map2State extends State<Map2> {
         }
       }
       return Container();
+    } else {
+      _height = MediaQuery.of(context).size.height;
+      _width  = MediaQuery.of(context).size.width;
+      return buildMap(mpNotifier);
     }
-
-    _height = MediaQuery.of(context).size.height;
-    _width  = MediaQuery.of(context).size.width;
-    loadingNotifier.unsetIsLoading();
-    return buildMap(mpNotifier);
-
   }
+  
 }

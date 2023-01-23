@@ -6,7 +6,6 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:tightwad/src/dev/tightwad.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
-import 'package:tightwad/src/notifiers/loading_notifier.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
@@ -36,9 +35,6 @@ class Tightwad extends StatelessWidget {
         ),
         ChangeNotifierProvider<EntityNotifier>(
           create: (_) => EntityNotifier(),
-        ),
-        ChangeNotifierProvider<LoadingNotifier>(
-          create: (_) => LoadingNotifier(),
         ),
         ChangeNotifierProvider<MultiPlayerNotifier>(
           create: (_) => MultiPlayerNotifier(),

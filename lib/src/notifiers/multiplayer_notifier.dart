@@ -29,6 +29,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   void setGameStatus(final GameStatus gameStatus) {
     _gameStatus = gameStatus;
+    notifyListeners();
   }
 
   GameStatus get getGameStatus        => _gameStatus;
@@ -53,8 +54,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'matrix': jsonEncode(matrix),
       })
       .whenComplete(() => {
-        _gameStatus = GameStatus.playing,
-        notifyListeners(),
+        setGameStatus(GameStatus.playing),
       });
   }
 
@@ -63,8 +63,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
       (event) async => {
         if (event.exists) {
           if (event.get('matrixReceived') == true) {
-            _gameStatus = GameStatus.playing,
-            notifyListeners(),
+            setGameStatus(GameStatus.playing),
           }
         }
       },
@@ -74,17 +73,12 @@ class MultiPlayerNotifier extends ChangeNotifier {
   Future<void> waitForMatrixToBeAvailable() async {
     FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen(
       (event) async => {
-        if (event.exists && event.data()?.containsKey('matrix') == true) {
-          event.get('matrix').forEach((row) {
-            print('ROW :');
-            print(row);
-            matrix.add(row);
-            _isMatrixAvailable = true;
-            notifyListeners();
-
+        if (event.exists && event.data()?.containsKey('matrix') == true && event.get('matrix') != '' && !_isMatrixAvailable) {
+          jsonDecode(event.get('matrix')).forEach((row) => {
+            matrix.add(row.cast<int>()),
           }),
-          print('MATRIX :'),
-          print(matrix),
+          _isMatrixAvailable = true,
+          notifyListeners(),
         },
       },
     );
@@ -96,8 +90,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'matrixReceived': true,
       })
       .whenComplete(() => {
-        _gameStatus = GameStatus.playing,
-        notifyListeners(),
+        setGameStatus(GameStatus.playing),
       });
   }
 

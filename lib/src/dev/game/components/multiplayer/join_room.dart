@@ -2,7 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/validation_button.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
-import 'package:tightwad/src/notifiers/loading_notifier.dart';
+import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
@@ -69,7 +69,8 @@ class _JoinRoomState extends State<JoinRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<OptionsNotifier, EntityNotifier, LoadingNotifier>(builder: (context, _, entityNotifier, loadingNotifier, __) {
+    MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: false);
+    return Consumer2<OptionsNotifier, EntityNotifier>(builder: (context, _, entityNotifier, __) {
       return SizedBox(
         height: MediaQuery.of(context).size.height *
             Utils.ROOM_LOBBY_OPTIONS_HEIGHT_RATIO,
@@ -113,13 +114,13 @@ class _JoinRoomState extends State<JoinRoom> {
                   });
                 }
               } else {
-                loadingNotifier.setIsLoading();
+                mpNotifier.setGameStatus(GameStatus.loading);
                 String? checkRoomIsFull = await Utils.checkTheRoomIsNotFull(_idController.text);
                 if (checkRoomIsFull != null) {
                   setState(() {
                     _idErrorMessage = checkRoomIsFull;
                   });
-                  loadingNotifier.unsetIsLoading();
+                  mpNotifier.setGameStatus(GameStatus.none);
                   return;
                 }
                 String? checkNamesAreNotTheSame = await Utils.checkNamesAreNotTheSame(_nameController.text, _idController.text);
@@ -127,7 +128,7 @@ class _JoinRoomState extends State<JoinRoom> {
                   setState(() {
                     _nameErrorMessage = checkNamesAreNotTheSame;
                   });
-                  loadingNotifier.unsetIsLoading();
+                  mpNotifier.setGameStatus(GameStatus.none);
                   return;
                 }
                 String? errorWhileJoining = await Utils.joinRoom(_nameController.text, _idController.text);
@@ -135,7 +136,7 @@ class _JoinRoomState extends State<JoinRoom> {
                   setState(() {
                     _idErrorMessage = errorWhileJoining;
                   });
-                  loadingNotifier.unsetIsLoading();
+                  mpNotifier.setGameStatus(GameStatus.none);
                   return;
                 }
                 entityNotifier.changeGameEntity(Entity.multiplayergame);

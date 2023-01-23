@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/database/database.dart';
-import 'package:tightwad/src/dev/game/components/common/loading.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/validation_button.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
-import 'package:tightwad/src/notifiers/loading_notifier.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
@@ -119,14 +116,14 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
 
-    EntityNotifier  entityNotifier  = Provider.of<EntityNotifier>(context,  listen: true);
-    LoadingNotifier loadingNotifier = Provider.of<LoadingNotifier>(context, listen: false);
+    EntityNotifier entityNotifier = Provider.of<EntityNotifier>(context, listen: true);
+    MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: false);
 
     _room.snapshots().listen(
       (event) async => {
         if (event.exists) {
           if (event.get('gameStarted') == true) {
-            loadingNotifier.setIsLoading(),
+            mpNotifier.setGameStatus(GameStatus.loading),
             await Future.delayed(const Duration(seconds: Utils.LOADING_DURATION)),
             entityNotifier.changeGameEntity(Entity.multiplayergame),
           }
@@ -138,9 +135,7 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
       backgroundColor: Colors.transparent,
       body: Responsive(
         child: Consumer<OptionsNotifier>(builder: (context, _, __) {
-
-            LoadingNotifier loadingNotifier = Provider.of<LoadingNotifier>(context, listen: false);
-
+            MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: true);
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -149,10 +144,10 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
                 buildRoomIdStatement(),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                 ValidationButton(onTap: () async {
-                  loadingNotifier.setIsLoading();
+                  mpNotifier.setGameStatus(GameStatus.loading);
                   await Utils.deleteRoomIfExists();
                   entityNotifier.changeGameEntity(Entity.lobby);
-                  loadingNotifier.unsetIsLoading();
+                  mpNotifier.setGameStatus(GameStatus.none);
                 },
                 text: 'quit!'),
               ],
