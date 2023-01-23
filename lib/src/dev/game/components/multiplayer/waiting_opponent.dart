@@ -128,7 +128,6 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
           if (event.get('gameStarted') == true) {
             loadingNotifier.setIsLoading(),
             await Future.delayed(const Duration(seconds: Utils.LOADING_DURATION)),
-            loadingNotifier.unsetIsLoading(),
             entityNotifier.changeGameEntity(Entity.multiplayergame),
           }
         }

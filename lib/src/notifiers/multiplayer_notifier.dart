@@ -7,17 +7,19 @@ import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/coordinates.dart';
 import 'package:tightwad/src/utils/game_utils.dart';
+import 'package:tightwad/src/utils/utils.dart';
 
 class MultiPlayerNotifier extends ChangeNotifier {
 
   GameStatus _gameStatus = GameStatus.none;
   static MultiPlayerStatus multiPlayerStatus = MultiPlayerStatus.none;
+  bool _isMatrixAvailable = false;
 
   late List<List<int>> matrix = List.empty(growable: true);
 
   static void generateAndSetRoomId() async {
     final Random random = Random();
-    final String roomId = random.nextInt(999999).toString();
+    final String roomId = (random.nextInt(Utils.ROOM_ID_MAX - Utils.ROOM_ID_MIN) + Utils.ROOM_ID_MIN).toString();
     setRoomId(roomId);
   }
 
@@ -29,7 +31,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _gameStatus = gameStatus;
   }
 
-  GameStatus get getGameStatus => _gameStatus;
+  GameStatus get getGameStatus        => _gameStatus;
+  bool       get getIsMatrixAvailable => _isMatrixAvailable;
 
   int getSqDim() {
     return matrix.length;
@@ -68,15 +71,23 @@ class MultiPlayerNotifier extends ChangeNotifier {
     );
   }
 
-  Future<void> fetchMatrix() async {
-    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
-      .get()
-      .then((doc) {
-        final serializedMatrix = jsonDecode(doc.get('matrix'));
-        serializedMatrix.forEach((row) => {
-          matrix.add(row),
-        });
-      });
+  Future<void> waitForMatrixToBeAvailable() async {
+    FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen(
+      (event) async => {
+        if (event.exists && event.data()?.containsKey('matrix') == true) {
+          event.get('matrix').forEach((row) {
+            print('ROW :');
+            print(row);
+            matrix.add(row);
+            _isMatrixAvailable = true;
+            notifyListeners();
+
+          }),
+          print('MATRIX :'),
+          print(matrix),
+        },
+      },
+    );
   }
 
   Future<void> notifyMatrixReceived() async {

@@ -8,37 +8,25 @@ import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/computation.dart';
 
-
-class Map2 extends StatelessWidget {
+class Map2 extends StatefulWidget {
   const Map2({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<Map2> createState() => _Map2State();
+}
 
-    LoadingNotifier     loadingNotifier = Provider.of<LoadingNotifier>(context, listen: false);
-    MultiPlayerNotifier mpNotifier      = Provider.of<MultiPlayerNotifier>(context, listen: true);
+class _Map2State extends State<Map2> {
 
-    if (mpNotifier.getGameStatus == GameStatus.none) {
-      loadingNotifier.setIsLoading();
-      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
-        mpNotifier.generateAndPushNewMatrix();
-        mpNotifier.waitForGuestToReceiveMatrix();
-      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
-        mpNotifier.fetchMatrix();
-        mpNotifier.notifyMatrixReceived();
-      }
-      loadingNotifier.unsetIsLoading();
-    }
+  double _height = 0.0;
+  double _width  = 0.0;
 
-    final double height = MediaQuery.of(context).size.height;
-    final double width  = MediaQuery.of(context).size.width;
-    
+  Widget buildMap(final MultiPlayerNotifier mpNotifier) {
     return SafeArea(
       child: Align(
         alignment: Alignment.center,
         child: SizedBox(
-          width:  min(min(width, height) / 1, height / 1.7),
-          height: min(min(width, height) / 1, height / 1.7),
+          width:  min(min(_width, _height) / 1, _height / 1.7),
+          height: min(min(_width, _height) / 1, _height / 1.7),
           child: Align(
             alignment: Alignment.center,
             child: GridView.count(
@@ -53,5 +41,32 @@ class Map2 extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
+    LoadingNotifier     loadingNotifier = Provider.of<LoadingNotifier>(context, listen: false);
+    MultiPlayerNotifier mpNotifier      = Provider.of<MultiPlayerNotifier>(context, listen: true);
+
+    if (mpNotifier.getGameStatus == GameStatus.none) {
+      loadingNotifier.setIsLoading();
+      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+        mpNotifier.generateAndPushNewMatrix();
+        mpNotifier.waitForGuestToReceiveMatrix();
+      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
+        mpNotifier.waitForMatrixToBeAvailable();
+        if (mpNotifier.getIsMatrixAvailable) {
+          mpNotifier.notifyMatrixReceived();
+        }
+      }
+      return Container();
+    }
+
+    _height = MediaQuery.of(context).size.height;
+    _width  = MediaQuery.of(context).size.width;
+    loadingNotifier.unsetIsLoading();
+    return buildMap(mpNotifier);
+
   }
 }

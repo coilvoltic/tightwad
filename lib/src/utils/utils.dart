@@ -57,6 +57,10 @@ abstract class Utils {
   static const int REQUEST_TIME_OUT = 10;
   // ignore: constant_identifier_names
   static const int LOADING_DURATION = 2;
+  // ignore: constant_identifier_names
+  static const int ROOM_ID_MAX = 999999;
+  // ignore: constant_identifier_names
+  static const int ROOM_ID_MIN = 100000;
 
   static Color getBackgroundColorFromTheme() {
     if (Database.getGameTheme() == LIGHT_THEME_INDEX) {

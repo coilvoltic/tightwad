@@ -139,7 +139,6 @@ class _JoinRoomState extends State<JoinRoom> {
                   return;
                 }
                 entityNotifier.changeGameEntity(Entity.multiplayergame);
-                loadingNotifier.unsetIsLoading();
               }
             },
             text: 'click to join!'),

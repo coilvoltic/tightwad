@@ -5,13 +5,17 @@ class LoadingNotifier extends ChangeNotifier {
   bool _isLoading = false;
 
   void setIsLoading() {
-    _isLoading = true;
-    notifyListeners();
+    if (!_isLoading) {
+      _isLoading = true;
+      notifyListeners();
+    }
   }
 
   void unsetIsLoading() {
-    _isLoading = false;
-    notifyListeners();
+    if (_isLoading) {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   bool get getIsLoading => _isLoading;
