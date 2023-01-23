@@ -10,8 +10,13 @@ class Database {
   static const _keySoundSetting = 'sound';
   static const _keyRoomId       = 'roomId';
 
-  static Future init() async =>
+  static Future init() async {
     _preferences = await SharedPreferences.getInstance();
+    if (Database.getGameEntity() == Utils.MULTIPLAYERGAME_ENTITY_INDEX ||
+        Database.getGameEntity() == Utils.WAITINGOPPONENT_ENTITY_INDEX) {
+      registerGameEntity(Utils.MULTIPLAYERWELCOME_ENTITY_INDEX);
+    }
+  }
 
   static Future registerGameEntity(int newGameEntity) async {
     await _preferences?.setInt(_keyGameEntity, newGameEntity);
