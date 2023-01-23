@@ -49,7 +49,9 @@ class _Map2State extends State<Map2> {
 
     if (mpNotifier.getGameStatus == GameStatus.loading) {
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
-        mpNotifier.generateAndPushNewMatrix();
+        if (!mpNotifier.getIsMatrixCreated) {
+          mpNotifier.generateAndPushNewMatrix();
+        }
         mpNotifier.waitForGuestToReceiveMatrix();
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
         mpNotifier.waitForMatrixToBeAvailable();
@@ -64,5 +66,5 @@ class _Map2State extends State<Map2> {
       return buildMap(mpNotifier);
     }
   }
-  
+
 }

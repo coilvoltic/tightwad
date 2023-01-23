@@ -14,6 +14,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   GameStatus _gameStatus = GameStatus.none;
   static MultiPlayerStatus multiPlayerStatus = MultiPlayerStatus.none;
   bool _isMatrixAvailable = false;
+  bool _isMatrixCreated = false;
 
   late List<List<int>> matrix = List.empty(growable: true);
 
@@ -34,6 +35,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   GameStatus get getGameStatus        => _gameStatus;
   bool       get getIsMatrixAvailable => _isMatrixAvailable;
+  bool       get getIsMatrixCreated   => _isMatrixCreated;
 
   int getSqDim() {
     return matrix.length;
@@ -47,6 +49,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     final Random random = Random();
     final int sqDim = random.nextInt(GameUtils.MULTIPLAYER_SQ_DIM_MAX - GameUtils.MULTIPLAYER_SQ_DIM_MIN) + GameUtils.MULTIPLAYER_SQ_DIM_MIN;
 
+    print('new matrix created');
     matrix = GameUtils.computeRandomMatrix(sqDim);
 
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
@@ -54,7 +57,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'matrix': jsonEncode(matrix),
       })
       .whenComplete(() => {
-        setGameStatus(GameStatus.playing),
+        _isMatrixCreated = true,
+        notifyListeners(),
       });
   }
 
@@ -74,6 +78,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
     FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen(
       (event) async => {
         if (event.exists && event.data()?.containsKey('matrix') == true && event.get('matrix') != '' && !_isMatrixAvailable) {
+          print(event.get('matrix')),
+          print(jsonDecode(event.get('matrix'))),
           jsonDecode(event.get('matrix')).forEach((row) => {
             matrix.add(row.cast<int>()),
           }),
