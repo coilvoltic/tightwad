@@ -100,4 +100,19 @@ class MultiPlayerNotifier extends ChangeNotifier {
       });
   }
 
+  Future<void> initMatrixSharing() async {
+    if (_gameStatus == GameStatus.loading) {
+      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+        if (!_isMatrixCreated) {
+          await generateAndPushNewMatrix();
+        }
+        await waitForGuestToReceiveMatrix();
+      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
+        await waitForMatrixToBeAvailable();
+        if (_isMatrixAvailable) {
+          await notifyMatrixReceived();
+        }
+      }
+    }
+  }
 }
