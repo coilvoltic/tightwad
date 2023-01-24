@@ -47,9 +47,12 @@ class _Map2State extends State<Map2> {
     
     MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: true);
 
+    _height = MediaQuery.of(context).size.height;
+    _width  = MediaQuery.of(context).size.width;
+
     return FutureBuilder(
-      builder: (BuildContext ctx, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
+      builder: (BuildContext _, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.hasData && snapshot.data! == true) {
           return buildMap(mpNotifier);
         } else {
           return Container();

@@ -45,20 +45,19 @@ class MultiPlayerNotifier extends ChangeNotifier {
     return matrix.elementAt(move.x - 1).elementAt(move.y - 1);
   }
 
-  Future<void> generateAndPushNewMatrix() async {
+  void generateMatrix() {
     final Random random = Random();
     final int sqDim = random.nextInt(GameUtils.MULTIPLAYER_SQ_DIM_MAX - GameUtils.MULTIPLAYER_SQ_DIM_MIN) + GameUtils.MULTIPLAYER_SQ_DIM_MIN;
-
-    print('new matrix created');
     matrix = GameUtils.computeRandomMatrix(sqDim);
+    print(matrix);
+    _isMatrixCreated = true;
+  }
 
+  Future<void> pushNewMatrix() async {
+    print('new matrix created');
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
         'matrix': jsonEncode(matrix),
-      })
-      .whenComplete(() => {
-        _isMatrixCreated = true,
-        notifyListeners(),
       });
   }
 
@@ -100,19 +99,23 @@ class MultiPlayerNotifier extends ChangeNotifier {
       });
   }
 
-  Future<void> initMatrixSharing() async {
+  Future<bool> initMatrixSharing() async {
     if (_gameStatus == GameStatus.loading) {
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
         if (!_isMatrixCreated) {
-          await generateAndPushNewMatrix();
+          generateMatrix();
+          await pushNewMatrix();
         }
         await waitForGuestToReceiveMatrix();
+        return true;
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
         await waitForMatrixToBeAvailable();
         if (_isMatrixAvailable) {
           await notifyMatrixReceived();
+          return true;
         }
       }
     }
+    return false;
   }
 }
