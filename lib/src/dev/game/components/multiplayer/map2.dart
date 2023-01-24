@@ -18,6 +18,7 @@ class _Map2State extends State<Map2> {
 
   double _height = 0.0;
   double _width  = 0.0;
+  bool _isGameInitialized = false;
 
   Widget buildMap(final MultiPlayerNotifier mpNotifier) {
     return SafeArea(
@@ -52,11 +53,11 @@ class _Map2State extends State<Map2> {
 
     return FutureBuilder(
       builder: (BuildContext _, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasData && snapshot.data! == true) {
+        if (snapshot.hasData && snapshot.data! == true || _isGameInitialized) {
+          _isGameInitialized = true;
           return buildMap(mpNotifier);
-        } else {
-          return Container();
         }
+        return Container();
       },
       future: mpNotifier.initMatrixSharing(),
     );
