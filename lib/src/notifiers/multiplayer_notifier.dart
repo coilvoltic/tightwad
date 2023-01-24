@@ -14,7 +14,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
   GameStatus _gameStatus = GameStatus.none;
   static MultiPlayerStatus multiPlayerStatus = MultiPlayerStatus.none;
   bool _isMatrixAvailable = false;
-  bool _isMatrixCreated = false;
 
   late List<List<int>> matrix = List.empty(growable: true);
 
@@ -28,14 +27,15 @@ class MultiPlayerNotifier extends ChangeNotifier {
     await Database.registerRoomId(roomId);
   }
 
-  void setGameStatus(final GameStatus gameStatus) {
+  void setGameStatus(final GameStatus gameStatus, { bool shouldNotify = false }) {
     _gameStatus = gameStatus;
-    notifyListeners();
+    if (shouldNotify) {
+      notifyListeners();
+    }
   }
 
   GameStatus get getGameStatus        => _gameStatus;
   bool       get getIsMatrixAvailable => _isMatrixAvailable;
-  bool       get getIsMatrixCreated   => _isMatrixCreated;
 
   int getSqDim() {
     return matrix.length;
@@ -50,18 +50,24 @@ class MultiPlayerNotifier extends ChangeNotifier {
     final int sqDim = random.nextInt(GameUtils.MULTIPLAYER_SQ_DIM_MAX - GameUtils.MULTIPLAYER_SQ_DIM_MIN) + GameUtils.MULTIPLAYER_SQ_DIM_MIN;
     matrix = GameUtils.computeRandomMatrix(sqDim);
     print(matrix);
-    _isMatrixCreated = true;
   }
 
-  Future<void> pushNewMatrix() async {
+  Future<bool> pushNewMatrix() async {
     print('new matrix created');
+    bool isSuccessful = false;
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
         'matrix': jsonEncode(matrix),
+      }).whenComplete(() => {
+        isSuccessful = true,
+      }).onError((error, stackTrace) => {
+        isSuccessful = false,
       });
+    return isSuccessful;
   }
 
   Future<void> waitForGuestToReceiveMatrix() async {
+    print('wait for guest');
     FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen(
       (event) async => {
         if (event.exists) {
@@ -73,49 +79,54 @@ class MultiPlayerNotifier extends ChangeNotifier {
     );
   }
 
-  Future<void> waitForMatrixToBeAvailable() async {
+  Future<bool> waitForMatrixToBeAvailable() async {
+    bool isSuccessful = false;
+    print('wait for matrix!');
     FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen(
       (event) async => {
-        if (event.exists && event.data()?.containsKey('matrix') == true && event.get('matrix') != '' && !_isMatrixAvailable) {
+        print('listening new event...'),
+        if (event.exists && event.data()?.containsKey('matrix') == true && event.get('matrix') != '') {
           print(event.get('matrix')),
           print(jsonDecode(event.get('matrix'))),
           jsonDecode(event.get('matrix')).forEach((row) => {
             matrix.add(row.cast<int>()),
           }),
-          _isMatrixAvailable = true,
-          notifyListeners(),
+          isSuccessful = true,
         },
       },
     );
+    return isSuccessful;
   }
 
-  Future<void> notifyMatrixReceived() async {
+  Future<bool> notifyMatrixReceived() async {
+    print('notify received!');
+    bool isSuccessful = false;
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
         'matrixReceived': true,
       })
       .whenComplete(() => {
+        isSuccessful = true,
         setGameStatus(GameStatus.playing),
+      }).onError((error, stackTrace) => {
+        isSuccessful = false,
       });
+    return isSuccessful;
   }
 
   Future<bool> initMatrixSharing() async {
+    bool isSuccessful = false;
+    print('Init matrix');
     if (_gameStatus == GameStatus.loading) {
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
-        if (!_isMatrixCreated) {
           generateMatrix();
-          await pushNewMatrix();
-        }
+          isSuccessful = await pushNewMatrix();
         await waitForGuestToReceiveMatrix();
-        return true;
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
-        await waitForMatrixToBeAvailable();
-        if (_isMatrixAvailable) {
-          await notifyMatrixReceived();
-          return true;
-        }
+        isSuccessful = await waitForMatrixToBeAvailable();
+        isSuccessful = isSuccessful && await notifyMatrixReceived();
       }
     }
-    return false;
+    return isSuccessful;
   }
 }

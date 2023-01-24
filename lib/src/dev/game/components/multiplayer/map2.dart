@@ -53,8 +53,10 @@ class _Map2State extends State<Map2> {
 
     return FutureBuilder(
       builder: (BuildContext _, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasData && snapshot.data! == true || _isGameInitialized) {
-          _isGameInitialized = true;
+        if (snapshot.hasData && snapshot.data! == true) {
+          print('DATA SNAPSHOT:');
+          print(snapshot.data == null);
+          print(snapshot.data! == true);
           return buildMap(mpNotifier);
         }
         return Container();
