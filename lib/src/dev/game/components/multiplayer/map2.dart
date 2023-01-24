@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/tile2.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
@@ -18,7 +21,6 @@ class _Map2State extends State<Map2> {
 
   double _height = 0.0;
   double _width  = 0.0;
-  bool _isGameInitialized = false;
 
   Widget buildMap(final MultiPlayerNotifier mpNotifier) {
     return SafeArea(
@@ -51,17 +53,32 @@ class _Map2State extends State<Map2> {
     _height = MediaQuery.of(context).size.height;
     _width  = MediaQuery.of(context).size.width;
 
-    return FutureBuilder(
-      builder: (BuildContext _, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasData && snapshot.data! == true) {
-          print('DATA SNAPSHOT:');
-          print(snapshot.data == null);
-          print(snapshot.data! == true);
-          return buildMap(mpNotifier);
-        }
-        return Container();
-      },
-      future: mpNotifier.initMatrixSharing(),
-    );
+    if (mpNotifier.getGameStatus == GameStatus.loading) {
+      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+        return FutureBuilder(
+          builder: (BuildContext _, AsyncSnapshot<bool> snapshot) {
+            if (snapshot.hasData && snapshot.data! == true) {
+              mpNotifier.setGameStatus(GameStatus.playing);
+            }
+            return Container();
+          },
+          future: mpNotifier.createAndPushMatrix(),
+        );
+      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+        return StreamBuilder(
+          builder: ((context, AsyncSnapshot<DocumentSnapshot>snapshot) {
+            if (snapshot.hasData && snapshot.data!.get('matrix') != '') {
+              mpNotifier.setMatrix(jsonDecode(snapshot.data!.get('matrix')));
+              mpNotifier.setGameStatus(GameStatus.playing);
+            }
+            return Container();
+          }),
+          stream: FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots(),
+        );      
+      }
+      return Container();
+    } else {
+      return buildMap(mpNotifier);
+    }
   }
 }
