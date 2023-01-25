@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:tightwad/src/database/database.dart';
-import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
+import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
@@ -18,10 +17,12 @@ class Tile2 extends StatefulWidget {
     Key? key,
     required this.sqNbOfTiles,
     required this.number,
+    required this.tileCoordinates,
   }) : super(key: key);
 
   final int sqNbOfTiles;
   final int number;
+  final Coordinates tileCoordinates;
   final player = AudioPlayer();
 
   @override
@@ -30,6 +31,8 @@ class Tile2 extends StatefulWidget {
 
 class _Tile2State extends State<Tile2> {
 
+  Player owner = Player.none;
+
   void playSound(final String soundPath) async {
     await widget.player.play(AssetSource(soundPath));
   }
@@ -37,7 +40,11 @@ class _Tile2State extends State<Tile2> {
   Widget createChild(double minDimension) {
     Color textColor = Colors.white;
 
-    if (Utils.shouldGlow()) {
+    if (owner == Player.creator) {
+      textColor = PlayerColors.creator.withAlpha(200);
+    } else if (owner == Player.guest) {
+      textColor = PlayerColors.guest.withAlpha(200);
+    } else if (Utils.shouldGlow()) {
       textColor = ThemeColors.labelColor.diamond.withAlpha(170);
     } else {
       textColor = ThemeColors.labelColor.lightOrDark.withAlpha(200);
@@ -60,9 +67,21 @@ class _Tile2State extends State<Tile2> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<GameHandlerNotifier, OptionsNotifier>(
-        builder: (context, gameHandlerNotifier, optionsNotifier, _) {
+
+    MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: false);
+
+    return Consumer< OptionsNotifier>(
+        builder: (context, _, __) {
       return GestureDetector(
+        onTap: () => setState(() {
+          if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+            mpNotifier.notifyCreatorNewMove(widget.tileCoordinates);
+            owner = Player.creator;
+          } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+            mpNotifier.notifyGuestNewMove(widget.tileCoordinates);
+            owner = Player.guest;
+          }
+        }),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           margin: EdgeInsets.all(-0.6 * widget.sqNbOfTiles + 8),

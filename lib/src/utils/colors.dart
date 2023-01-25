@@ -104,6 +104,8 @@ class ThemeColors {
 }
 
 class PlayerColors {
-  static Color user = Colors.indigo;
-  static Color algo = Colors.purple;
+  static Color user    = Colors.indigo;
+  static Color algo    = Colors.purple;
+  static Color creator = Colors.indigo;
+  static Color guest   = Colors.purple;
 }

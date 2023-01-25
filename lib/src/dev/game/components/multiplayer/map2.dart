@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/tile2.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
@@ -35,8 +32,9 @@ class _Map2State extends State<Map2> {
               crossAxisCount: mpNotifier.getSqDim(),
               children: [
                 for (int i = 0; i < pow(mpNotifier.getSqDim(), 2); i++)
-                  Tile2(sqNbOfTiles:    mpNotifier.getSqDim(),
-                        number:         mpNotifier.getMatrixElement(indexToCoordinates(i, mpNotifier.getSqDim())),),
+                  Tile2(sqNbOfTiles:     mpNotifier.getSqDim(),
+                        number:          mpNotifier.getMatrixElement(indexToCoordinates(i, mpNotifier.getSqDim())),
+                        tileCoordinates: indexToCoordinates(i, mpNotifier.getSqDim())),
               ],
             ),
           ),

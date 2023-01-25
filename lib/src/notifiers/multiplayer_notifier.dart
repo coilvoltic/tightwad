@@ -54,17 +54,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
     matrix = GameUtils.computeRandomMatrix(sqDim);
   }
 
-  void setMatrix(final dynamic serializedMatrix) {
-    serializedMatrix.forEach((row) => {
-      matrix.add(row.cast<int>()),
-    });
-  }
-
   Future<bool> createAndPushMatrix() async {
     bool isSuccessful = true;
     if (!_isMatrixBeingCreated) {
       _isMatrixBeingCreated = true;
-      print('enter');
       generateMatrix();
       await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
         .update({
@@ -106,6 +99,42 @@ class MultiPlayerNotifier extends ChangeNotifier {
         });
       await Future.delayed(const Duration(seconds: 1));
     }
+    return isSuccessful;
+  }
+
+  Future<bool> notifyCreatorNewMove(final Coordinates move) async {
+    bool isSuccessful = false;
+    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+      .update({
+        'creatorLastMove': {
+          'x': move.x,
+          'y': move.y,
+        },
+        'turn': 'guest',
+      }).whenComplete(() => {
+        isSuccessful = true,
+        setGameStatus(GameStatus.playing),
+      }).onError((error, stackTrace) => {
+        isSuccessful = false,
+      });
+    return isSuccessful;
+  }
+
+  Future<bool> notifyGuestNewMove(final Coordinates move) async {
+    bool isSuccessful = false;
+    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+      .update({
+        'guestLastMove': {
+          'x': move.x,
+          'y': move.y,
+        },
+        'turn': 'creator',
+      }).whenComplete(() => {
+        isSuccessful = true,
+        setGameStatus(GameStatus.playing),
+      }).onError((error, stackTrace) => {
+        isSuccessful = false,
+      });
     return isSuccessful;
   }
 

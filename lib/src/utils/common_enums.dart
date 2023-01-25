@@ -4,7 +4,7 @@ enum GameStatus { playing, lose, win, nextlevel, tryagain, finish, loading, none
 
 enum VolumeMode { up, off }
 
-enum Player { user, algo, none }
+enum Player { user, algo, none, creator, guest }
 
 enum Entity { tutorial, singleplayerwelcome, multiplayerwelcome, singleplayergame, multiplayergame, waitingopponent, lobby, none }
 

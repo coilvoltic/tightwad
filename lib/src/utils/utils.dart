@@ -376,12 +376,13 @@ abstract class Utils {
       'roomId': Database.getRoomId(),
       'nbOfRounds': nbOfRounds,
       'creatorName': name,
-      'guestName': '',
       'creatorTurn': true,
-      'guestTurn': false,
       'gameStarted': false,
       'matrix': '',
-      'matrixReceived': false
+      'matrixReceived': false,
+      'creatorLastMove': '',
+      'guestLastMove': '',
+      'turn': 'creator',
     }).whenComplete(() => {
       MultiPlayerNotifier.multiPlayerStatus = MultiPlayerStatus.creator,
     }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
