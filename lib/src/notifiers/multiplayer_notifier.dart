@@ -55,9 +55,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> createAndPushMatrix() async {
+    print('new matrix');
     bool isSuccessful = true;
     if (!_isMatrixBeingCreated) {
       _isMatrixBeingCreated = true;
+      print('creation');
       generateMatrix();
       await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
         .update({
@@ -113,7 +115,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'turn': 'guest',
       }).whenComplete(() => {
         isSuccessful = true,
-        setGameStatus(GameStatus.playing),
       }).onError((error, stackTrace) => {
         isSuccessful = false,
       });
@@ -131,7 +132,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'turn': 'creator',
       }).whenComplete(() => {
         isSuccessful = true,
-        setGameStatus(GameStatus.playing),
       }).onError((error, stackTrace) => {
         isSuccessful = false,
       });

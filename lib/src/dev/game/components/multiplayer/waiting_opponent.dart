@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -25,18 +27,18 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
   final double ratioLoader = 0.15;
   final double ratioRoomIdStatement = 0.2;
 
-  late DocumentReference<Map<String, dynamic>> _room;
+  late StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> _listener;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
-    _room = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}');
     super.initState();
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _listener.cancel();
     super.dispose();
   }
 
@@ -119,8 +121,7 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
     EntityNotifier entityNotifier = Provider.of<EntityNotifier>(context, listen: true);
     MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: false);
 
-    _room.snapshots().listen(
-      (event) async => {
+    _listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
         if (event.exists) {
           if (event.get('gameStarted') == true) {
             mpNotifier.setGameStatus(GameStatus.loading),
