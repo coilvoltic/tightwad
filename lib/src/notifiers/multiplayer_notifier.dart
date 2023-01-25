@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -15,6 +16,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   static MultiPlayerStatus multiPlayerStatus = MultiPlayerStatus.none;
 
   late List<List<int>> matrix = List.empty(growable: true);
+  late StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> listener;
 
   static void generateAndSetRoomId() async {
     final Random random = Random();
@@ -63,9 +65,24 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'matrix': jsonEncode(matrix),
       }).whenComplete(() => {
         isSuccessful = true,
+        setGameStatus(GameStatus.playing),
       }).onError((error, stackTrace) => {
         isSuccessful = false,
       });
     return isSuccessful;
   }
+
+  Future<bool> waitForMatrixAndStoreIt() async {
+    bool isSuccessful = false;
+    listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
+      if (event.exists && event.data()?.containsKey('matrix') == true && event.get('matrix') != '') {
+        jsonDecode(event.get('matrix')).forEach((row) => {
+          matrix.add(row.cast<int>()),
+        }),
+        setGameStatus(GameStatus.playing),
+      }
+    });
+    return isSuccessful;
+  }
+
 }

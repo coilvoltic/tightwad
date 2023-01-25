@@ -55,32 +55,15 @@ class _Map2State extends State<Map2> {
 
     if (mpNotifier.getGameStatus == GameStatus.loading) {
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
-        return FutureBuilder(
-          builder: (BuildContext _, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.hasData && snapshot.data! == true) {
-              mpNotifier.setGameStatus(GameStatus.playing);
-            }
-            return Container();
-          },
-          future: mpNotifier.createAndPushMatrix(),
-        );
+        mpNotifier.createAndPushMatrix();
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
-        return StreamBuilder(
-          builder: ((context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            print('guest builder');
-            if (snapshot.hasData && snapshot.data!.get('matrix') != '') {
-              print('set matrix!');
-              mpNotifier.setMatrix(jsonDecode(snapshot.data!.get('matrix')));
-              mpNotifier.setGameStatus(GameStatus.playing, shouldNotify: false);
-            }
-            return Container();
-          }),
-          stream: FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots(),
-        );      
+        mpNotifier.waitForMatrixAndStoreIt();
       }
-      return Container();
-    } else {
+    }
+
+    if (mpNotifier.getGameStatus == GameStatus.playing) {
       return buildMap(mpNotifier);
     }
+    return Container();
   }
 }
