@@ -16,7 +16,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
   static MultiPlayerStatus multiPlayerStatus = MultiPlayerStatus.none;
 
   late List<List<int>> matrix = List.empty(growable: true);
-  late StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> listener;
+
+  bool _isMatrixBeingCreated = false;
+  bool _isMatrixReceived = false;
+  bool _isFetchingData = false;
 
   static void generateAndSetRoomId() async {
     final Random random = Random();
@@ -58,30 +61,51 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> createAndPushMatrix() async {
-    bool isSuccessful = false;
-    generateMatrix();
-    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
-      .update({
-        'matrix': jsonEncode(matrix),
-      }).whenComplete(() => {
-        isSuccessful = true,
-        setGameStatus(GameStatus.playing),
-      }).onError((error, stackTrace) => {
-        isSuccessful = false,
-      });
+    bool isSuccessful = true;
+    if (!_isMatrixBeingCreated) {
+      _isMatrixBeingCreated = true;
+      print('enter');
+      generateMatrix();
+      await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+        .update({
+          'matrix': jsonEncode(matrix),
+        }).whenComplete(() => {
+          _isMatrixBeingCreated = false,
+          isSuccessful = true,
+          setGameStatus(GameStatus.playing),
+        }).onError((error, stackTrace) => {
+          _isMatrixBeingCreated = false,
+          isSuccessful = false,
+        });
+    }
     return isSuccessful;
   }
 
   Future<bool> waitForMatrixAndStoreIt() async {
-    bool isSuccessful = false;
-    listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
-      if (event.exists && event.data()?.containsKey('matrix') == true && event.get('matrix') != '') {
-        jsonDecode(event.get('matrix')).forEach((row) => {
-          matrix.add(row.cast<int>()),
-        }),
-        setGameStatus(GameStatus.playing),
-      }
-    });
+    bool isSuccessful = true;
+    if (_isFetchingData) {
+      return true;
+    }
+    _isFetchingData = true;
+    while (!_isMatrixReceived && isSuccessful) {
+      await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+      .get()
+        .then((doc) {
+          if (doc.exists && doc.data()?.containsKey('matrix') == true && doc.get('matrix') != '') {
+            jsonDecode(doc.get('matrix')).forEach((row) => {
+              matrix.add(row.cast<int>()),
+            });
+            _isMatrixReceived = true;
+            _isFetchingData = false;
+            setGameStatus(GameStatus.playing);
+          }
+        }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
+          isSuccessful = false;
+        }).onError((errorObj, stackTrace) {
+          isSuccessful = false;
+        });
+      await Future.delayed(const Duration(seconds: 1));
+    }
     return isSuccessful;
   }
 

@@ -15,14 +15,7 @@ import 'package:tightwad/src/utils/utils.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: 'AIzaSyDaAMCOCv6GK56W3r3hLvAA4ez4N-6PrNY',
-      appId: '1:738466289587:web:3b769cb181f5b2a4bd5dc6',
-      messagingSenderId: '738466289587',
-      projectId: 'tightwad-80f9e',
-    ),
-  );
+  await Firebase.initializeApp();
   await Database.init();
   runApp(const Tightwad());
 }
