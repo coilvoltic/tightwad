@@ -33,7 +33,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     }
   }
 
-  GameStatus get getGameStatus        => _gameStatus;
+  GameStatus get getGameStatus => _gameStatus;
 
   int getSqDim() {
     return matrix.length;
@@ -51,7 +51,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   void setMatrix(final dynamic serializedMatrix) {
     serializedMatrix.forEach((row) => {
-      matrix.add(row),
+      matrix.add(row.cast<int>()),
     });
   }
 

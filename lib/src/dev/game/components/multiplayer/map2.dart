@@ -64,12 +64,14 @@ class _Map2State extends State<Map2> {
           },
           future: mpNotifier.createAndPushMatrix(),
         );
-      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
         return StreamBuilder(
-          builder: ((context, AsyncSnapshot<DocumentSnapshot>snapshot) {
+          builder: ((context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            print('guest builder');
             if (snapshot.hasData && snapshot.data!.get('matrix') != '') {
+              print('set matrix!');
               mpNotifier.setMatrix(jsonDecode(snapshot.data!.get('matrix')));
-              mpNotifier.setGameStatus(GameStatus.playing);
+              mpNotifier.setGameStatus(GameStatus.playing, shouldNotify: false);
             }
             return Container();
           }),
