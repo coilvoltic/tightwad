@@ -15,12 +15,16 @@ class MultiPlayerNotifier extends ChangeNotifier {
   GameStatus _gameStatus = GameStatus.none;
   static MultiPlayerStatus multiPlayerStatus = MultiPlayerStatus.none;
 
-  late List<List<int>> matrix = List.empty(growable: true);
+  List<List<int>> matrix = List.empty(growable: true);
+  List<Coordinates> guestMoves = List.empty(growable: true);
+  List<Coordinates> creatorMoves = List.empty(growable: true);
+  late StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> listener;
+
 
   bool _isMatrixBeingCreated = false;
   bool _isMatrixReceived = false;
   bool _isFetchingData = false;
-  Player turn = Player.none;
+  Player turn = Player.creator;
 
   static void generateAndSetRoomId() async {
     final Random random = Random();
@@ -40,6 +44,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   GameStatus get getGameStatus => _gameStatus;
+  Player get getTurn => turn;
 
   int getSqDim() {
     return matrix.length;
@@ -47,6 +52,14 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   int getMatrixElement(final Coordinates move) {
     return matrix.elementAt(move.x - 1).elementAt(move.y - 1);
+  }
+
+  Coordinates getGuestLastMove() {
+    return guestMoves.last;
+  }
+
+  Coordinates getCreatorLastMove() {
+    return creatorMoves.last;
   }
 
   void generateMatrix() {
@@ -113,6 +126,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         },
         'turn': 'guest',
       }).whenComplete(() => {
+        turn = Player.guest,
         isSuccessful = true,
       }).onError((error, stackTrace) => {
         isSuccessful = false,
@@ -130,6 +144,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
         },
         'turn': 'creator',
       }).whenComplete(() => {
+        print('guest move stored!'),
+        turn = Player.guest,
         isSuccessful = true,
       }).onError((error, stackTrace) => {
         isSuccessful = false,
@@ -137,4 +153,29 @@ class MultiPlayerNotifier extends ChangeNotifier {
     return isSuccessful;
   }
 
+  Future<bool> listenToGuestMove() async {
+    listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
+        if (event.exists && event.data()!.containsKey('guestLastMove')) {
+          guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
+          print(guestMoves),
+          turn = Player.creator,
+          listener.cancel(),
+        }
+      },
+    );
+    return true;
+  }
+
+  Future<bool> listenToCreatorMove() async {
+    listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
+        if (event.exists && event.data()!.containsKey('creatorLastMove')) {
+          creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
+          print(creatorMoves),
+          turn = Player.guest,
+          listener.cancel(),
+        }
+      },
+    );
+    return true;
+  }
 }

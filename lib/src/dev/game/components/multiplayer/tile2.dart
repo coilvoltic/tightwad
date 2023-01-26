@@ -65,19 +65,43 @@ class _Tile2State extends State<Tile2> {
     );
   }
 
+  void checkOpponentMove(MultiPlayerNotifier mpNotifier) {
+    if (owner == Player.none) {
+      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest && mpNotifier.getCreatorLastMove() == widget.tileCoordinates) {
+        setState(() {
+          owner = Player.creator;
+        });
+      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator && mpNotifier.getGuestLastMove() == widget.tileCoordinates) {
+        setState(() {
+          owner = Player.guest;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: false);
+    MultiPlayerNotifier mpNotifier = Provider.of<MultiPlayerNotifier>(context, listen: true);
 
-    return Consumer< OptionsNotifier>(
-        builder: (context, _, __) {
+    return Consumer<OptionsNotifier>(
+      builder: (context, _, __) {
+      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
+          mpNotifier.getTurn == Player.guest) {
+        mpNotifier.listenToGuestMove();
+      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
+                  mpNotifier.getTurn == Player.creator) {
+        mpNotifier.listenToCreatorMove();
+      }
+      checkOpponentMove(mpNotifier);
       return GestureDetector(
         onTap: () => setState(() {
-          if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+          if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
+              mpNotifier.getTurn == Player.creator) {
             mpNotifier.notifyCreatorNewMove(widget.tileCoordinates);
             owner = Player.creator;
-          } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
+          } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
+                     mpNotifier.getTurn == Player.guest) {
             mpNotifier.notifyGuestNewMove(widget.tileCoordinates);
             owner = Player.guest;
           }
