@@ -161,38 +161,42 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> listenToGuestMove() async {
-    _isListening = true;
-    listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
-        if (event.exists && event.data()!.containsKey('guestLastMove')) {
-          guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
-          guestMoves.forEach((element) {
-            print('x : ' + (element.x).toString());
-            print('y : ' + (element.y).toString());
-          }),
-          turn = Player.creator,
-          _isListening = false,
-          listener.cancel(),
-        }
-      },
-    );
+    if (!_isListening) {
+      _isListening = true;
+      listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
+          if (event.exists && event.data()!.containsKey('guestLastMove')) {
+            guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
+            guestMoves.forEach((element) {
+              print('x : ' + (element.x).toString());
+              print('y : ' + (element.y).toString());
+            }),
+            turn = Player.creator,
+            _isListening = false,
+            listener.cancel(),
+          }
+        },
+      );
+    }
     return true;
   }
 
   Future<bool> listenToCreatorMove() async {
-    _isListening = true;
-    listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
-        if (event.exists && event.data()!.containsKey('creatorLastMove')) {
-          creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
-          creatorMoves.forEach((element) {
-            print('x : ' + (element.x).toString());
-            print('y : ' + (element.y).toString());
-          }),
-          turn = Player.guest,
-          _isListening = false,
-          listener.cancel(),
-        }
-      },
-    );
+    if (!_isListening) {
+      _isListening = true;
+      listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
+          if (event.exists && event.data()!.containsKey('creatorLastMove')) {
+            creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
+            creatorMoves.forEach((element) {
+              print('x : ' + (element.x).toString());
+              print('y : ' + (element.y).toString());
+            }),
+            turn = Player.guest,
+            _isListening = false,
+            listener.cancel(),
+          }
+        },
+      );
+    }
     return true;
   }
 }
