@@ -54,11 +54,17 @@ class MultiPlayerNotifier extends ChangeNotifier {
     return matrix.elementAt(move.x - 1).elementAt(move.y - 1);
   }
 
-  Coordinates getGuestLastMove() {
+  Coordinates? getGuestLastMove() {
+    if (guestMoves.isEmpty) {
+      return null;
+    }
     return guestMoves.last;
   }
 
-  Coordinates getCreatorLastMove() {
+  Coordinates? getCreatorLastMove() {
+    if (creatorMoves.isEmpty) {
+      return null;
+    }
     return creatorMoves.last;
   }
 
@@ -157,7 +163,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
     listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
         if (event.exists && event.data()!.containsKey('guestLastMove')) {
           guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
-          print(guestMoves),
+          guestMoves.forEach((element) {
+            print('x : ' + (element.x).toString());
+            print('y : ' + (element.y).toString());
+          }),
           turn = Player.creator,
           listener.cancel(),
         }
@@ -170,7 +179,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
     listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
         if (event.exists && event.data()!.containsKey('creatorLastMove')) {
           creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
-          print(creatorMoves),
+          creatorMoves.forEach((element) {
+            print('x : ' + (element.x).toString());
+            print('y : ' + (element.y).toString());
+          }),
           turn = Player.guest,
           listener.cancel(),
         }

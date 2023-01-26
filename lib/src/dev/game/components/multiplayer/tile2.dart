@@ -32,6 +32,7 @@ class Tile2 extends StatefulWidget {
 class _Tile2State extends State<Tile2> {
 
   Player owner = Player.none;
+  bool _isListening = false;
 
   void playSound(final String soundPath) async {
     await widget.player.play(AssetSource(soundPath));
@@ -86,12 +87,15 @@ class _Tile2State extends State<Tile2> {
 
     return Consumer<OptionsNotifier>(
       builder: (context, _, __) {
-      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
-          mpNotifier.getTurn == Player.guest) {
-        mpNotifier.listenToGuestMove();
-      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
-                  mpNotifier.getTurn == Player.creator) {
-        mpNotifier.listenToCreatorMove();
+      if (!_isListening) {
+        _isListening = true;
+        if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
+            mpNotifier.getTurn == Player.guest) {
+          mpNotifier.listenToGuestMove();
+        } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
+                    mpNotifier.getTurn == Player.creator) {
+          mpNotifier.listenToCreatorMove();
+        }
       }
       checkOpponentMove(mpNotifier);
       return GestureDetector(
