@@ -87,17 +87,15 @@ class _Tile2State extends State<Tile2> {
 
     return Consumer<OptionsNotifier>(
       builder: (context, _, __) {
-      if (!_isListening) {
-        _isListening = true;
-        if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
-            mpNotifier.getTurn == Player.guest) {
-          mpNotifier.listenToGuestMove();
-        } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
-                    mpNotifier.getTurn == Player.creator) {
-          mpNotifier.listenToCreatorMove();
-        }
+      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
+          mpNotifier.getTurn == Player.guest) {
+        mpNotifier.listenToGuestMove();
+      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
+                  mpNotifier.getTurn == Player.creator) {
+        mpNotifier.listenToCreatorMove();
+      } else {
+        checkOpponentMove(mpNotifier);
       }
-      checkOpponentMove(mpNotifier);
       return GestureDetector(
         onTap: () => setState(() {
           if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&

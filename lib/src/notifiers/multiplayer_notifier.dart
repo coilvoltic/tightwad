@@ -24,6 +24,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   bool _isMatrixBeingCreated = false;
   bool _isMatrixReceived = false;
   bool _isFetchingData = false;
+  bool _isListening = false;
   Player turn = Player.creator;
 
   static void generateAndSetRoomId() async {
@@ -160,6 +161,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> listenToGuestMove() async {
+    _isListening = true;
     listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
         if (event.exists && event.data()!.containsKey('guestLastMove')) {
           guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
@@ -168,6 +170,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             print('y : ' + (element.y).toString());
           }),
           turn = Player.creator,
+          _isListening = false,
           listener.cancel(),
         }
       },
@@ -176,6 +179,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> listenToCreatorMove() async {
+    _isListening = true;
     listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
         if (event.exists && event.data()!.containsKey('creatorLastMove')) {
           creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
@@ -184,6 +188,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             print('y : ' + (element.y).toString());
           }),
           turn = Player.guest,
+          _isListening = false,
           listener.cancel(),
         }
       },
