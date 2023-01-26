@@ -20,6 +20,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   bool _isMatrixBeingCreated = false;
   bool _isMatrixReceived = false;
   bool _isFetchingData = false;
+  Player turn = Player.none;
 
   static void generateAndSetRoomId() async {
     final Random random = Random();
@@ -55,11 +56,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> createAndPushMatrix() async {
-    print('new matrix');
     bool isSuccessful = true;
     if (!_isMatrixBeingCreated) {
       _isMatrixBeingCreated = true;
-      print('creation');
       generateMatrix();
       await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
         .update({

@@ -77,7 +77,7 @@ class _Tile2State extends State<Tile2> {
           if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
             mpNotifier.notifyCreatorNewMove(widget.tileCoordinates);
             owner = Player.creator;
-          } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+          } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
             mpNotifier.notifyGuestNewMove(widget.tileCoordinates);
             owner = Player.guest;
           }
@@ -88,7 +88,7 @@ class _Tile2State extends State<Tile2> {
           width: double.infinity,
           height: double.infinity,
           decoration: Utils.buildNeumorphismBox(45.0 - 5 * widget.sqNbOfTiles,
-              5.0, 6.5 - widget.sqNbOfTiles / 2, false),
+              5.0, 6.5 - widget.sqNbOfTiles / 2, owner != Player.none),
           child: Center(
             child: createChild(min(
                 min(MediaQuery.of(context).size.width,
