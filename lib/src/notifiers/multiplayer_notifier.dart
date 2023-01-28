@@ -18,8 +18,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
   List<List<int>> matrix = List.empty(growable: true);
   List<Coordinates> guestMoves = List.empty(growable: true);
   List<Coordinates> creatorMoves = List.empty(growable: true);
-  List<Coordinates> guestPossibleMoves = List.empty(growable: true);
-  List<Coordinates> creatorPossibleMoves = List.empty(growable: true);
+  List<Coordinates> _guestPossibleMoves = List.empty(growable: true);
+  List<Coordinates> _creatorPossibleMoves = List.empty(growable: true);
 
   late StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> listener;
 
@@ -83,6 +83,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     if (!_isMatrixBeingCreated) {
       _isMatrixBeingCreated = true;
       generateMatrix();
+      _creatorPossibleMoves = GameUtils.fillAllMoves(getSqDim());
       await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
         .update({
           'matrix': jsonEncode(matrix),
@@ -116,6 +117,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             });
             _isMatrixReceived = true;
             _isFetchingData = false;
+            _guestPossibleMoves = GameUtils.fillAllMoves(getSqDim());
             setGameStatus(GameStatus.playing);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
@@ -131,13 +133,13 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   void initializeGame() {
-    creatorPossibleMoves = GameUtils.fillAllMoves(getSqDim());
-    guestPossibleMoves = GameUtils.fillAllMoves(getSqDim());
+    _creatorPossibleMoves = GameUtils.fillAllMoves(getSqDim());
+    _guestPossibleMoves = GameUtils.fillAllMoves(getSqDim());
   }
 
   Future<bool> notifyCreatorNewMove(final Coordinates move) async {
     bool isSuccessful = false;
-    GameUtils.updatePossibleMoves(creatorPossibleMoves, move, getSqDim());
+    GameUtils.updatePossibleMoves(_creatorPossibleMoves, move, getSqDim());
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
         'creatorLastMove': {
@@ -157,7 +159,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<bool> notifyGuestNewMove(final Coordinates move) async {
     bool isSuccessful = false;
-    GameUtils.updatePossibleMoves(guestPossibleMoves, move, getSqDim());
+    GameUtils.updatePossibleMoves(_guestPossibleMoves, move, getSqDim());
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
         'guestLastMove': {
@@ -183,7 +185,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
             turn = Player.creator,
             _isListening = false,
-            creatorPossibleMoves.removeWhere((element) =>
+            _creatorPossibleMoves.removeWhere((element) =>
               element.x == getGuestLastMove().x && element.y == getGuestLastMove().y),
             listener.cancel(),
             notifyListeners(),
@@ -202,7 +204,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
             turn = Player.guest,
             _isListening = false,
-            guestPossibleMoves.removeWhere((element) =>
+            _guestPossibleMoves.removeWhere((element) =>
               element.x == getCreatorLastMove().x && element.y == getCreatorLastMove().y),
             listener.cancel(),
             notifyListeners(),
@@ -214,11 +216,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   bool isForbiddenGuestMove(final Coordinates move) {
-    return !guestPossibleMoves.any((item) => item.x == move.x && item.y == move.y);
+    return !_guestPossibleMoves.any((item) => item.x == move.x && item.y == move.y);
   }
 
   bool isForbiddenCreatorMove(final Coordinates move) {
-    return !creatorPossibleMoves.any((item) => item.x == move.x && item.y == move.y);
+    return !_creatorPossibleMoves.any((item) => item.x == move.x && item.y == move.y);
   }
 
 }

@@ -19,8 +19,6 @@ class _Map2State extends State<Map2> {
   double _height = 0.0;
   double _width  = 0.0;
 
-  bool _isGameInitialized = false;
-
   Widget buildMap(final MultiPlayerNotifier mpNotifier) {
     return SafeArea(
       child: Align(
@@ -59,14 +57,9 @@ class _Map2State extends State<Map2> {
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
         mpNotifier.waitForMatrixAndStoreIt();
       }
-      if (!_isGameInitialized) {
-        _isGameInitialized = true;
-        mpNotifier.initializeGame();
-      }
     }
 
     if (mpNotifier.getGameStatus == GameStatus.playing) {
-      _isGameInitialized = false;
       return buildMap(mpNotifier);
     }
     return Container();

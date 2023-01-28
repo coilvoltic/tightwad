@@ -43,12 +43,12 @@ class _Tile2State extends State<Tile2> {
   Widget createChild(double minDimension) {
     Color textColor = Colors.white;
 
-    if (_isMoveForbidden) {
-      textColor = ThemeColors.labelColor.lightOrDark.withAlpha(50);
-    } else if (owner == Player.creator) {
+    if (owner == Player.creator) {
       textColor = PlayerColors.creator.withAlpha(200);
     } else if (owner == Player.guest) {
       textColor = PlayerColors.guest.withAlpha(200);
+    } else if (_isMoveForbidden) {
+      textColor = ThemeColors.labelColor.lightOrDark.withAlpha(50); 
     } else if (Utils.shouldGlow()) {
       textColor = ThemeColors.labelColor.diamond.withAlpha(170);
     } else {
