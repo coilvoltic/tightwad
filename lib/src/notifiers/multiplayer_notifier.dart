@@ -25,7 +25,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
   bool _isMatrixReceived = false;
   bool _isFetchingData = false;
   bool _isListening = false;
-  bool _isOppLastMoveChecked = false;
   Player turn = Player.creator;
 
   static void generateAndSetRoomId() async {
@@ -47,11 +46,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   GameStatus get getGameStatus => _gameStatus;
   Player get getTurn => turn;
-  bool get getIsOppLastMoveChecked => _isOppLastMoveChecked;
-
-  void setIsOppLastMoveChecked() {
-    _isOppLastMoveChecked = true;
-  }
 
   int getSqDim() {
     return matrix.length;
@@ -175,7 +169,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   Future<bool> listenToGuestMove() async {
     if (!_isListening) {
       _isListening = true;
-      listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
+      listener =  FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
           if (event.exists && event.data()!.containsKey('guestLastMove') && event.get('guestLastMove') != '') {
             print('listen to guest'),
             guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
@@ -186,7 +180,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
             }),
             turn = Player.creator,
             _isListening = false,
-            _isOppLastMoveChecked = false,
             listener.cancel(),
             notifyListeners(),
           }
@@ -210,7 +203,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
             }),
             turn = Player.guest,
             _isListening = false,
-            _isOppLastMoveChecked = false,
             listener.cancel(),
             notifyListeners(),
           }

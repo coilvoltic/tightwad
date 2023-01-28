@@ -33,7 +33,7 @@ class Tile2 extends StatefulWidget {
 class _Tile2State extends State<Tile2> {
 
   Player owner = Player.none;
-  bool _isListening = false;
+  bool _isOppLastMoveChecked = false;
 
   void playSound(final String soundPath) async {
     await widget.player.play(AssetSource(soundPath));
@@ -68,6 +68,10 @@ class _Tile2State extends State<Tile2> {
   }
 
   void checkOpponentMove(MultiPlayerNotifier mpNotifier) {
+    print('x : ' + mpNotifier.getCreatorLastMove().x.toString());
+    print('y : ' + mpNotifier.getCreatorLastMove().y.toString());
+    print('xT: ' + widget.tileCoordinates.x.toString());
+    print('yT: ' + widget.tileCoordinates.y.toString());
     if (owner == Player.none) {
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getCreatorLastMove())) {
         owner = Player.creator;
@@ -87,12 +91,14 @@ class _Tile2State extends State<Tile2> {
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
           mpNotifier.getTurn == Player.guest) {
         mpNotifier.listenToGuestMove();
+        _isOppLastMoveChecked = false;
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
                   mpNotifier.getTurn == Player.creator) {
         mpNotifier.listenToCreatorMove();
-      } else if (!mpNotifier.getIsOppLastMoveChecked) {
+        _isOppLastMoveChecked = false;
+      } else if (_isOppLastMoveChecked) {
         checkOpponentMove(mpNotifier);
-        mpNotifier.setIsOppLastMoveChecked();
+        _isOppLastMoveChecked = true;
       }
       return GestureDetector(
         onTap: () => {
