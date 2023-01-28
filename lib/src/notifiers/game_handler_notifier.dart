@@ -86,11 +86,7 @@ class GameHandlerNotifier extends ChangeNotifier {
   }
 
   void initializeUserPossibleMoves() {
-    for (int i = 0; i < levels[lvl].getSqNbOfTiles; i++) {
-      for (int j = 0; j < levels[lvl].getSqNbOfTiles; j++) {
-        userPossibleMoveList.add(Coordinates(i + 1, j + 1));
-      }
-    }
+    userPossibleMoveList = GameUtils.fillAllMoves(levels[lvl].getSqNbOfTiles);
   }
 
   /* '----------' GAME EVENT HANDLING '----------' */
@@ -127,48 +123,17 @@ class GameHandlerNotifier extends ChangeNotifier {
   }
 
   void updateForbiddenMoveListFromUser(Coordinates move) {
-    userPossibleMoveList
-        .removeWhere((element) => element.x == move.x && element.y == move.y);
-
-    for (int i = 0; i < levels[lvl].getSqNbOfTiles; i++) {
-      if (move.x != i + 1) {
-        userPossibleMoveList.removeWhere(
-            (element) => element.x == i + 1 && element.y == move.y);
-      }
-    }
-
-    for (int j = 0; j < levels[lvl].getSqNbOfTiles; j++) {
-      if (move.y != j + 1) {
-        userPossibleMoveList.removeWhere(
-            (element) => element.x == move.x && element.y == j + 1);
-      }
-    }
+    GameUtils.updatePossibleMoves(userPossibleMoveList, move, levels[lvl].getSqNbOfTiles);
   }
 
   void preventPotentialStuckSituation() {
-    if (nbUserPress == levels[lvl].getSqNbOfTiles - 2 &&
+     final bool couldBeStuck = (nbUserPress == levels[lvl].getSqNbOfTiles - 2 &&
             levels[lvl].getFirstPlayer == Player.algo ||
         nbAlgoPress == levels[lvl].getSqNbOfTiles - 2 &&
-            levels[lvl].getFirstPlayer == Player.user) {
-      if (userPossibleMoveList.length == 3) {
-        if ((userPossibleMoveList[0].x == userPossibleMoveList[1].x &&
-                userPossibleMoveList[0].y == userPossibleMoveList[2].y) ||
-            (userPossibleMoveList[0].x == userPossibleMoveList[2].x &&
-                userPossibleMoveList[0].y == userPossibleMoveList[1].y)) {
-          userPossibleMoveList.removeAt(0);
-        } else if ((userPossibleMoveList[1].x == userPossibleMoveList[0].x &&
-                userPossibleMoveList[1].y == userPossibleMoveList[2].y) ||
-            (userPossibleMoveList[1].x == userPossibleMoveList[2].x &&
-                userPossibleMoveList[1].y == userPossibleMoveList[0].y)) {
-          userPossibleMoveList.removeAt(1);
-        } else if ((userPossibleMoveList[2].x == userPossibleMoveList[0].x &&
-                userPossibleMoveList[2].y == userPossibleMoveList[1].y) ||
-            (userPossibleMoveList[2].x == userPossibleMoveList[1].x &&
-                userPossibleMoveList[2].y == userPossibleMoveList[0].y)) {
-          userPossibleMoveList.removeAt(2);
-        }
+            levels[lvl].getFirstPlayer == Player.user);
+      if (couldBeStuck) {
+        GameUtils.preventPotentialStuckSituation(userPossibleMoveList);
       }
-    }
   }
 
   bool isForbiddenMove(Coordinates move) {
@@ -186,8 +151,8 @@ class GameHandlerNotifier extends ChangeNotifier {
         incrementAlgoScore();
         removeMoveFromAlgo();
         updateUserPossibleMove();
-        checkEndGame();
         preventPotentialStuckSituation();
+        checkEndGame();
 
         canUserMove = true;
 

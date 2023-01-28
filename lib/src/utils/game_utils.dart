@@ -74,4 +74,56 @@ abstract class GameUtils {
     return coord1.x == coord2.x && coord1.y == coord2.y;
   }
 
+  static List<Coordinates> fillAllMoves(final int sqDim) {
+    List<Coordinates> moves = List.empty(growable: true);
+    for (int i = 0; i < sqDim; i++) {
+      for (int j = 0; j < sqDim; j++) {
+        moves.add(Coordinates(i + 1, j + 1));
+      }
+    }
+    return moves;
+  }
+
+  static void updatePossibleMoves(List<Coordinates> movesList,
+                                  final Coordinates newMove,
+                                  final int sqDim) {
+    movesList
+      .removeWhere((element) => element.x == newMove.x && element.y == newMove.y);
+
+    for (int i = 0; i < sqDim; i++) {
+      if (newMove.x != i + 1) {
+        movesList.removeWhere(
+            (element) => element.x == i + 1 && element.y == newMove.y);
+      }
+    }
+
+    for (int j = 0; j < sqDim; j++) {
+      if (newMove.y != j + 1) {
+        movesList.removeWhere(
+            (element) => element.x == newMove.x && element.y == j + 1);
+      }
+    }
+  }
+
+  static void preventPotentialStuckSituation(List<Coordinates> movesList) {
+    if (movesList.length == 3) {
+      if ((movesList[0].x == movesList[1].x &&
+              movesList[0].y == movesList[2].y) ||
+          (movesList[0].x == movesList[2].x &&
+              movesList[0].y == movesList[1].y)) {
+        movesList.removeAt(0);
+      } else if ((movesList[1].x == movesList[0].x &&
+              movesList[1].y == movesList[2].y) ||
+          (movesList[1].x == movesList[2].x &&
+              movesList[1].y == movesList[0].y)) {
+        movesList.removeAt(1);
+      } else if ((movesList[2].x == movesList[0].x &&
+              movesList[2].y == movesList[1].y) ||
+          (movesList[2].x == movesList[1].x &&
+              movesList[2].y == movesList[0].y)) {
+        movesList.removeAt(2);
+      }
+    }
+  }
+
 }
