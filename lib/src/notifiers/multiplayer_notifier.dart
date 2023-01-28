@@ -157,7 +157,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'turn': 'creator',
       }).whenComplete(() => {
         print('guest move stored!'),
-        turn = Player.guest,
+        turn = Player.creator,
         isSuccessful = true,
         notifyListeners(),
       }).onError((error, stackTrace) => {

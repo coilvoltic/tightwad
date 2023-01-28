@@ -68,10 +68,6 @@ class _Tile2State extends State<Tile2> {
   }
 
   void checkOpponentMove(MultiPlayerNotifier mpNotifier) {
-    print('x : ' + mpNotifier.getCreatorLastMove().x.toString());
-    print('y : ' + mpNotifier.getCreatorLastMove().y.toString());
-    print('xT: ' + widget.tileCoordinates.x.toString());
-    print('yT: ' + widget.tileCoordinates.y.toString());
     if (owner == Player.none) {
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getCreatorLastMove())) {
         owner = Player.creator;
@@ -96,7 +92,7 @@ class _Tile2State extends State<Tile2> {
                   mpNotifier.getTurn == Player.creator) {
         mpNotifier.listenToCreatorMove();
         _isOppLastMoveChecked = false;
-      } else if (_isOppLastMoveChecked) {
+      } else if (!_isOppLastMoveChecked) {
         checkOpponentMove(mpNotifier);
         _isOppLastMoveChecked = true;
       }
