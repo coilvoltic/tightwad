@@ -97,9 +97,9 @@ class _Tile2State extends State<Tile2> {
 
   void checkWhetherMoveIsForbidden(MultiPlayerNotifier mpNotifier) {
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
-      _isMoveForbidden == mpNotifier.isForbiddenCreatorMove(widget.tileCoordinates);
+      _isMoveForbidden = mpNotifier.isForbiddenCreatorMove(widget.tileCoordinates);
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
-      _isMoveForbidden == mpNotifier.isForbiddenGuestMove(widget.tileCoordinates);
+      _isMoveForbidden = mpNotifier.isForbiddenGuestMove(widget.tileCoordinates);
     }
   }
 
