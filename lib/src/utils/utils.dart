@@ -382,7 +382,6 @@ abstract class Utils {
       'matrixReceived': false,
       'creatorLastMove': '',
       'guestLastMove': '',
-      'turn': 'creator',
     }).whenComplete(() => {
       MultiPlayerNotifier.multiPlayerStatus = MultiPlayerStatus.creator,
     }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {

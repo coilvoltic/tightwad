@@ -135,7 +135,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
           'x': move.x,
           'y': move.y,
         },
-        'turn': 'guest',
+        'guestLastMove': '',
       }).whenComplete(() => {
         turn = Player.guest,
         isSuccessful = true,
@@ -154,7 +154,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
           'x': move.x,
           'y': move.y,
         },
-        'turn': 'creator',
+        'creatorLastMove': '',
       }).whenComplete(() => {
         print('guest move stored!'),
         turn = Player.creator,
