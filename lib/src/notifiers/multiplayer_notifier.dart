@@ -55,16 +55,16 @@ class MultiPlayerNotifier extends ChangeNotifier {
     return matrix.elementAt(move.x - 1).elementAt(move.y - 1);
   }
 
-  Coordinates? getGuestLastMove() {
+  Coordinates getGuestLastMove() {
     if (guestMoves.isEmpty) {
-      return null;
+      return Coordinates(-1, -1);
     }
     return guestMoves.last;
   }
 
-  Coordinates? getCreatorLastMove() {
+  Coordinates getCreatorLastMove() {
     if (creatorMoves.isEmpty) {
-      return null;
+      return Coordinates(-1, -1);
     }
     return creatorMoves.last;
   }
@@ -102,9 +102,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
     }
     _isFetchingData = true;
     while (!_isMatrixReceived && isSuccessful) {
+      print('fetch matrix!');
       await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .get()
         .then((doc) {
+          print('matrix fetched!');
           if (doc.exists && doc.data()?.containsKey('matrix') == true && doc.get('matrix') != '') {
             jsonDecode(doc.get('matrix')).forEach((row) => {
               matrix.add(row.cast<int>()),

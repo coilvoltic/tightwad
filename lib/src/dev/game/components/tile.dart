@@ -11,6 +11,7 @@ import 'package:tightwad/src/utils/coordinates.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tightwad/src/utils/game_utils.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
 class Tile extends StatefulWidget {
@@ -72,8 +73,7 @@ class _TileState extends State<Tile> {
   }
 
   void checkAlgoPress(GameHandlerNotifier gameHandlerNotifier) async {
-    if (widget.tileCoordinates.x == gameHandlerNotifier.getAlgoPress.x &&
-        widget.tileCoordinates.y == gameHandlerNotifier.getAlgoPress.y) {
+    if (GameUtils.areCoordinatesEqual(widget.tileCoordinates, gameHandlerNotifier.getAlgoPress)) {
       if (!isAlgoSoundPlayed && Database.getSoundSettingOn()) {
         playSound('algo.wav');
         isAlgoSoundPlayed = true;

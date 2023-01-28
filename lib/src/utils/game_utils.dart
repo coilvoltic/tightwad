@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:tightwad/src/utils/coordinates.dart';
+
 abstract class GameUtils {
 
   // ignore: constant_identifier_names
@@ -67,4 +69,9 @@ abstract class GameUtils {
     return matrix;
 
   }
+
+  static bool areCoordinatesEqual(final Coordinates coord1, final Coordinates coord2) {
+    return coord1.x == coord2.x && coord1.y == coord2.y;
+  }
+
 }

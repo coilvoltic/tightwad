@@ -10,6 +10,7 @@ import 'package:tightwad/src/utils/coordinates.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tightwad/src/utils/game_utils.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
 class Tile2 extends StatefulWidget {
@@ -68,16 +69,11 @@ class _Tile2State extends State<Tile2> {
 
   void checkOpponentMove(MultiPlayerNotifier mpNotifier) {
     if (owner == Player.none) {
-      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest && mpNotifier.getCreatorLastMove() == widget.tileCoordinates) {
-        print('Creator last move x : ' + (mpNotifier.getCreatorLastMove()!.x).toString());
-        print('Creator last move y : ' + (mpNotifier.getCreatorLastMove()!.y).toString());
-        print('Widget tiles x : ' + (widget.tileCoordinates.x).toString());
-        print('Widget tiles y : ' + (widget.tileCoordinates.y).toString());
-        print('Is equal : ' + (mpNotifier.getCreatorLastMove() == widget.tileCoordinates).toString());
+      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getCreatorLastMove())) {
         setState(() {
           owner = Player.creator;
         });
-      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator && mpNotifier.getGuestLastMove() == widget.tileCoordinates) {
+      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getGuestLastMove())) {
         setState(() {
           owner = Player.guest;
         });
