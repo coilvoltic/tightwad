@@ -174,6 +174,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             turn = Player.creator,
             _isListening = false,
             listener.cancel(),
+            notifyListeners(),
           }
         },
       );
@@ -195,6 +196,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             turn = Player.guest,
             _isListening = false,
             listener.cancel(),
+            notifyListeners(),
           }
         },
       );
