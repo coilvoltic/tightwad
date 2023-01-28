@@ -114,8 +114,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
             setGameStatus(GameStatus.playing);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
+          print('KL timed out.');
           isSuccessful = false;
         }).onError((errorObj, stackTrace) {
+          print('KL an error occured.');
           isSuccessful = false;
         });
       await Future.delayed(const Duration(seconds: 1));
@@ -164,7 +166,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
     if (!_isListening) {
       _isListening = true;
       listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
-          if (event.exists && event.data()!.containsKey('guestLastMove')) {
+          if (event.exists && event.data()!.containsKey('guestLastMove') && event.get('guestLastMove') != '') {
+            print('listen to guest'),
             guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
             print('guest moves: '),
             guestMoves.forEach((element) {
@@ -186,7 +189,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
     if (!_isListening) {
       _isListening = true;
       listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
-          if (event.exists && event.data()!.containsKey('creatorLastMove')) {
+          if (event.exists && event.data()!.containsKey('creatorLastMove') && event.get('creatorLastMove') != '') {
+            print('listen to creator'),
             creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
             print('creator moves: '),
             creatorMoves.forEach((element) {
