@@ -166,6 +166,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
       listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
           if (event.exists && event.data()!.containsKey('guestLastMove')) {
             guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
+            print('guest moves: '),
             guestMoves.forEach((element) {
               print('x : ' + (element.x).toString());
               print('y : ' + (element.y).toString());
@@ -186,6 +187,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
       listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
           if (event.exists && event.data()!.containsKey('creatorLastMove')) {
             creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
+            print('creator moves: '),
             creatorMoves.forEach((element) {
               print('x : ' + (element.x).toString());
               print('y : ' + (element.y).toString());
