@@ -90,21 +90,22 @@ class _Tile2State extends State<Tile2> {
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
                   mpNotifier.getTurn == Player.creator) {
         mpNotifier.listenToCreatorMove();
-      } else {
+      } else if (!mpNotifier.getIsOppLastMoveChecked) {
         checkOpponentMove(mpNotifier);
+        mpNotifier.setIsOppLastMoveChecked();
       }
       return GestureDetector(
-        onTap: () => setState(() {
+        onTap: () => {
           if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
               mpNotifier.getTurn == Player.creator) {
-            mpNotifier.notifyCreatorNewMove(widget.tileCoordinates);
-            owner = Player.creator;
+            owner = Player.creator,
+            mpNotifier.notifyCreatorNewMove(widget.tileCoordinates),
           } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
                      mpNotifier.getTurn == Player.guest) {
-            mpNotifier.notifyGuestNewMove(widget.tileCoordinates);
-            owner = Player.guest;
+            owner = Player.guest,
+            mpNotifier.notifyGuestNewMove(widget.tileCoordinates),
           }
-        }),
+        },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           margin: EdgeInsets.all(-0.6 * widget.sqNbOfTiles + 8),

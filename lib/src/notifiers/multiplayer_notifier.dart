@@ -25,6 +25,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   bool _isMatrixReceived = false;
   bool _isFetchingData = false;
   bool _isListening = false;
+  bool _isOppLastMoveChecked = false;
   Player turn = Player.creator;
 
   static void generateAndSetRoomId() async {
@@ -46,6 +47,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   GameStatus get getGameStatus => _gameStatus;
   Player get getTurn => turn;
+  bool get getIsOppLastMoveChecked => _isOppLastMoveChecked;
+
+  void setIsOppLastMoveChecked() {
+    _isOppLastMoveChecked = true;
+  }
 
   int getSqDim() {
     return matrix.length;
@@ -139,6 +145,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
       }).whenComplete(() => {
         turn = Player.guest,
         isSuccessful = true,
+        notifyListeners(),
       }).onError((error, stackTrace) => {
         isSuccessful = false,
       });
@@ -158,6 +165,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         print('guest move stored!'),
         turn = Player.guest,
         isSuccessful = true,
+        notifyListeners(),
       }).onError((error, stackTrace) => {
         isSuccessful = false,
       });
@@ -178,6 +186,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             }),
             turn = Player.creator,
             _isListening = false,
+            _isOppLastMoveChecked = false,
             listener.cancel(),
             notifyListeners(),
           }
@@ -201,6 +210,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             }),
             turn = Player.guest,
             _isListening = false,
+            _isOppLastMoveChecked = false,
             listener.cancel(),
             notifyListeners(),
           }
