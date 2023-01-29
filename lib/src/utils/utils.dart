@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';

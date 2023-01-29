@@ -242,8 +242,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
       listener =  FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
           if (event.exists && event.data()!.containsKey('guestLastMove') && event.get('guestLastMove') != '') {
             guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
-            _isListening = false,
-            listener.cancel(),
+            print('guestMoves.length:'),
+            print(guestMoves.length),
             _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
             if (checkEndGame()) {
               notifyListeners(),
@@ -256,7 +256,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
                 GameUtils.preventPotentialStuckSituation(_creatorPossibleMoves),
               },
               notifyListeners(),
-            }
+            },
+            _isListening = false,
+            listener.cancel(),
           }
         },
       );
@@ -270,8 +272,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
       listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
           if (event.exists && event.data()!.containsKey('creatorLastMove') && event.get('creatorLastMove') != '') {
             creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
-            _isListening = false,
-            listener.cancel(),
             _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
             if (checkEndGame()) {
               notifyListeners(),
@@ -284,8 +284,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
                 GameUtils.preventPotentialStuckSituation(_guestPossibleMoves),
               },
               notifyListeners(),
-            }
-          }
+            },
+            _isListening = false,
+            listener.cancel(),
+          },
         },
       );
     }
@@ -302,13 +304,13 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   void endGame() {
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
-      if (_creatorScore > _guestScore) {
+      if (_creatorScore < _guestScore) {
         setWin();
       } else {
         setLose();
       }
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
-      if (_guestScore > _creatorScore) {
+      if (_guestScore < _creatorScore) {
         setWin();
       } else {
         setLose();

@@ -43,9 +43,6 @@ class _Statement2State extends State<Statement2> {
     return Consumer<MultiPlayerNotifier>(builder: (context, mpNotifier, _) {
       computeStatementVisibilityStatus(mpNotifier);
       computeStatement(mpNotifier);
-      print('KL statement:');
-      print(_isDisplayedStatement);
-      print(_statement);
       return SafeArea(
         child: Center(
           child: Visibility(
