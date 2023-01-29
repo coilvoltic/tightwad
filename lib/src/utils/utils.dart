@@ -384,7 +384,6 @@ abstract class Utils {
       'guestLastMove': '',
     }).whenComplete(() => {
       MultiPlayerNotifier.multiPlayerStatus = MultiPlayerStatus.creator,
-      MultiPlayerNotifier.creatorName = name,
     }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
       error = "Request timed out. Please try again!";
     }).onError((errorObj, stackTrace) {
@@ -437,7 +436,6 @@ abstract class Utils {
       })
       .whenComplete(() => {
         MultiPlayerNotifier.multiPlayerStatus = MultiPlayerStatus.guest,
-        MultiPlayerNotifier.guestName = name,
         MultiPlayerNotifier.setRoomId(roomId),
       })
       .timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {

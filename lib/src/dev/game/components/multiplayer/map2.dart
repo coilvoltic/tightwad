@@ -52,6 +52,9 @@ class _Map2State extends State<Map2> {
     _width  = MediaQuery.of(context).size.width;
 
     if (mpNotifier.getGameStatus == GameStatus.loading) {
+      if (!mpNotifier.getAreNamesFetched) {
+        mpNotifier.fetchNames();
+      }
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
         mpNotifier.createAndPushMatrix();
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {

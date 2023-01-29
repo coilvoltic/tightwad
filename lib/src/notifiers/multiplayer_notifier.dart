@@ -14,8 +14,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   GameStatus _gameStatus = GameStatus.none;
   static MultiPlayerStatus multiPlayerStatus = MultiPlayerStatus.none;
-  static String creatorName = '';
-  static String guestName = '';
 
   List<List<int>> matrix = List.empty(growable: true);
   List<Coordinates> guestMoves = List.empty(growable: true);
@@ -31,6 +29,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
   bool _isListening = false;
   int  _creatorScore = 0;
   int  _guestScore = 0;
+  bool _areNamesFetched = false;
+  String _creatorName = '';
+  String _guestName = '';
   Player turn = Player.creator;
   Player firstPlayer = Player.creator;
 
@@ -55,6 +56,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
   Player get getTurn => turn;
   int get getCreatorScore => _creatorScore;
   int get getGuestScore => _guestScore;
+  bool get getAreNamesFetched => _areNamesFetched;
+  String get getCreatorName => _creatorName;
+  String get getGuestName => _guestName;
 
 
   int getSqDim() {
@@ -77,6 +81,26 @@ class MultiPlayerNotifier extends ChangeNotifier {
       return Coordinates(-1, -1);
     }
     return creatorMoves.last;
+  }
+
+  Future<bool> fetchNames() async {
+    bool isSuccessful = true;
+    _areNamesFetched = true;
+    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+      .get()
+        .then((doc) {
+          if (doc.exists && doc.data()?.containsKey('guestName') != null && doc.data()?.containsKey('creatorName') != null) {
+            _creatorName = doc.get('creatorName');
+            _guestName = doc.get('guestName');
+          }
+        }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
+          isSuccessful = false;
+          _areNamesFetched = false;
+        }).onError((errorObj, stackTrace) {
+          isSuccessful = false;
+          _areNamesFetched = false;
+        });
+    return isSuccessful;
   }
 
   void generateMatrix() {

@@ -22,7 +22,7 @@ class _Scores2State extends State<Scores2> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          MultiPlayerNotifier.creatorName,
+          mpNotifier.getCreatorName,
           style: TextStyle(
             fontFamily: 'Righteous',
             decoration: TextDecoration.none,
@@ -50,7 +50,7 @@ class _Scores2State extends State<Scores2> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          MultiPlayerNotifier.guestName,
+          mpNotifier.getGuestName,
           style: TextStyle(
             fontFamily: 'Righteous',
             decoration: TextDecoration.none,
