@@ -14,6 +14,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   GameStatus _gameStatus = GameStatus.none;
   static MultiPlayerStatus multiPlayerStatus = MultiPlayerStatus.none;
+  static String creatorName = '';
+  static String guestName = '';
 
   List<List<int>> matrix = List.empty(growable: true);
   List<Coordinates> guestMoves = List.empty(growable: true);
@@ -27,7 +29,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
   bool _isMatrixReceived = false;
   bool _isFetchingData = false;
   bool _isListening = false;
-  Player turn = Player.creator;  
+  int  _creatorScore = 0;
+  int  _guestScore = 0;
+  Player turn = Player.creator;
   Player firstPlayer = Player.creator;
 
   static void generateAndSetRoomId() async {
@@ -49,6 +53,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   GameStatus get getGameStatus => _gameStatus;
   Player get getTurn => turn;
+  int get getCreatorScore => _creatorScore;
+  int get getGuestScore => _guestScore;
+
 
   int getSqDim() {
     return matrix.length;
@@ -136,8 +143,12 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   void updateLocalCreatorTiles(final Coordinates move) {
+    _creatorScore += matrix.elementAt(move.x - 1).elementAt(move.y - 1);
     creatorMoves.add(move);
     GameUtils.updatePossibleMoves(_creatorPossibleMoves, move, getSqDim());
+    if (creatorMoves.length == getSqDim() - 2) {
+      GameUtils.preventPotentialStuckSituation(_creatorPossibleMoves);
+    }
     notifyListeners();
   }
 
@@ -161,8 +172,12 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   void updateLocalGuestTiles(final Coordinates move) {
+    _guestScore += matrix.elementAt(move.x - 1).elementAt(move.y - 1);
     guestMoves.add(move);
     GameUtils.updatePossibleMoves(_guestPossibleMoves, move, getSqDim());
+    if (guestMoves.length == getSqDim() - 2) {
+      GameUtils.preventPotentialStuckSituation(_guestPossibleMoves);
+    }
     notifyListeners();
   }
 
@@ -197,9 +212,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             turn = Player.creator,
             _creatorPossibleMoves.removeWhere((element) =>
               element.x == getGuestLastMove().x && element.y == getGuestLastMove().y),
-            if (creatorMoves.length == getSqDim() - 2 && firstPlayer == Player.creator) {
-              GameUtils.preventPotentialStuckSituation(_creatorPossibleMoves),
-            },
+            _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
             notifyListeners(),
           }
         },
@@ -219,9 +232,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             listener.cancel(),
             _guestPossibleMoves.removeWhere((element) =>
               element.x == getCreatorLastMove().x && element.y == getCreatorLastMove().y),
-            if (guestMoves.length == getSqDim() - 2 && firstPlayer == Player.guest) {
-              GameUtils.preventPotentialStuckSituation(_guestPossibleMoves),
-            },
+            _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
             notifyListeners(),
           }
         },

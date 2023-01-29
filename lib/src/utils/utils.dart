@@ -56,7 +56,7 @@ abstract class Utils {
   // ignore: constant_identifier_names
   static const int REQUEST_TIME_OUT = 10;
   // ignore: constant_identifier_names
-  static const int LOADING_DURATION = 2;
+  static const int LOADING_DURATION = 1;
   // ignore: constant_identifier_names
   static const int ROOM_ID_MAX = 999999;
   // ignore: constant_identifier_names
@@ -384,6 +384,7 @@ abstract class Utils {
       'guestLastMove': '',
     }).whenComplete(() => {
       MultiPlayerNotifier.multiPlayerStatus = MultiPlayerStatus.creator,
+      MultiPlayerNotifier.creatorName = name,
     }).timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
       error = "Request timed out. Please try again!";
     }).onError((errorObj, stackTrace) {
@@ -436,6 +437,7 @@ abstract class Utils {
       })
       .whenComplete(() => {
         MultiPlayerNotifier.multiPlayerStatus = MultiPlayerStatus.guest,
+        MultiPlayerNotifier.guestName = name,
         MultiPlayerNotifier.setRoomId(roomId),
       })
       .timeout(const Duration(seconds: REQUEST_TIME_OUT), onTimeout: () {
