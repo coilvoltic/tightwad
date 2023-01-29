@@ -28,8 +28,11 @@ class _BlurState extends State<Blur> {
     _isDisplayedBlur = (gameHandlerNotifier.getGameStatus != GameStatus.playing ||
                        optionsNotifier.getAreSettingsChanging ||
                        entityNotifier.getIsModeChanging ||
-                       mpNotifier.getGameStatus != GameStatus.playing);
-    if (gameHandlerNotifier.getGameStatus != GameStatus.playing || mpNotifier.getGameStatus != GameStatus.playing) {
+                       mpNotifier.getGameStatus == GameStatus.win ||
+                       mpNotifier.getGameStatus == GameStatus.lose);
+    if (gameHandlerNotifier.getGameStatus != GameStatus.playing ||
+        mpNotifier.getGameStatus == GameStatus.win ||
+        mpNotifier.getGameStatus == GameStatus.lose) {
       _blurAnimationDuration = 1000;
       _blurValue = 4.0;
     } else if (optionsNotifier.getAreSettingsChanging || entityNotifier.getIsModeChanging) {
