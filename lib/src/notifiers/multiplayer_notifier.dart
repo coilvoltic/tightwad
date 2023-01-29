@@ -166,7 +166,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _creatorScore += matrix.elementAt(move.x - 1).elementAt(move.y - 1);
     creatorMoves.add(move);
     if (checkEndGame()) {
-      setGameStatus(GameStatus.loading);
+      endGame();
     } else {
       GameUtils.updatePossibleMoves(_creatorPossibleMoves, move, getSqDim());
       if (creatorMoves.length == getSqDim() - 2) {
@@ -199,7 +199,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _guestScore += matrix.elementAt(move.x - 1).elementAt(move.y - 1);
     guestMoves.add(move);
     if (checkEndGame()) {
-      setGameStatus(GameStatus.loading);
+      endGame();
     } else {
       GameUtils.updatePossibleMoves(_guestPossibleMoves, move, getSqDim());
       if (guestMoves.length == getSqDim() - 2) {
@@ -239,7 +239,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             listener.cancel(),
             _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
             if (checkEndGame()) {
-              setGameStatus(GameStatus.loading),
+              endGame(),
             } else {
               turn = Player.creator,
               _creatorPossibleMoves.removeWhere((element) =>
@@ -266,7 +266,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             listener.cancel(),
             _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
             if (checkEndGame()) {
-              setGameStatus(GameStatus.loading),
+              endGame(),
             } else {
               turn = Player.guest,
               _guestPossibleMoves.removeWhere((element) =>
@@ -291,18 +291,52 @@ class MultiPlayerNotifier extends ChangeNotifier {
     return !_creatorPossibleMoves.any((item) => item.x == move.x && item.y == move.y);
   }
 
-  bool checkEndGame() {
-    bool isEndGame = creatorMoves.length == getSqDim() && guestMoves.length == getSqDim();
-    if (!isEndGame) {
-      return false;
+  void endGame() {
+    if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+      if (_creatorScore > _guestScore) {
+        setWin();
+      } else {
+        setLose();
+      }
+    } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+      if (_guestScore > _creatorScore) {
+        setWin();
+      } else {
+        setLose();
+      }
     }
+  }
+
+  void reinitializeLevel() {
     _isMatrixReceived = false;
     _creatorScore = 0;
     _guestScore = 0;
     matrix.clear();
     creatorMoves.clear();
     guestMoves.clear();
-    return true;
+    setGameStatus(GameStatus.loading);
+  }
+
+  bool checkEndGame() {
+    return creatorMoves.length == getSqDim() && guestMoves.length == getSqDim();
+  }
+
+  void setWin() {
+    Timer(const Duration(seconds: 1), () {
+      setGameStatus(GameStatus.win);
+      Timer(const Duration(seconds: 1), () {
+        reinitializeLevel();
+      });
+    });
+  }
+
+  void setLose() {
+    Timer(const Duration(seconds: 1), () {
+      setGameStatus(GameStatus.lose);
+      Timer(const Duration(seconds: 1), () {
+        reinitializeLevel();
+      });
+    });
   }
 
 }

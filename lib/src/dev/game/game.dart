@@ -78,6 +78,7 @@ class Game extends StatelessWidget {
         Scores2(),
         Map2(),
         Blur(),
+        Statement(),
         BigButton(),
         SettingsButtons(),
         ModesButtons(),
