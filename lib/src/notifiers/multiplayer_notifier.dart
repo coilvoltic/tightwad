@@ -112,6 +112,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     if (!_isMatrixBeingCreated) {
       _isMatrixBeingCreated = true;
       generateMatrix();
+      print(matrix);
       _creatorPossibleMoves = GameUtils.fillAllMoves(getSqDim());
       await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
         .update({
@@ -119,9 +120,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
         }).whenComplete(() => {
           _isMatrixBeingCreated = false,
           isSuccessful = true,
+          print('matrix completed'),
           setGameStatus(GameStatus.playing),
         }).onError((error, stackTrace) => {
           _isMatrixBeingCreated = false,
+          print('KL createMatrix error'),
           isSuccessful = false,
         });
     }
@@ -296,6 +299,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _isMatrixReceived = false;
     _creatorScore = 0;
     _guestScore = 0;
+    matrix.clear();
     creatorMoves.clear();
     guestMoves.clear();
     return true;
