@@ -189,7 +189,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
         },
         'guestLastMove': '',
       }).whenComplete(() => {
-        turn = Player.guest,
+        if (!checkEndGame()) {
+          turn = Player.guest,
+        },
         isSuccessful = true,
         notifyListeners(),
       }).onError((error, stackTrace) => {
@@ -223,7 +225,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
         },
         'creatorLastMove': '',
       }).whenComplete(() => {
-        turn = Player.creator,
+        if (!checkEndGame()) {
+          turn = Player.creator,
+        },
         isSuccessful = true,
         notifyListeners(),
       }).onError((error, stackTrace) => {
@@ -241,10 +245,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _isListening = false,
             listener.cancel(),
             _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
-            turn = Player.creator,
             if (checkEndGame()) {
+              notifyListeners(),
               endGame(),
             } else {
+              turn = Player.creator,
               _creatorPossibleMoves.removeWhere((element) =>
                 element.x == getGuestLastMove().x && element.y == getGuestLastMove().y),
               if (creatorMoves.length == getSqDim() - 2) {
@@ -268,10 +273,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _isListening = false,
             listener.cancel(),
             _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
-            turn = Player.guest,
             if (checkEndGame()) {
+              notifyListeners(),
               endGame(),
             } else {
+              turn = Player.guest,
               _guestPossibleMoves.removeWhere((element) =>
                 element.x == getCreatorLastMove().x && element.y == getCreatorLastMove().y),
               if (guestMoves.length == getSqDim() - 2) {
