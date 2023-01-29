@@ -118,10 +118,12 @@ class _Tile2State extends State<Tile2> {
             if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
                 mpNotifier.getTurn == Player.creator) {
               owner = Player.creator,
+              mpNotifier.updateLocalCreatorTiles(widget.tileCoordinates),
               mpNotifier.notifyCreatorNewMove(widget.tileCoordinates),
             } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
                       mpNotifier.getTurn == Player.guest) {
               owner = Player.guest,
+              mpNotifier.updateLocalGuestTiles(widget.tileCoordinates),
               mpNotifier.notifyGuestNewMove(widget.tileCoordinates),
             }
           }

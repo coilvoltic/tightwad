@@ -23,12 +23,12 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   late StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> listener;
 
-
   bool _isMatrixBeingCreated = false;
   bool _isMatrixReceived = false;
   bool _isFetchingData = false;
   bool _isListening = false;
-  Player turn = Player.creator;
+  Player turn = Player.creator;  
+  Player firstPlayer = Player.creator;
 
   static void generateAndSetRoomId() async {
     final Random random = Random();
@@ -106,11 +106,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
     }
     _isFetchingData = true;
     while (!_isMatrixReceived && isSuccessful) {
-      print('fetch matrix!');
       await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .get()
         .then((doc) {
-          print('matrix fetched!');
           if (doc.exists && doc.data()?.containsKey('matrix') == true && doc.get('matrix') != '') {
             jsonDecode(doc.get('matrix')).forEach((row) => {
               matrix.add(row.cast<int>()),
@@ -137,9 +135,14 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _guestPossibleMoves = GameUtils.fillAllMoves(getSqDim());
   }
 
+  void updateLocalCreatorTiles(final Coordinates move) {
+    creatorMoves.add(move);
+    GameUtils.updatePossibleMoves(_creatorPossibleMoves, move, getSqDim());
+    notifyListeners();
+  }
+
   Future<bool> notifyCreatorNewMove(final Coordinates move) async {
     bool isSuccessful = false;
-    GameUtils.updatePossibleMoves(_creatorPossibleMoves, move, getSqDim());
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
         'creatorLastMove': {
@@ -155,6 +158,12 @@ class MultiPlayerNotifier extends ChangeNotifier {
         isSuccessful = false,
       });
     return isSuccessful;
+  }
+
+  void updateLocalGuestTiles(final Coordinates move) {
+    guestMoves.add(move);
+    GameUtils.updatePossibleMoves(_guestPossibleMoves, move, getSqDim());
+    notifyListeners();
   }
 
   Future<bool> notifyGuestNewMove(final Coordinates move) async {
@@ -183,11 +192,14 @@ class MultiPlayerNotifier extends ChangeNotifier {
       listener =  FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
           if (event.exists && event.data()!.containsKey('guestLastMove') && event.get('guestLastMove') != '') {
             guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
-            turn = Player.creator,
             _isListening = false,
+            listener.cancel(),
+            turn = Player.creator,
             _creatorPossibleMoves.removeWhere((element) =>
               element.x == getGuestLastMove().x && element.y == getGuestLastMove().y),
-            listener.cancel(),
+            if (creatorMoves.length == getSqDim() - 2 && firstPlayer == Player.creator) {
+              GameUtils.preventPotentialStuckSituation(_creatorPossibleMoves),
+            },
             notifyListeners(),
           }
         },
@@ -204,9 +216,12 @@ class MultiPlayerNotifier extends ChangeNotifier {
             creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
             turn = Player.guest,
             _isListening = false,
+            listener.cancel(),
             _guestPossibleMoves.removeWhere((element) =>
               element.x == getCreatorLastMove().x && element.y == getCreatorLastMove().y),
-            listener.cancel(),
+            if (guestMoves.length == getSqDim() - 2 && firstPlayer == Player.guest) {
+              GameUtils.preventPotentialStuckSituation(_guestPossibleMoves),
+            },
             notifyListeners(),
           }
         },
