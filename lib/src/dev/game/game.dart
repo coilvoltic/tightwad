@@ -13,6 +13,7 @@ import 'package:tightwad/src/dev/game/components/map.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/map2.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/room_lobby.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/socres2.dart';
+import 'package:tightwad/src/dev/game/components/multiplayer/statement2.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/waiting_opponent.dart';
 import 'package:tightwad/src/dev/game/components/scores.dart';
 import 'package:tightwad/src/dev/game/components/statement.dart';
@@ -78,7 +79,7 @@ class Game extends StatelessWidget {
         Scores2(),
         Map2(),
         Blur(),
-        Statement(),
+        Statement2(),
         BigButton(),
         SettingsButtons(),
         ModesButtons(),

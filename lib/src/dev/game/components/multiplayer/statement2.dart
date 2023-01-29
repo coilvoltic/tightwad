@@ -26,11 +26,11 @@ class _Statement2State extends State<Statement2> {
                             mpNotifier.getGameStatus == GameStatus.lose;
   }
 
-  void computeStatement(final MultiPlayerNotifier notifier) {
-    if (notifier.getGameStatus == GameStatus.lose) {
+  void computeStatement(final MultiPlayerNotifier mpNotifier) {
+    if (mpNotifier.getGameStatus == GameStatus.lose) {
       _statement = "YOU LOSE";
       _sizeRatio = 45;
-    } else if (notifier.getGameStatus == GameStatus.win) {
+    } else if (mpNotifier.getGameStatus == GameStatus.win) {
       Random random = Random();
       statementIndex = random.nextInt(3);
       _statement = winStatements[statementIndex];
@@ -43,6 +43,9 @@ class _Statement2State extends State<Statement2> {
     return Consumer<MultiPlayerNotifier>(builder: (context, mpNotifier, _) {
       computeStatementVisibilityStatus(mpNotifier);
       computeStatement(mpNotifier);
+      print('KL statement:');
+      print(_isDisplayedStatement);
+      print(_statement);
       return SafeArea(
         child: Center(
           child: Visibility(

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
+import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +23,13 @@ class _BlurState extends State<Blur> {
 
   void updateBlur(GameHandlerNotifier gameHandlerNotifier,
                   OptionsNotifier     optionsNotifier,
-                  EntityNotifier      entityNotifier) {
+                  EntityNotifier      entityNotifier,
+                  MultiPlayerNotifier mpNotifier) {
     _isDisplayedBlur = (gameHandlerNotifier.getGameStatus != GameStatus.playing ||
                        optionsNotifier.getAreSettingsChanging ||
-                       entityNotifier.getIsModeChanging);
-    if (gameHandlerNotifier.getGameStatus != GameStatus.playing) {
+                       entityNotifier.getIsModeChanging ||
+                       mpNotifier.getGameStatus != GameStatus.playing);
+    if (gameHandlerNotifier.getGameStatus != GameStatus.playing || mpNotifier.getGameStatus != GameStatus.playing) {
       _blurAnimationDuration = 1000;
       _blurValue = 4.0;
     } else if (optionsNotifier.getAreSettingsChanging || entityNotifier.getIsModeChanging) {
@@ -38,9 +41,9 @@ class _BlurState extends State<Blur> {
   @override
   Widget build(BuildContext context) {
     
-    return Consumer3<GameHandlerNotifier, OptionsNotifier, EntityNotifier>(
-      builder: (context, gameHandlerNotifier, optionsNotifier, entityNotifier, _) {
-        updateBlur(gameHandlerNotifier, optionsNotifier, entityNotifier);
+    return Consumer4<GameHandlerNotifier, OptionsNotifier, EntityNotifier, MultiPlayerNotifier>(
+      builder: (context, gameHandlerNotifier, optionsNotifier, entityNotifier, mpNotifier, _) {
+        updateBlur(gameHandlerNotifier, optionsNotifier, entityNotifier, mpNotifier);
         return Visibility(
           visible: _isDisplayedBlur,
           child: TweenAnimationBuilder<double>(

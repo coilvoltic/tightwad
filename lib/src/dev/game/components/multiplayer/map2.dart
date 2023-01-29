@@ -60,11 +60,9 @@ class _Map2State extends State<Map2> {
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
         mpNotifier.waitForMatrixAndStoreIt();
       }
-    }
-
-    if (mpNotifier.getGameStatus == GameStatus.playing) {
+      return Container();
+    } else {
       return buildMap(mpNotifier);
     }
-    return Container();
   }
 }
