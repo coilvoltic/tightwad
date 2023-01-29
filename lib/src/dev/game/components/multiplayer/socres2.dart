@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/colors.dart';
+import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
 class Scores2 extends StatefulWidget {
@@ -27,7 +28,7 @@ class _Scores2State extends State<Scores2> {
             decoration: TextDecoration.none,
             fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 20),
             fontWeight: FontWeight.bold,
-            color: Utils.getPassedColorFromTheme().withAlpha(128),
+            color: mpNotifier.getTurn == Player.creator ? Utils.getPassedColorFromTheme() : Utils.getPassedColorFromTheme().withAlpha(128),
           ),
         ),
         Text(
@@ -55,7 +56,7 @@ class _Scores2State extends State<Scores2> {
             decoration: TextDecoration.none,
             fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 20),
             fontWeight: FontWeight.bold,
-            color: Utils.getPassedColorFromTheme(),
+            color: mpNotifier.getTurn == Player.guest ? Utils.getPassedColorFromTheme() : Utils.getPassedColorFromTheme().withAlpha(128),
           ),
         ),
         Text(
