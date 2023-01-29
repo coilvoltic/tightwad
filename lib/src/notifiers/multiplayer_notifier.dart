@@ -238,10 +238,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _isListening = false,
             listener.cancel(),
             _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
+            turn = Player.creator,
             if (checkEndGame()) {
               endGame(),
             } else {
-              turn = Player.creator,
               _creatorPossibleMoves.removeWhere((element) =>
                 element.x == getGuestLastMove().x && element.y == getGuestLastMove().y),
               if (creatorMoves.length == getSqDim() - 2) {
@@ -265,10 +265,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _isListening = false,
             listener.cancel(),
             _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
+            turn = Player.guest,
             if (checkEndGame()) {
               endGame(),
             } else {
-              turn = Player.guest,
               _guestPossibleMoves.removeWhere((element) =>
                 element.x == getCreatorLastMove().x && element.y == getCreatorLastMove().y),
               if (guestMoves.length == getSqDim() - 2) {
@@ -298,7 +298,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
       } else {
         setLose();
       }
-    } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+    } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
       if (_guestScore > _creatorScore) {
         setWin();
       } else {
@@ -322,18 +322,18 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   void setWin() {
-    Timer(const Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 2), () {
       setGameStatus(GameStatus.win);
-      Timer(const Duration(seconds: 1), () {
+      Timer(const Duration(seconds: 2), () {
         reinitializeLevel();
       });
     });
   }
 
   void setLose() {
-    Timer(const Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 2), () {
       setGameStatus(GameStatus.lose);
-      Timer(const Duration(seconds: 1), () {
+      Timer(const Duration(seconds: 2), () {
         reinitializeLevel();
       });
     });
