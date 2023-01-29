@@ -151,14 +151,17 @@ class MultiPlayerNotifier extends ChangeNotifier {
             setGameStatus(GameStatus.playing);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
-          print('KL timed out.');
           isSuccessful = false;
         }).onError((errorObj, stackTrace) {
-          print('KL an error occured.');
           isSuccessful = false;
         });
       await Future.delayed(const Duration(seconds: 1));
     }
+    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+    .update({
+      'matrix': '',
+      'matrix_backup': jsonEncode(matrix),
+    });
     return isSuccessful;
   }
 

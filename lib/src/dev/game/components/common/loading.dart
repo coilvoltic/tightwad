@@ -27,7 +27,7 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SpinKitSquareCircle(
+    return SpinKitCubeGrid(
       color: Utils.getIconColorFromTheme(),
       size: 50.0,
       controller: _controller,
