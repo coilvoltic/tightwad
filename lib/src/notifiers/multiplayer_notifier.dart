@@ -239,6 +239,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
             if (isEndGame()) {
               notifyListeners(),
+              await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+              .update({
+                'guestLastMove': '',
+              }),
               endGame(),
             } else {
               turn = Player.creator,
@@ -253,12 +257,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
           }
         },
       );
-      if (isEndGame()) {
-        await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
-        .update({
-          'guestLastMove': '',
-        });
-      }
     }
     return true;
   }
@@ -273,6 +271,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
             if (isEndGame()) {
               notifyListeners(),
+              await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+              .update({
+                'creatorLastMove': '',
+              }),
               endGame(),
             } else {
               turn = Player.guest,
@@ -288,10 +290,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         },
       );
       if (isEndGame()) {
-        await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
-        .update({
-          'creatorLastMove': '',
-        });
+
       }
     }
     return true;
