@@ -110,6 +110,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   Future<bool> createAndPushMatrix() async {
     bool isSuccessful = true;
     if (!_isMatrixBeingCreated) {
+      print('matrix creation attempt'!);
       _isMatrixBeingCreated = true;
       generateMatrix();
       _creatorPossibleMoves = GameUtils.fillAllMoves(getSqDim());
@@ -117,6 +118,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         .update({
           'matrix': jsonEncode(matrix),
         }).whenComplete(() => {
+          print('matrix created'!),
           setGameStatus(GameStatus.playing),
         }).onError((error, stackTrace) => {
         });
@@ -148,6 +150,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
         });
       await Future.delayed(const Duration(seconds: 1));
     }
+    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+      .update({
+        'matrix': '',
+        'matrix_backup': jsonEncode(matrix),
+      });
     return isSuccessful;
   }
 
@@ -246,6 +253,12 @@ class MultiPlayerNotifier extends ChangeNotifier {
           }
         },
       );
+      if (isEndGame()) {
+        await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+        .update({
+          'guestLastMove': '',
+        });
+      }
     }
     return true;
   }
@@ -274,6 +287,12 @@ class MultiPlayerNotifier extends ChangeNotifier {
           },
         },
       );
+      if (isEndGame()) {
+        await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+        .update({
+          'creatorLastMove': '',
+        });
+      }
     }
     return true;
   }
@@ -309,12 +328,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
     matrix.clear();
     creatorMoves.clear();
     guestMoves.clear();
-    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
-      .update({
-        'matrix': '',
-        'creatorLastMove': '',
-        'guestLastMove': '',
-      });
     setGameStatus(GameStatus.loading);
   }
 
