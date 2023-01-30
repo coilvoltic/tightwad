@@ -119,6 +119,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
           'matrix': jsonEncode(matrix),
         }).whenComplete(() => {
           print('matrix created'!),
+          _isMatrixBeingCreated = false,
           setGameStatus(GameStatus.playing),
         }).onError((error, stackTrace) => {
         });
@@ -162,6 +163,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _creatorScore += matrix.elementAt(move.x - 1).elementAt(move.y - 1);
     creatorMoves.add(move);
     if (isEndGame()) {
+      notifyListeners();
       endGame();
     } else {
       GameUtils.updatePossibleMoves(_creatorPossibleMoves, move, getSqDim());
@@ -195,6 +197,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _guestScore += matrix.elementAt(move.x - 1).elementAt(move.y - 1);
     guestMoves.add(move);
     if (isEndGame()) {
+      notifyListeners();
       endGame();
     } else {
       GameUtils.updatePossibleMoves(_guestPossibleMoves, move, getSqDim());
@@ -315,6 +318,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   void reinitializeLevel() {
     _isMatrixReceived = false;
+    _isMatrixBeingCreated = false;
     _creatorScore = 0;
     _guestScore = 0;
     matrix.clear();
