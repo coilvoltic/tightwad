@@ -168,7 +168,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   void updateLocalCreatorTiles(final Coordinates move) {
     _creatorScore += matrix.elementAt(move.x - 1).elementAt(move.y - 1);
     creatorMoves.add(move);
-    if (checkEndGame()) {
+    if (isEndGame()) {
       endGame();
     } else {
       GameUtils.updatePossibleMoves(_creatorPossibleMoves, move, getSqDim());
@@ -189,7 +189,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         },
         'guestLastMove': '',
       }).whenComplete(() => {
-        if (!checkEndGame()) {
+        if (!isEndGame()) {
           turn = Player.guest,
         },
         isSuccessful = true,
@@ -203,7 +203,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   void updateLocalGuestTiles(final Coordinates move) {
     _guestScore += matrix.elementAt(move.x - 1).elementAt(move.y - 1);
     guestMoves.add(move);
-    if (checkEndGame()) {
+    if (isEndGame()) {
       endGame();
     } else {
       GameUtils.updatePossibleMoves(_guestPossibleMoves, move, getSqDim());
@@ -225,7 +225,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         },
         'creatorLastMove': '',
       }).whenComplete(() => {
-        if (!checkEndGame()) {
+        if (!isEndGame()) {
           turn = Player.creator,
         },
         isSuccessful = true,
@@ -237,15 +237,16 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> listenToGuestMove() async {
-    if (!_isListening) {
+    if (!_isListening && !isEndGame()) {
       _isListening = true;
       listener =  FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
           if (event.exists && event.data()!.containsKey('guestLastMove') && event.get('guestLastMove') != '') {
             guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
+            listener.cancel(),
             print('guestMoves.length:'),
             print(guestMoves.length),
             _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
-            if (checkEndGame()) {
+            if (isEndGame()) {
               notifyListeners(),
               endGame(),
             } else {
@@ -258,7 +259,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
               notifyListeners(),
             },
             _isListening = false,
-            listener.cancel(),
           }
         },
       );
@@ -267,13 +267,14 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> listenToCreatorMove() async {
-    if (!_isListening) {
+    if (!_isListening && !isEndGame()) {
       _isListening = true;
       listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
           if (event.exists && event.data()!.containsKey('creatorLastMove') && event.get('creatorLastMove') != '') {
             creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
+            listener.cancel(),
             _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
-            if (checkEndGame()) {
+            if (isEndGame()) {
               notifyListeners(),
               endGame(),
             } else {
@@ -286,7 +287,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
               notifyListeners(),
             },
             _isListening = false,
-            listener.cancel(),
           },
         },
       );
@@ -328,7 +328,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     setGameStatus(GameStatus.loading);
   }
 
-  bool checkEndGame() {
+  bool isEndGame() {
     return creatorMoves.length == getSqDim() && guestMoves.length == getSqDim();
   }
 
