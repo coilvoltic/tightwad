@@ -375,10 +375,9 @@ abstract class Utils {
       'roomId': Database.getRoomId(),
       'nbOfRounds': nbOfRounds,
       'creatorName': name,
-      'creatorTurn': true,
+      'guestName': name,
       'gameStarted': false,
       'matrix': '',
-      'matrixReceived': false,
       'creatorLastMove': '',
       'guestLastMove': '',
     }).whenComplete(() => {

@@ -173,7 +173,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> notifyCreatorNewMove(final Coordinates move) async {
-    bool isSuccessful = false;
+    bool isSuccessful = true;
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
         'creatorLastMove': {
@@ -184,11 +184,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
       }).whenComplete(() => {
         if (!isEndGame()) {
           turn = Player.guest,
+          notifyListeners(),
         },
-        isSuccessful = true,
-        notifyListeners(),
       }).onError((error, stackTrace) => {
-        isSuccessful = false,
       });
     return isSuccessful;
   }
@@ -208,7 +206,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> notifyGuestNewMove(final Coordinates move) async {
-    bool isSuccessful = false;
+    bool isSuccessful = true;
     GameUtils.updatePossibleMoves(_guestPossibleMoves, move, getSqDim());
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
@@ -220,11 +218,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
       }).whenComplete(() => {
         if (!isEndGame()) {
           turn = Player.creator,
+          notifyListeners(),
         },
-        isSuccessful = true,
-        notifyListeners(),
       }).onError((error, stackTrace) => {
-        isSuccessful = false,
       });
     return isSuccessful;
   }
@@ -239,11 +235,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
             if (isEndGame()) {
               notifyListeners(),
+              endGame(),
               await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
               .update({
                 'guestLastMove': '',
               }),
-              endGame(),
             } else {
               turn = Player.creator,
               _creatorPossibleMoves.removeWhere((element) =>
@@ -271,11 +267,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
             if (isEndGame()) {
               notifyListeners(),
+              endGame(),
               await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
               .update({
                 'creatorLastMove': '',
               }),
-              endGame(),
             } else {
               turn = Player.guest,
               _guestPossibleMoves.removeWhere((element) =>
@@ -289,9 +285,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
           },
         },
       );
-      if (isEndGame()) {
-
-      }
     }
     return true;
   }
@@ -320,7 +313,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     }
   }
 
-  Future<void> reinitializeLevel() async {
+  void reinitializeLevel() {
     _isMatrixReceived = false;
     _creatorScore = 0;
     _guestScore = 0;
@@ -337,8 +330,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
   void setWin() {
     Timer(const Duration(seconds: 2), () {
       setGameStatus(GameStatus.win);
-      Timer(const Duration(seconds: 2), () async {
-        await reinitializeLevel();
+      Timer(const Duration(seconds: 2), () {
+        reinitializeLevel();
       });
     });
   }
@@ -346,8 +339,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
   void setLose() {
     Timer(const Duration(seconds: 2), () {
       setGameStatus(GameStatus.lose);
-      Timer(const Duration(seconds: 2), () async {
-        await reinitializeLevel();
+      Timer(const Duration(seconds: 2), () {
+        reinitializeLevel();
       });
     });
   }
