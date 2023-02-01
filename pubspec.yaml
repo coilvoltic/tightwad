@@ -46,7 +46,7 @@ dependencies:
   flutter_neumorphic: ^3.2.0
   firebase_core: ^2.4.1
   cloud_firestore: ^4.3.1
-  audioplayers: ^2.0.0
+  audioplayers: ^3.0.0
   flutter_spinkit: ^5.1.0
 
 dev_dependencies:
@@ -77,6 +77,22 @@ flutter:
     - assets/algo.wav
     - assets/lose.wav
     - assets/wow.wav
+    - assets/player1-1.mp3
+    - assets/player1-2.mp3
+    - assets/player1-3.mp3
+    - assets/player1-4.mp3
+    - assets/player1-5.mp3
+    - assets/player1-6.mp3
+    - assets/player1-7.mp3
+    - assets/player1-8.mp3
+    - assets/player2-1.wav
+    - assets/player2-2.wav
+    - assets/player2-3.wav
+    - assets/player2-4.wav
+    - assets/player2-5.wav
+    - assets/player2-6.wav
+    - assets/player2-7.wav
+    - assets/player2-8.wav
 
   fonts:
     - family: BebasNeue

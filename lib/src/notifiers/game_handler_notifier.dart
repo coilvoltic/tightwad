@@ -345,4 +345,6 @@ class GameHandlerNotifier extends ChangeNotifier {
   int get getUserScore => userScore;
   int get getAlgoScore => algoScore;
   bool get getCanUserMove => canUserMove;
+  int get getNbUserPress => nbUserPress;
+  int get getNbAlgoPress => nbAlgoPress;
 }

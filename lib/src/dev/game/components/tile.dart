@@ -75,7 +75,7 @@ class _TileState extends State<Tile> {
   void checkAlgoPress(GameHandlerNotifier gameHandlerNotifier) async {
     if (GameUtils.areCoordinatesEqual(widget.tileCoordinates, gameHandlerNotifier.getAlgoPress)) {
       if (!isAlgoSoundPlayed && Database.getSoundSettingOn()) {
-        playSound('algo.wav');
+        playSound('player2-${gameHandlerNotifier.getNbAlgoPress}.wav');
         isAlgoSoundPlayed = true;
       }
       owner = Player.algo;
@@ -86,6 +86,7 @@ class _TileState extends State<Tile> {
     if (gameHandlerNotifier.getGameStatus == GameStatus.playing) {
       if (!isRebuilt) {
         owner = Player.none;
+        isAlgoSoundPlayed = false;
         isRebuilt = true;
       }
     } else {
@@ -107,7 +108,7 @@ class _TileState extends State<Tile> {
               !(owner == Player.user) &&
               gameHandlerNotifier.canUserMove) {
             if (Database.getSoundSettingOn()) {
-              playSound('user.wav');
+              playSound('player1-${gameHandlerNotifier.getNbUserPress+1}.mp3');
             }
             owner = Player.user;
             lastAnimationWasPressing = true;
