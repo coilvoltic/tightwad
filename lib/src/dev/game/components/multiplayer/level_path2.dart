@@ -179,6 +179,9 @@ class _LevelPath2State extends State<LevelPath2> {
     _labelSize = _containerHeight * 18.0 / 225.0;
 
     return Consumer2<OptionsNotifier, MultiPlayerNotifier>(builder: (context, _, mpNotifier, __) {
+      if (!mpNotifier.getIsSessionInitialized) {
+        return Container();
+      }
       _nbOfRounds = mpNotifier.getNbOfRounds;
         return Container(
           margin: EdgeInsets.only(top: _height - _containerHeight),

@@ -31,7 +31,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   bool _isListening = false;
   int  _creatorScore = 0;
   int  _guestScore = 0;
-  bool _areNamesFetched = false;
+  bool _isSessionInitialized = false;
   String _creatorName = '';
   String _guestName = '';
   Player turn = Player.creator;
@@ -42,7 +42,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   Player get getTurn => turn;
   int get getCreatorScore => _creatorScore;
   int get getGuestScore => _guestScore;
-  bool get getAreNamesFetched => _areNamesFetched;
+  bool get getIsSessionInitialized => _isSessionInitialized;
   String get getCreatorName => _creatorName;
   String get getGuestName => _guestName;
   List<RoundStatus> get getCreatorRoundStatus => _creatorRoundStatus;
@@ -89,9 +89,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
     return creatorMoves.last;
   }
 
-  Future<bool> fetchNames() async {
+  Future<bool> initializeSession() async {
     bool isSuccessful = true;
-    _areNamesFetched = true;
+    _isSessionInitialized = true;
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .get()
         .then((doc) {
@@ -103,13 +103,16 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _guestName = doc.get('guestName');
             _nbOfRounds = doc.get('nbOfRounds');
           }
-          print('_nbOfRounds set ${_nbOfRounds}');
+          for (int i = 0; i < _nbOfRounds; i++) {
+            _creatorRoundStatus.add(RoundStatus.none);
+            _guestRoundStatus.add(RoundStatus.none);
+          }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
           isSuccessful = false;
-          _areNamesFetched = false;
+          _isSessionInitialized = false;
         }).onError((errorObj, stackTrace) {
           isSuccessful = false;
-          _areNamesFetched = false;
+          _isSessionInitialized = false;
         });
     return isSuccessful;
   }
@@ -118,9 +121,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
     final Random random = Random();
     final int sqDim = random.nextInt(GameUtils.MULTIPLAYER_SQ_DIM_MAX - GameUtils.MULTIPLAYER_SQ_DIM_MIN) + GameUtils.MULTIPLAYER_SQ_DIM_MIN;
     matrix = GameUtils.computeRandomMatrix(sqDim);
-    for (int i = 0; i < sqDim; i++) {
-      _creatorRoundStatus.add(RoundStatus.none);
-    }
   }
 
   Future<bool> createAndPushMatrix() async {
@@ -158,9 +158,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _isMatrixReceived = true;
             _isFetchingData = false;
             _guestPossibleMoves = GameUtils.fillAllMoves(getSqDim());
-            for (int i = 0; i < getSqDim(); i++) {
-              _guestRoundStatus.add(RoundStatus.none);
-            }
             setGameStatus(GameStatus.playing);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
