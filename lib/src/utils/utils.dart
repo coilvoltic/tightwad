@@ -469,4 +469,9 @@ abstract class Utils {
     return roomId != '-1';
   }
 
+  static Color randomColor() {
+    Random random = Random();
+    return Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), 1);
+  }
+
 }

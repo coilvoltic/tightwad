@@ -35,6 +35,9 @@ class _Statement2State extends State<Statement2> {
       statementIndex = random.nextInt(3);
       _statement = winStatements[statementIndex];
       _sizeRatio = statementIndex == 2 ? 38 : 50;
+    } else if (mpNotifier.getGameStatus == GameStatus.draw) {
+      _statement = "DRAW";
+      _sizeRatio = 50;
     }
   }
 

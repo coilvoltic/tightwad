@@ -10,6 +10,7 @@ import 'package:tightwad/src/dev/game/components/common/options/settings_buttons
 import 'package:tightwad/src/dev/game/components/confettis.dart';
 import 'package:tightwad/src/dev/game/components/level_path.dart';
 import 'package:tightwad/src/dev/game/components/map.dart';
+import 'package:tightwad/src/dev/game/components/multiplayer/level_path2.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/map2.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/room_lobby.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/socres2.dart';
@@ -59,7 +60,7 @@ class Game extends StatelessWidget {
     return Stack(
       children: const [
         Background(),
-        LevelPath(),
+        LevelPath2(),
         Scores(),
         Map(),
         Confettis(),
@@ -76,6 +77,7 @@ class Game extends StatelessWidget {
     return Stack(
       children: const [
         Background(),
+        LevelPath(),
         Scores2(),
         Map2(),
         Blur(),

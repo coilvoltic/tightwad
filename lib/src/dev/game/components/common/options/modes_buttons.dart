@@ -65,7 +65,7 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
       _buttonSize     = 15  + _gamePxSize / 12 ;
       _offsetSize     =       _gamePxSize / 100;
       _xMarginOffset  =       _gamePxSize / 20 ;
-      _yMarginOffset  =  15 +       width / 20 ;
+      _yMarginOffset  = 3 * ((height - min(min(width, height) / 1, height / 1.7)) / 2 - (2 * _buttonSize)) / 7;
       _borderRadius   =       _gamePxSize / 30 ;
   }
 
