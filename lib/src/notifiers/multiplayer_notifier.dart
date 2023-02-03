@@ -348,8 +348,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
     matrix.clear();
     creatorMoves.clear();
     guestMoves.clear();
-    _creatorRoundStatus.clear();
-    _guestRoundStatus.clear();
     _currentRound++;
     setGameStatus(GameStatus.loading);
   }
