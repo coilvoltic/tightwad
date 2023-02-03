@@ -36,7 +36,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   String _guestName = '';
   Player turn = Player.creator;
   int _nbOfRounds = 0;
-  int _currentRound = 0;
+  int _currentRound = 1;
 
   GameStatus get getGameStatus => _gameStatus;
   Player get getTurn => turn;
