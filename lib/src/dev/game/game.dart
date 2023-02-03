@@ -60,7 +60,7 @@ class Game extends StatelessWidget {
     return Stack(
       children: const [
         Background(),
-        LevelPath2(),
+        LevelPath(),
         Scores(),
         Map(),
         Confettis(),
