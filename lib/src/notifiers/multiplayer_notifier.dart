@@ -20,8 +20,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
   List<Coordinates> creatorMoves = List.empty(growable: true);
   List<Coordinates> _guestPossibleMoves = List.empty(growable: true);
   List<Coordinates> _creatorPossibleMoves = List.empty(growable: true);
-  final List<RoundStatus> _guestRoundStatus = List.empty(growable: true);
-  final List<RoundStatus> _creatorRoundStatus = List.empty(growable: true);
+  List<RoundStatus> _guestRoundStatus = List.empty(growable: true);
+  List<RoundStatus> _creatorRoundStatus = List.empty(growable: true);
 
   late StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> listener;
 
@@ -103,6 +103,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _guestName = doc.get('guestName');
             _nbOfRounds = doc.get('nbOfRounds');
           }
+          print('_nbOfRounds set ${_nbOfRounds}');
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
           isSuccessful = false;
           _areNamesFetched = false;
@@ -119,7 +120,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
     matrix = GameUtils.computeRandomMatrix(sqDim);
     for (int i = 0; i < sqDim; i++) {
       _creatorRoundStatus.add(RoundStatus.none);
-      _guestRoundStatus.add(RoundStatus.none);
     }
   }
 
@@ -158,6 +158,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _isMatrixReceived = true;
             _isFetchingData = false;
             _guestPossibleMoves = GameUtils.fillAllMoves(getSqDim());
+            for (int i = 0; i < getSqDim(); i++) {
+              _guestRoundStatus.add(RoundStatus.none);
+            }
             setGameStatus(GameStatus.playing);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
