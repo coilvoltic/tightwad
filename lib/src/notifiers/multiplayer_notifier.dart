@@ -317,24 +317,24 @@ class MultiPlayerNotifier extends ChangeNotifier {
   void endGame() async {
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
       if (_creatorScore < _guestScore) {
-        _guestRoundStatus[_currentRound] = RoundStatus.won;
+        _creatorRoundStatus[_currentRound - 1] = RoundStatus.won;
         setWin();
       } else if (_creatorScore > _guestScore) {
-        _guestRoundStatus[_currentRound] = RoundStatus.lost;
+        _creatorRoundStatus[_currentRound - 1] = RoundStatus.lost;
         setLose();
       } else {
-        _guestRoundStatus[_currentRound] = RoundStatus.draw;
+        _creatorRoundStatus[_currentRound - 1] = RoundStatus.draw;
         setDraw();
       }
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
       if (_guestScore < _creatorScore) {
-        _guestRoundStatus[_currentRound] = RoundStatus.won;
+        _guestRoundStatus[_currentRound - 1] = RoundStatus.won;
         setWin();
       } else if (_guestScore > _creatorScore) {
-        _guestRoundStatus[_currentRound] = RoundStatus.lost;
+        _guestRoundStatus[_currentRound - 1] = RoundStatus.lost;
         setLose();
       } else {
-        _guestRoundStatus[_currentRound] = RoundStatus.draw;
+        _guestRoundStatus[_currentRound - 1] = RoundStatus.draw;
         setDraw();
       }
     }

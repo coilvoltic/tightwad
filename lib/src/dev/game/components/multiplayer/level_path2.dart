@@ -155,8 +155,6 @@ class _LevelPath2State extends State<LevelPath2> {
 
   Widget buildLevelPath(final MultiPlayerNotifier mpNotifier) {
     List<RoundStatus> roundStatuses = MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator ? mpNotifier.getCreatorRoundStatus : mpNotifier.getGuestRoundStatus;
-    print('roundStatuses length ${roundStatuses.length}');
-    print('_nbOfRounds ${_nbOfRounds}');
     return Stack(
       children: [
         buildLinkLine(mpNotifier.getCurrentRound > _nbOfRounds / 2),
