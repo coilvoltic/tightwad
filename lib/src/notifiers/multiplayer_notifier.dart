@@ -248,7 +248,13 @@ class MultiPlayerNotifier extends ChangeNotifier {
   Future<bool> listenToGuestMove() async {
     print('KL is endGame? ${isEndGame()}');
     print('KL creatorMoves.length : ${creatorMoves.length}');
-    print('KL creatorMoves.length : ${creatorMoves.length}');
+    print('KL guestMoves.length : ${guestMoves.length}');
+    creatorMoves.forEach((element) => {
+      print('creator x : ${element.x} and y : ${element.y}'),
+    },);
+    guestMoves.forEach((element) => {
+      print('guest x : ${element.x} and y : ${element.y}'),
+    },);
     print('KL getSqDim() : ${getSqDim()}\n');
     if (!_isListening && !isEndGame()) {
       _isListening = true;
