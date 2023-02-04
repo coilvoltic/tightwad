@@ -75,6 +75,14 @@ class MultiPlayerNotifier extends ChangeNotifier {
     return matrix.elementAt(move.x - 1).elementAt(move.y - 1);
   }
 
+  int getNbOfCreatorPress() {
+    return creatorMoves.length;
+  }
+
+  int getNbOfGuestPress() {
+    return guestMoves.length;
+  }
+
   Coordinates getGuestLastMove() {
     if (guestMoves.isEmpty) {
       return Coordinates(-1, -1);

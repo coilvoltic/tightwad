@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_glow/flutter_glow.dart';
+import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/colors.dart';
@@ -71,10 +72,17 @@ class _Tile2State extends State<Tile2> {
   }
 
   void checkOpponentMove(MultiPlayerNotifier mpNotifier) {
+    print('check opponent move');
     if (owner == Player.none) {
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getCreatorLastMove())) {
+        if (Database.getSoundSettingOn() && mpNotifier.getNbOfCreatorPress() > 0) {
+          playSound('player1-${mpNotifier.getNbOfCreatorPress()}.wav');
+        }
         owner = Player.creator;
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getGuestLastMove())) {
+        if (Database.getSoundSettingOn() && mpNotifier.getNbOfGuestPress() > 0) {
+          playSound('player2-${mpNotifier.getNbOfGuestPress()}.wav');
+        }
         owner = Player.guest;
       }
     }
@@ -117,11 +125,13 @@ class _Tile2State extends State<Tile2> {
           if (owner == Player.none && !_isMoveForbidden) {
             if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
                 mpNotifier.getTurn == Player.creator) {
+              playSound('player1-${mpNotifier.getNbOfCreatorPress()}.wav'),
               owner = Player.creator,
               mpNotifier.updateLocalCreatorTiles(widget.tileCoordinates),
               mpNotifier.notifyCreatorNewMove(widget.tileCoordinates),
             } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
                       mpNotifier.getTurn == Player.guest) {
+              playSound('player2-${mpNotifier.getNbOfGuestPress()}.wav'),
               owner = Player.guest,
               mpNotifier.updateLocalGuestTiles(widget.tileCoordinates),
               mpNotifier.notifyGuestNewMove(widget.tileCoordinates),
