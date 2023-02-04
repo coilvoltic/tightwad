@@ -14,6 +14,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   GameStatus _gameStatus = GameStatus.none;
   static MultiPlayerStatus multiPlayerStatus = MultiPlayerStatus.none;
+  static bool isSessionInitialized = false;
 
   List<List<int>> matrix = List.empty(growable: true);
   List<Coordinates> guestMoves = List.empty(growable: true);
@@ -31,7 +32,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
   bool _isListening = false;
   int  _creatorScore = 0;
   int  _guestScore = 0;
-  bool _isSessionInitialized = false;
   String _creatorName = '';
   String _guestName = '';
   Player turn = Player.creator;
@@ -42,7 +42,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
   Player get getTurn => turn;
   int get getCreatorScore => _creatorScore;
   int get getGuestScore => _guestScore;
-  bool get getIsSessionInitialized => _isSessionInitialized;
   String get getCreatorName => _creatorName;
   String get getGuestName => _guestName;
   List<RoundStatus> get getCreatorRoundStatus => _creatorRoundStatus;
@@ -99,7 +98,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<bool> initializeSession() async {
     bool isSuccessful = true;
-    _isSessionInitialized = true;
+    isSessionInitialized = true;
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .get()
         .then((doc) {
@@ -116,11 +115,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _guestRoundStatus.add(RoundStatus.none);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
-          isSuccessful = false;
-          _isSessionInitialized = false;
         }).onError((errorObj, stackTrace) {
-          isSuccessful = false;
-          _isSessionInitialized = false;
         });
     return isSuccessful;
   }
@@ -251,6 +246,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> listenToGuestMove() async {
+    print('KL is endGame? ${isEndGame()}');
+    print('KL creatorMoves.length : ${creatorMoves.length}');
+    print('KL creatorMoves.length : ${creatorMoves.length}');
+    print('KL getSqDim() : ${getSqDim()}\n');
     if (!_isListening && !isEndGame()) {
       _isListening = true;
       listener =  FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
