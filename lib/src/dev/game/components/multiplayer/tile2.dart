@@ -125,13 +125,17 @@ class _Tile2State extends State<Tile2> {
           if (owner == Player.none && !_isMoveForbidden) {
             if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
                 mpNotifier.getTurn == Player.creator) {
-              playSound('player1-${mpNotifier.getNbOfCreatorPress() + 1}.mp3'),
+              if (Database.getSoundSettingOn()) {
+                playSound('player1-${mpNotifier.getNbOfCreatorPress() + 1}.mp3'),
+              },
               owner = Player.creator,
               mpNotifier.updateLocalCreatorTiles(widget.tileCoordinates),
               mpNotifier.notifyCreatorNewMove(widget.tileCoordinates),
             } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
                       mpNotifier.getTurn == Player.guest) {
-              playSound('player2-${mpNotifier.getNbOfGuestPress() + 1}.wav'),
+              if (Database.getSoundSettingOn()) {
+                playSound('player2-${mpNotifier.getNbOfGuestPress() + 1}.wav'),
+              },
               owner = Player.guest,
               mpNotifier.updateLocalGuestTiles(widget.tileCoordinates),
               mpNotifier.notifyGuestNewMove(widget.tileCoordinates),
