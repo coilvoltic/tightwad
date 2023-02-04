@@ -246,19 +246,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> listenToGuestMove() async {
-    print('KL is endGame? ${isEndGame()}');
-    print('KL creatorMoves.length : ${creatorMoves.length}');
-    print('KL guestMoves.length : ${guestMoves.length}');
-    creatorMoves.forEach((element) => {
-      print('creator x : ${element.x} and y : ${element.y}'),
-    },);
-    guestMoves.forEach((element) => {
-      print('guest x : ${element.x} and y : ${element.y}'),
-    },);
-    print('KL getSqDim() : ${getSqDim()}\n');
-    if (!_isListening && !isEndGame()) {
+    if (!_isListening) {
+      print('listening...');
       _isListening = true;
       listener =  FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
+          print('got event!...'),
           if (event.exists && event.data()!.containsKey('guestLastMove') && event.get('guestLastMove') != '') {
             guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
             listener.cancel(),
@@ -277,9 +269,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
               if (creatorMoves.length == getSqDim() - 2) {
                 GameUtils.preventPotentialStuckSituation(_creatorPossibleMoves),
               },
+              _isListening = false,
               notifyListeners(),
             },
-            _isListening = false,
           }
         },
       );
@@ -288,7 +280,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> listenToCreatorMove() async {
-    if (!_isListening && !isEndGame()) {
+    if (!_isListening) {
       _isListening = true;
       listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
           if (event.exists && event.data()!.containsKey('creatorLastMove') && event.get('creatorLastMove') != '') {
@@ -309,9 +301,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
               if (guestMoves.length == getSqDim() - 2) {
                 GameUtils.preventPotentialStuckSituation(_guestPossibleMoves),
               },
+              _isListening = false,
               notifyListeners(),
             },
-            _isListening = false,
           },
         },
       );
@@ -356,6 +348,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   void reinitializeLevel() {
     _isMatrixReceived = false;
     _isMatrixBeingCreated = false;
+    _isListening = false;
     _creatorScore = 0;
     _guestScore = 0;
     matrix.clear();
