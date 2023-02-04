@@ -141,7 +141,7 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
      Database.getGameEntity() != Utils.LOBBY_ENTITY_INDEX)) {
       return Container();
     } else {
-      return buildSettingsButtons();
+      return SafeArea(child: buildSettingsButtons());
     }
   }
 }

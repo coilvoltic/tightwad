@@ -184,7 +184,7 @@ class _LevelPath2State extends State<LevelPath2> {
         return Container(
           margin: EdgeInsets.only(top: _height - _containerHeight),
           height: _containerHeight,
-          child: buildLevelPath(mpNotifier),
+          child: SafeArea(child: buildLevelPath(mpNotifier)),
       );
     });
   }
