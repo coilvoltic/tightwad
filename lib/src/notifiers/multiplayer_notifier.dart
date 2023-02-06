@@ -31,6 +31,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   bool _isFetchingData = false;
   bool _isListening = false;
   int  _creatorScore = 0;
+  bool _isNewEvent = false;
   int  _guestScore = 0;
   String _creatorName = '';
   String _guestName = '';
@@ -48,6 +49,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   List<RoundStatus> get getGuestRoundStatus => _guestRoundStatus;
   int get getCurrentRound => _currentRound;
   int get getNbOfRounds => _nbOfRounds;
+  bool get getIsNewEvent => _isNewEvent;
 
   static void generateAndSetRoomId() async {
     final Random random = Random();
@@ -94,6 +96,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
       return Coordinates(-1, -1);
     }
     return creatorMoves.last;
+  }
+
+  void resetNewEvent() {
+    _isNewEvent = false;
   }
 
   Future<bool> initializeSession() async {
@@ -255,6 +261,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
             listener.cancel(),
             _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
+            _isNewEvent = true,
             if (isEndGame()) {
               notifyListeners(),
               endGame(),

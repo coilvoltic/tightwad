@@ -34,7 +34,6 @@ class Tile2 extends StatefulWidget {
 class _Tile2State extends State<Tile2> {
 
   Player owner = Player.none;
-  bool _isOppLastMoveChecked = false;
   bool _isMoveForbidden = false;
 
   void playSound(final String soundPath) async {
@@ -92,14 +91,13 @@ class _Tile2State extends State<Tile2> {
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
         mpNotifier.getTurn == Player.guest) {
       mpNotifier.listenToGuestMove();
-      _isOppLastMoveChecked = false;
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
                 mpNotifier.getTurn == Player.creator) {
       mpNotifier.listenToCreatorMove();
-      _isOppLastMoveChecked = false;
-    } else if (!_isOppLastMoveChecked) {
+    }
+    if (mpNotifier.getIsNewEvent) {
       checkOpponentMove(mpNotifier);
-      _isOppLastMoveChecked = true;
+      mpNotifier.resetNewEvent();
     }
   }
 
