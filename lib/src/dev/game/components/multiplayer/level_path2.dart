@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
+import 'package:tightwad/src/utils/nothing.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
 class LevelPath2 extends StatefulWidget {
@@ -177,8 +178,8 @@ class _LevelPath2State extends State<LevelPath2> {
     _labelSize = _containerHeight * 18.0 / 225.0;
 
     return Consumer2<OptionsNotifier, MultiPlayerNotifier>(builder: (context, _, mpNotifier, __) {
-      if (!MultiPlayerNotifier.isSessionInitialized) {
-        return Container();
+      if (mpNotifier.getIsSessionInitialized) {
+        return const Nothing();
       }
       _nbOfRounds = mpNotifier.getNbOfRounds;
         return Container(

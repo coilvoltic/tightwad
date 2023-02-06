@@ -6,6 +6,7 @@ import 'package:tightwad/src/dev/game/components/multiplayer/tile2.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/computation.dart';
+import 'package:tightwad/src/utils/nothing.dart';
 
 class Map2 extends StatefulWidget {
   const Map2({Key? key}) : super(key: key);
@@ -51,18 +52,21 @@ class _Map2State extends State<Map2> {
     _height = MediaQuery.of(context).size.height;
     _width  = MediaQuery.of(context).size.width;
 
-    if (mpNotifier.getGameStatus == GameStatus.loading) {
-      if (!MultiPlayerNotifier.isSessionInitialized) {
-        mpNotifier.initializeSession();
-      }
-      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
-        mpNotifier.createAndPushMatrix();
-      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
-        mpNotifier.waitForMatrixAndStoreIt();
-      }
-      return Container();
-    } else {
-      return buildMap(mpNotifier);
+    /** Initialization */
+    if (mpNotifier.getGameStatus == GameStatus.loading &&
+        !mpNotifier.getIsSessionInitialized) {
+      mpNotifier.initializeSession();
+      return const Nothing();
+    } 
+
+    /** Game */
+    if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
+        (mpNotifier.getTurn == Player.guest || mpNotifier.isEndGame())) {
+      mpNotifier.listenToGuestMove();
+    } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
+                mpNotifier.getTurn == Player.creator || mpNotifier.isEndGame()) {
+      mpNotifier.listenToCreatorMove();
     }
+    return buildMap(mpNotifier);
   }
 }
