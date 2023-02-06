@@ -97,6 +97,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
   Future<bool> initializeSession() async {
     shouldSessionBeInitialized = false;
     _currentRound = 1;
+    creatorRoundStatus.clear();
+    guestRoundStatus.clear();
     initializeData();
     await fetchUsefulSessionData();
     return true;
@@ -354,8 +356,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
     matrix.clear();
     creatorMoves.clear();
     guestMoves.clear();
-    guestRoundStatus.clear();
-    creatorRoundStatus.clear();
   }
 
   void clearAndLeaveSession() {
