@@ -14,6 +14,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   GameStatus _gameStatus = GameStatus.none;
   static MultiPlayerStatus multiPlayerStatus = MultiPlayerStatus.none;
+  static bool shouldSessionBeInitialized = false;
 
   List<List<int>>   matrix                = List.empty(growable: true);
   List<Coordinates> guestMoves            = List.empty(growable: true);
@@ -28,7 +29,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
   bool   _isMatrixReceived      = false;
   bool   _isListening           = false;
   bool   _isNewEvent            = false;
-  bool   _isSessionGettingReady = false;
   int    _creatorScore          = 0;
   int    _guestScore            = 0;
   int    _nbOfRounds            = 0;
@@ -37,7 +37,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
   String _guestName             = '';
   Player turn                   = Player.creator;
 
-  bool              get getSessionGettingReady => _isSessionGettingReady;
   bool              get getIsNewEvent          => _isNewEvent;
   GameStatus        get getGameStatus          => _gameStatus;
   Player            get getTurn                => turn;
@@ -102,7 +101,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> initializeSession() async {
-    _isSessionGettingReady = true;
+    _currentRound = 0;
+    shouldSessionBeInitialized = false;
     initializeData();
     await fetchUsefulSessionData();
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
@@ -110,7 +110,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
       await waitForMatrixAndStoreIt();
     }
-    _isSessionGettingReady = false;
     return true;
   }
 
@@ -354,7 +353,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
   void initializeData() {
     _isMatrixReceived = false;
     _isListening = false;
-    _isNewEvent = false;
     _creatorScore = 0;
     _guestScore = 0;
     matrix.clear();
