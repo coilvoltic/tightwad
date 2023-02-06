@@ -54,7 +54,7 @@ class _Map2State extends State<Map2> {
 
     /** Initialization */
     if (mpNotifier.getGameStatus == GameStatus.loading &&
-        !mpNotifier.getIsSessionInitialized) {
+        !mpNotifier.getSessionGettingReady) {
       mpNotifier.initializeSession();
       return const Nothing();
     } 

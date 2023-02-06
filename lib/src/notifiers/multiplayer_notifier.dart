@@ -25,30 +25,30 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   late StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> listener;
 
-  bool   _isMatrixReceived     = false;
-  bool   _isListening          = false;
-  bool   _isNewEvent           = false;
-  bool   _isSessionInitialized = false;
-  int    _creatorScore         = 0;
-  int    _guestScore           = 0;
-  int    _nbOfRounds           = 0;
-  int    _currentRound         = 1;
-  String _creatorName          = '';
-  String _guestName            = '';
-  Player turn                  = Player.creator;
+  bool   _isMatrixReceived      = false;
+  bool   _isListening           = false;
+  bool   _isNewEvent            = false;
+  bool   _isSessionGettingReady = false;
+  int    _creatorScore          = 0;
+  int    _guestScore            = 0;
+  int    _nbOfRounds            = 0;
+  int    _currentRound          = 1;
+  String _creatorName           = '';
+  String _guestName             = '';
+  Player turn                   = Player.creator;
 
-  bool              get getIsSessionInitialized => _isSessionInitialized;
-  bool              get getIsNewEvent           => _isNewEvent;
-  GameStatus        get getGameStatus           => _gameStatus;
-  Player            get getTurn                 => turn;
-  int               get getCreatorScore         => _creatorScore;
-  int               get getGuestScore           => _guestScore;
-  int               get getCurrentRound         => _currentRound;
-  int               get getNbOfRounds           => _nbOfRounds;
-  String            get getCreatorName          => _creatorName;
-  String            get getGuestName            => _guestName;
-  List<RoundStatus> get getCreatorRoundStatus   => creatorRoundStatus;
-  List<RoundStatus> get getGuestRoundStatus     => guestRoundStatus;
+  bool              get getSessionGettingReady => _isSessionGettingReady;
+  bool              get getIsNewEvent          => _isNewEvent;
+  GameStatus        get getGameStatus          => _gameStatus;
+  Player            get getTurn                => turn;
+  int               get getCreatorScore        => _creatorScore;
+  int               get getGuestScore          => _guestScore;
+  int               get getCurrentRound        => _currentRound;
+  int               get getNbOfRounds          => _nbOfRounds;
+  String            get getCreatorName         => _creatorName;
+  String            get getGuestName           => _guestName;
+  List<RoundStatus> get getCreatorRoundStatus  => creatorRoundStatus;
+  List<RoundStatus> get getGuestRoundStatus    => guestRoundStatus;
 
   static void generateAndSetRoomId() async {
     final Random random = Random();
@@ -102,7 +102,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> initializeSession() async {
-    _isSessionInitialized = true;
+    _isSessionGettingReady = true;
     initializeData();
     await fetchUsefulSessionData();
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
@@ -110,6 +110,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
       await waitForMatrixAndStoreIt();
     }
+    _isSessionGettingReady = false;
     return true;
   }
 
