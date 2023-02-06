@@ -28,7 +28,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   bool   _isMatrixReceived      = false;
   bool   _isListening           = false;
-  bool   _isNewEvent            = false;
   int    _creatorScore          = 0;
   int    _guestScore            = 0;
   int    _nbOfRounds            = 0;
@@ -37,7 +36,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
   String _guestName             = '';
   Player turn                   = Player.creator;
 
-  bool              get getIsNewEvent          => _isNewEvent;
   GameStatus        get getGameStatus          => _gameStatus;
   Player            get getTurn                => turn;
   int               get getCreatorScore        => _creatorScore;
@@ -94,10 +92,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
       return Coordinates(-1, -1);
     }
     return creatorMoves.last;
-  }
-
-  void resetNewEvent() {
-    _isNewEvent = false;
   }
 
   Future<bool> initializeSession() async {
@@ -258,7 +252,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
             guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
             listener.cancel(),
             _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
-            _isNewEvent = true,
             if (isEndGame()) {
               notifyListeners(),
               endGame(),
@@ -291,7 +284,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
             creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
             listener.cancel(),
             _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
-            _isNewEvent = true,
             if (isEndGame()) {
               notifyListeners(),
               endGame(),
@@ -324,7 +316,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     return !_creatorPossibleMoves.any((item) => item.x == move.x && item.y == move.y);
   }
 
-  void endGame() async {
+  void endGame() {
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
       if (_creatorScore < _guestScore) {
         creatorRoundStatus[_currentRound - 1] = RoundStatus.won;

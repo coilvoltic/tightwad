@@ -97,9 +97,10 @@ class _Tile2State extends State<Tile2> {
   }
 
   void getUpdatedToOpponentMove(MultiPlayerNotifier mpNotifier) {
-    if (mpNotifier.getIsNewEvent) {
+    if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator && mpNotifier.getTurn == Player.creator ||
+        MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest   && mpNotifier.getTurn == Player.guest   ||
+        mpNotifier.isEndGame()) {
       checkOpponentMove(mpNotifier);
-      mpNotifier.resetNewEvent();
     }
   }
 

@@ -62,10 +62,10 @@ class _Map2State extends State<Map2> {
 
     /** Game */
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator &&
-        (mpNotifier.getTurn == Player.guest || mpNotifier.isEndGame())) {
+        mpNotifier.getTurn == Player.guest) {
       mpNotifier.listenToGuestMove();
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest &&
-                mpNotifier.getTurn == Player.creator || mpNotifier.isEndGame()) {
+                mpNotifier.getTurn == Player.creator) {
       mpNotifier.listenToCreatorMove();
     }
     return buildMap(mpNotifier);
