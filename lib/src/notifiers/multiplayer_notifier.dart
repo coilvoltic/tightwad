@@ -99,6 +99,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _currentRound = 1;
     initializeData();
     await fetchUsefulSessionData();
+    return true;
+  }
+
+  Future<bool> initializeGame() async {
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
       await createAndPushMatrix();
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {

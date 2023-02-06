@@ -53,10 +53,11 @@ class _Map2State extends State<Map2> {
     _width  = MediaQuery.of(context).size.width;
 
     /** Initialization */
-    if (mpNotifier.getGameStatus == GameStatus.loading &&
-        MultiPlayerNotifier.shouldSessionBeInitialized) {
-      mpNotifier.initializeSession();
-      print('Initialization');
+    if (mpNotifier.getGameStatus == GameStatus.loading) {
+      if (MultiPlayerNotifier.shouldSessionBeInitialized) {
+        mpNotifier.initializeSession();
+      }
+      mpNotifier.initializeGame();
       return const Nothing();
     } 
 
