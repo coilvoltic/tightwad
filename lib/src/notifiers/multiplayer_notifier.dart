@@ -101,8 +101,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<bool> initializeSession() async {
-    _currentRound = 0;
     shouldSessionBeInitialized = false;
+    _currentRound = 1;
     initializeData();
     await fetchUsefulSessionData();
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {

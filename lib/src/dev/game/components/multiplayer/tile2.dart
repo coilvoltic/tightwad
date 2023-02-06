@@ -75,8 +75,11 @@ class _Tile2State extends State<Tile2> {
     print('owner is : ${owner.toString()}');
     if (owner == Player.none) {
       print('owner is none');
-      print('1: x = ${mpNotifier.getCreatorLastMove().x}, y = ${mpNotifier.getCreatorLastMove().y}');
-      print('2: x = ${mpNotifier.getGuestLastMove().x}, y = ${mpNotifier.getGuestLastMove().y}');
+      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
+        print('1: x = ${mpNotifier.getCreatorLastMove().x}, y = ${mpNotifier.getCreatorLastMove().y}');
+        print('2: x = ${widget.tileCoordinates.x}, y = ${widget.tileCoordinates.y}');
+        print(GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getCreatorLastMove()));
+      }
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getCreatorLastMove())) {
         if (Database.getSoundSettingOn() && mpNotifier.getNbOfCreatorPress() > 0) {
           playSound('player1-${mpNotifier.getNbOfCreatorPress()}.mp3');
