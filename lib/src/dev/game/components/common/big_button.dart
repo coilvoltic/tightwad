@@ -46,6 +46,7 @@ class BigButtonState extends State<BigButton> {
             onPressed: () => {
               if (dueToError) {
                 entityNotifier.changeGameEntity(Entity.multiplayerwelcome),
+                mpNotifier.setGameStatus(GameStatus.none),
               } else if (dueToMode) {
                 entityNotifier.updateModeChanging(),
               } else if (dueToSettings) {

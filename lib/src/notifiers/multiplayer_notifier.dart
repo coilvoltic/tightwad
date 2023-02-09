@@ -324,15 +324,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
   void endGame() {
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
       if (_creatorScore < _guestScore) {
-        if (Database.getSoundSettingOn()) {
-          playSound('wow.wav');
-        }
         creatorRoundStatus[_currentRound - 1] = RoundStatus.won;
         setWin();
       } else if (_creatorScore > _guestScore) {
-        if (Database.getSoundSettingOn()) {
-          playSound('lose.wav');
-        }
         creatorRoundStatus[_currentRound - 1] = RoundStatus.lost;
         setLose();
       } else {
@@ -341,15 +335,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
       }
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
       if (_guestScore < _creatorScore) {
-        if (Database.getSoundSettingOn()) {
-          playSound('wow.wav');
-        }
         guestRoundStatus[_currentRound - 1] = RoundStatus.won;
         setWin();
       } else if (_guestScore > _creatorScore) {
-        if (Database.getSoundSettingOn()) {
-          playSound('lose.wav');
-        }
         guestRoundStatus[_currentRound - 1] = RoundStatus.lost;
         setLose();
       } else {
@@ -402,6 +390,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   void setWin() {
     Timer(const Duration(seconds: 2), () {
+      if (Database.getSoundSettingOn()) {
+        playSound('wow.wav');
+      }
       setGameStatus(GameStatus.win);
       Timer(const Duration(seconds: 2), () {
         checkEndSession();
@@ -411,6 +402,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   void setLose() {
     Timer(const Duration(seconds: 2), () {
+      if (Database.getSoundSettingOn()) {
+        playSound('lose.wav');
+      }
       setGameStatus(GameStatus.lose);
       Timer(const Duration(seconds: 2), () {
         checkEndSession();
