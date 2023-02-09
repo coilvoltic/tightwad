@@ -5,19 +5,19 @@ import 'package:tightwad/src/dev/game/components/common/background.dart';
 
 import 'package:tightwad/src/dev/game/components/common/big_button.dart';
 import 'package:tightwad/src/dev/game/components/common/blur.dart';
-import 'package:tightwad/src/dev/game/components/common/loading.dart';
+import 'package:tightwad/src/dev/game/components/common/confettis.dart';
 import 'package:tightwad/src/dev/game/components/common/options/settings_buttons.dart';
-import 'package:tightwad/src/dev/game/components/confettis.dart';
-import 'package:tightwad/src/dev/game/components/level_path.dart';
-import 'package:tightwad/src/dev/game/components/map.dart';
+import 'package:tightwad/src/dev/game/components/multiplayer/loading.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/level_path2.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/map2.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/room_lobby.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/socres2.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/statement2.dart';
 import 'package:tightwad/src/dev/game/components/multiplayer/waiting_opponent.dart';
-import 'package:tightwad/src/dev/game/components/scores.dart';
-import 'package:tightwad/src/dev/game/components/statement.dart';
+import 'package:tightwad/src/dev/game/components/singleplayer/level_path.dart';
+import 'package:tightwad/src/dev/game/components/singleplayer/map.dart';
+import 'package:tightwad/src/dev/game/components/singleplayer/scores.dart';
+import 'package:tightwad/src/dev/game/components/singleplayer/statement.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
@@ -80,6 +80,7 @@ class Game extends StatelessWidget {
         LevelPath2(),
         Scores2(),
         Map2(),
+        Confettis(),
         Blur(),
         Statement2(),
         BigButton(),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tightwad/src/database/database.dart';
@@ -46,6 +47,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
   String            get getGuestName           => _guestName;
   List<RoundStatus> get getCreatorRoundStatus  => creatorRoundStatus;
   List<RoundStatus> get getGuestRoundStatus    => guestRoundStatus;
+
+  final player = AudioPlayer();
+  void playSound(final String soundPath) async {
+    await player.play(AssetSource(soundPath));
+  }
 
   static void generateAndSetRoomId() async {
     final Random random = Random();
@@ -94,26 +100,24 @@ class MultiPlayerNotifier extends ChangeNotifier {
     return creatorMoves.last;
   }
 
-  Future<bool> initializeSession() async {
+  Future<void> initializeSession() async {
     shouldSessionBeInitialized = false;
     _currentRound = 1;
     creatorRoundStatus.clear();
     guestRoundStatus.clear();
     initializeData();
     await fetchUsefulSessionData();
-    return true;
   }
 
-  Future<bool> initializeGame() async {
+  Future<void> initializeGame() async {
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
       await createAndPushMatrix();
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
       await waitForMatrixAndStoreIt();
     }
-    return true;
   }
 
-  Future<bool> fetchUsefulSessionData() async {
+  Future<void> fetchUsefulSessionData() async {
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .get()
         .then((doc) {
@@ -130,9 +134,10 @@ class MultiPlayerNotifier extends ChangeNotifier {
             guestRoundStatus.add(RoundStatus.none);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
-        }).onError((errorObj, stackTrace) {
+          setGameStatus(GameStatus.error);
+        }).onError((_, __) {
+          setGameStatus(GameStatus.error);
         });
-    return true;
   }
 
   void generateMatrix() {
@@ -141,7 +146,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     matrix = GameUtils.computeRandomMatrix(sqDim);
   }
 
-  Future<bool> createAndPushMatrix() async {
+  Future<void> createAndPushMatrix() async {
     generateMatrix();
     _creatorPossibleMoves = GameUtils.fillAllMoves(getSqDim());
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
@@ -150,12 +155,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
       }).whenComplete(() => {
         setGameStatus(GameStatus.playing),
       }).onError((error, stackTrace) => {
+        setGameStatus(GameStatus.error),
       });
-    return true;
   }
 
-  Future<bool> waitForMatrixAndStoreIt() async {
-    bool isSuccessful = true;
+  Future<void> waitForMatrixAndStoreIt() async {
     while (!_isMatrixReceived) {
       await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .get()
@@ -169,7 +173,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
             setGameStatus(GameStatus.playing);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
+          setGameStatus(GameStatus.error);
         }).onError((errorObj, stackTrace) {
+          setGameStatus(GameStatus.error);
         });
       await Future.delayed(const Duration(seconds: 1));
     }
@@ -178,7 +184,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'matrix': '',
         'matrix_backup': jsonEncode(matrix),
       });
-    return isSuccessful;
   }
 
   void updateLocalCreatorTiles(final Coordinates move) {
@@ -196,8 +201,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     }
   }
 
-  Future<bool> notifyCreatorNewMove(final Coordinates move) async {
-    bool isSuccessful = true;
+  Future<void> notifyCreatorNewMove(final Coordinates move) async {
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
         'creatorLastMove': {
@@ -211,8 +215,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
           notifyListeners(),
         },
       }).onError((error, stackTrace) => {
+        setGameStatus(GameStatus.error),
       });
-    return isSuccessful;
   }
 
   void updateLocalGuestTiles(final Coordinates move) {
@@ -230,8 +234,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     }
   }
 
-  Future<bool> notifyGuestNewMove(final Coordinates move) async {
-    bool isSuccessful = true;
+  Future<void> notifyGuestNewMove(final Coordinates move) async {
     GameUtils.updatePossibleMoves(_guestPossibleMoves, move, getSqDim());
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
@@ -246,72 +249,68 @@ class MultiPlayerNotifier extends ChangeNotifier {
           notifyListeners(),
         },
       }).onError((error, stackTrace) => {
+        setGameStatus(GameStatus.error),
       });
-    return isSuccessful;
   }
 
-  Future<bool> listenToGuestMove() async {
+  Future<void> listenToGuestMove() async {
     if (!_isListening) {
       _isListening = true;
       listener =  FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
-          if (event.exists && event.data()!.containsKey('guestLastMove') && event.get('guestLastMove') != '') {
-            guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
-            listener.cancel(),
-            _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
-            if (isEndGame()) {
-              notifyListeners(),
-              endGame(),
-              await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
-              .update({
-                'guestLastMove': '',
-              }),
-            } else {
-              turn = Player.creator,
-              _creatorPossibleMoves.removeWhere((element) =>
-                element.x == getGuestLastMove().x && element.y == getGuestLastMove().y),
-              if (creatorMoves.length == getSqDim() - 2) {
-                GameUtils.preventPotentialStuckSituation(_creatorPossibleMoves),
-              },
-              _isListening = false,
-              notifyListeners(),
+        if (event.exists && event.data()!.containsKey('guestLastMove') && event.get('guestLastMove') != '') {
+          guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
+          listener.cancel(),
+          _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
+          if (isEndGame()) {
+            notifyListeners(),
+            endGame(),
+            await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+            .update({
+              'guestLastMove': '',
+            }),
+          } else {
+            turn = Player.creator,
+            _creatorPossibleMoves.removeWhere((element) =>
+              element.x == getGuestLastMove().x && element.y == getGuestLastMove().y),
+            if (creatorMoves.length == getSqDim() - 2) {
+              GameUtils.preventPotentialStuckSituation(_creatorPossibleMoves),
             },
-          }
-        },
-      );
+            _isListening = false,
+            notifyListeners(),
+          },
+        }
+      });
     }
-    return true;
   }
 
-  Future<bool> listenToCreatorMove() async {
+  Future<void> listenToCreatorMove() async {
     if (!_isListening) {
       _isListening = true;
       listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
-          if (event.exists && event.data()!.containsKey('creatorLastMove') && event.get('creatorLastMove') != '') {
-            creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
-            listener.cancel(),
-            _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
-            if (isEndGame()) {
-              notifyListeners(),
-              endGame(),
-              await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
-              .update({
-                'creatorLastMove': '',
-              }),
-            } else {
-              turn = Player.guest,
-              _guestPossibleMoves.removeWhere((element) =>
-                element.x == getCreatorLastMove().x && element.y == getCreatorLastMove().y),
-              if (guestMoves.length == getSqDim() - 2) {
-                GameUtils.preventPotentialStuckSituation(_guestPossibleMoves),
-              },
-              _isListening = false,
-              notifyListeners(),
+        if (event.exists && event.data()!.containsKey('creatorLastMove') && event.get('creatorLastMove') != '') {
+          creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
+          listener.cancel(),
+          _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
+          if (isEndGame()) {
+            notifyListeners(),
+            endGame(),
+            await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+            .update({
+              'creatorLastMove': '',
+            }),
+          } else {
+            turn = Player.guest,
+            _guestPossibleMoves.removeWhere((element) =>
+              element.x == getCreatorLastMove().x && element.y == getCreatorLastMove().y),
+            if (guestMoves.length == getSqDim() - 2) {
+              GameUtils.preventPotentialStuckSituation(_guestPossibleMoves),
             },
+            _isListening = false,
+            notifyListeners(),
           },
         },
-      );
+      });
     }
-    return true;
   }
 
   bool isForbiddenGuestMove(final Coordinates move) {
@@ -325,9 +324,15 @@ class MultiPlayerNotifier extends ChangeNotifier {
   void endGame() {
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
       if (_creatorScore < _guestScore) {
+        if (Database.getSoundSettingOn()) {
+          playSound('wow.wav');
+        }
         creatorRoundStatus[_currentRound - 1] = RoundStatus.won;
         setWin();
       } else if (_creatorScore > _guestScore) {
+        if (Database.getSoundSettingOn()) {
+          playSound('lose.wav');
+        }
         creatorRoundStatus[_currentRound - 1] = RoundStatus.lost;
         setLose();
       } else {
@@ -336,9 +341,15 @@ class MultiPlayerNotifier extends ChangeNotifier {
       }
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
       if (_guestScore < _creatorScore) {
+        if (Database.getSoundSettingOn()) {
+          playSound('wow.wav');
+        }
         guestRoundStatus[_currentRound - 1] = RoundStatus.won;
         setWin();
       } else if (_guestScore > _creatorScore) {
+        if (Database.getSoundSettingOn()) {
+          playSound('lose.wav');
+        }
         guestRoundStatus[_currentRound - 1] = RoundStatus.lost;
         setLose();
       } else {
@@ -358,8 +369,31 @@ class MultiPlayerNotifier extends ChangeNotifier {
     guestMoves.clear();
   }
 
-  void clearAndLeaveSession() {
-    // setGameStatus(GameStatus.finish);
+  void leaveSession() {
+    if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
+      computeSessionStatus(creatorRoundStatus);
+    } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
+      computeSessionStatus(guestRoundStatus);
+    }
+  }
+
+  void computeSessionStatus(final List<RoundStatus> rounds) {
+    int nbOfWins = 0;
+    int nbOfLosses = 0;
+    for (final RoundStatus round in rounds) {
+      if (round == RoundStatus.won) {
+        nbOfWins++;
+      } else if (round == RoundStatus.lost) {
+        nbOfLosses++;
+      }
+    }
+    if (nbOfWins > nbOfLosses) {
+      setGameStatus(GameStatus.winsession);
+    } else if (nbOfWins < nbOfLosses) {
+      setGameStatus(GameStatus.losesession);
+    } else {
+      setGameStatus(GameStatus.drawsession);
+    }
   }
 
   bool isEndGame() {
@@ -395,7 +429,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   void checkEndSession() {
     if (_currentRound == _nbOfRounds) {
-      clearAndLeaveSession();
+      leaveSession();
     } else {
       initializeData();
       _currentRound++;

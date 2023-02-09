@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tightwad/src/dev/game/components/tile.dart';
+import 'package:tightwad/src/dev/game/components/singleplayer/tile.dart';
 
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/utils/computation.dart';

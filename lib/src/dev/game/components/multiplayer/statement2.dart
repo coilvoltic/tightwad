@@ -22,8 +22,11 @@ class _Statement2State extends State<Statement2> {
   bool _isDisplayedStatement = false;
 
   void computeStatementVisibilityStatus(final MultiPlayerNotifier mpNotifier) {
-    _isDisplayedStatement = mpNotifier.getGameStatus == GameStatus.win ||
-                            mpNotifier.getGameStatus == GameStatus.lose;
+    _isDisplayedStatement = mpNotifier.getGameStatus == GameStatus.win         ||
+                            mpNotifier.getGameStatus == GameStatus.lose        ||
+                            mpNotifier.getGameStatus == GameStatus.winsession  ||
+                            mpNotifier.getGameStatus == GameStatus.losesession ||
+                            mpNotifier.getGameStatus == GameStatus.drawsession;
   }
 
   void computeStatement(final MultiPlayerNotifier mpNotifier) {
@@ -38,6 +41,15 @@ class _Statement2State extends State<Statement2> {
     } else if (mpNotifier.getGameStatus == GameStatus.draw) {
       _statement = "DRAW";
       _sizeRatio = 50;
+    } else if (mpNotifier.getGameStatus == GameStatus.winsession) {
+      _statement = "END OF SESSION\nYOU WIN!";
+      _sizeRatio = 30;
+    } else if (mpNotifier.getGameStatus == GameStatus.losesession) {
+      _statement = "END OF SESSION\nYOU LOSE!";
+      _sizeRatio = 30;
+    } else if (mpNotifier.getGameStatus == GameStatus.drawsession) {
+      _statement = "END OF SESSION\nDRAW!";
+      _sizeRatio = 30;
     }
   }
 

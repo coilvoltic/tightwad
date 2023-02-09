@@ -3,6 +3,7 @@ import 'package:confetti/confetti.dart';
 import 'package:provider/provider.dart';
 
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
+import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 
 
@@ -26,11 +27,13 @@ class _ConfettisState extends State<Confettis> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<GameHandlerNotifier>(
-      builder: (context, notifier, _) {
-        if (notifier.getGameStatus == GameStatus.win       ||
-            notifier.getGameStatus == GameStatus.nextlevel ||
-            notifier.getGameStatus == GameStatus.finish)
+    return Consumer2<GameHandlerNotifier, MultiPlayerNotifier>(
+      builder: (context, ghNotifier, mpNotifier, _) {
+        if (ghNotifier.getGameStatus == GameStatus.win       ||
+            ghNotifier.getGameStatus == GameStatus.nextlevel ||
+            ghNotifier.getGameStatus == GameStatus.finish    ||
+            mpNotifier.getGameStatus == GameStatus.win       ||
+            mpNotifier.getGameStatus == GameStatus.winsession)
         {
           _controller.play();
         }

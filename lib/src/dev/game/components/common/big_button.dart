@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
+import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 
@@ -23,14 +24,19 @@ class BigButtonState extends State<BigButton> {
     GameHandlerNotifier gameHandlerNotifier = Provider.of<GameHandlerNotifier>(context, listen: true);
     OptionsNotifier     optionsNotifier     = Provider.of<OptionsNotifier>(context, listen: true);
     EntityNotifier      entityNotifier      = Provider.of<EntityNotifier>(context, listen: true);
+    MultiPlayerNotifier mpNotifier          = Provider.of<MultiPlayerNotifier>(context, listen: true);
 
     final bool dueToGameHandler = gameHandlerNotifier.getGameStatus == GameStatus.nextlevel ||
                                   gameHandlerNotifier.getGameStatus == GameStatus.tryagain  ||
                                   gameHandlerNotifier.getGameStatus == GameStatus.finish;
     final bool dueToSettings    = optionsNotifier.getAreSettingsChanging;
     final bool dueToMode        = entityNotifier.getIsModeChanging;
+    final bool dueToError       = mpNotifier.getGameStatus == GameStatus.error       ||
+                                  mpNotifier.getGameStatus == GameStatus.winsession  ||
+                                  mpNotifier.getGameStatus == GameStatus.losesession ||
+                                  mpNotifier.getGameStatus == GameStatus.drawsession;
 
-    _isVisible = dueToMode || dueToSettings || dueToGameHandler;
+    _isVisible = dueToMode || dueToSettings || dueToGameHandler || dueToError;
 
     return Visibility(
       visible: _isVisible,
@@ -38,7 +44,9 @@ class BigButtonState extends State<BigButton> {
         child: SizedBox.expand(
           child: TextButton(
             onPressed: () => {
-              if (dueToMode) {
+              if (dueToError) {
+                entityNotifier.changeGameEntity(Entity.multiplayerwelcome),
+              } else if (dueToMode) {
                 entityNotifier.updateModeChanging(),
               } else if (dueToSettings) {
                 optionsNotifier.updateSettingsChaning(),

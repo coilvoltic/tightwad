@@ -15,7 +15,7 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
     super.initState();
   }
 
@@ -27,9 +27,9 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SpinKitSquareCircle(
+    return SpinKitPulse(
       color: Utils.getIconColorFromTheme(),
-      size: 50.0,
+      size: 150.0,
       controller: _controller,
     );
   }
