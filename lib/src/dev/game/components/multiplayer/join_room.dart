@@ -142,7 +142,7 @@ class _JoinRoomState extends State<JoinRoom> {
                 entityNotifier.changeGameEntity(Entity.multiplayergame);
               }
             },
-            text: 'click to join!'),
+            icon: Icons.check),
           ],
         ),
       );

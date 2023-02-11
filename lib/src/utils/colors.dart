@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Background {
   Color light   = const Color.fromRGBO(231, 236, 239, 1);
   Color dark    = const Color.fromRGBO(46, 50, 57, 1);
-  Color diamond = const Color.fromRGBO(9, 26, 51, 1);
+  Color diamond = const Color.fromRGBO(15, 22, 30, 1);
 
   Color get getLightColor   => light;
   Color get getDarkColor    => dark;
@@ -100,7 +100,7 @@ class ThemeColors {
   static NotPassed      notPassedColor      = NotPassed();
   static LabelPassed    labelPassedColor    = LabelPassed();
   static LabelNotPassed labelNotPassedColor = LabelNotPassed();
-  static Label          labelColor           = Label();
+  static Label          labelColor          = Label();
 }
 
 class PlayerColors {

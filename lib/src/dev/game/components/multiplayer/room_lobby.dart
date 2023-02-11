@@ -65,11 +65,11 @@ class _RoomLobbyState extends State<RoomLobby> {
           Utils.ROOM_LOBBY_TITLE_HEIGHT_RATIO,
       child: Center(
         child: Text(
-          _isJoinRoom ? 'join room' : 'create room',
+          _isJoinRoom ? 'JOIN\nROOM' : 'CREATE\nROOM',
           style: TextStyle(
-            fontFamily: 'BebasNeue',
+            fontFamily: 'Righteous',
             decoration: TextDecoration.none,
-            fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 35),
+            fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 25),
             fontWeight: FontWeight.bold,
             color: Utils.getPassedColorFromTheme(),
           ),

@@ -123,7 +123,7 @@ class _TileState extends State<Tile> {
               lastAnimationWasPressing = false;
             }
           }),
-          duration: const Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
           margin: EdgeInsets.all(-0.6 * widget.sqNbOfTiles + 8),
           width: double.infinity,
           height: double.infinity,

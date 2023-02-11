@@ -150,7 +150,7 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
                   entityNotifier.changeGameEntity(Entity.lobby);
                   mpNotifier.setGameStatus(GameStatus.none);
                 },
-                text: 'quit!'),
+                icon: Icons.close),
               ],
             );
           }

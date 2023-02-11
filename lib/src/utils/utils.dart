@@ -36,7 +36,7 @@ abstract class Utils {
   static const int MULTIPLAYERGAME_ENTITY_INDEX = 6;
 
   // ignore: constant_identifier_names
-  static const int THEME_ANIMATION_DURATION_MS = 150;
+  static const int THEME_ANIMATION_DURATION_MS = 300;
 
   // ignore: constant_identifier_names
   static const double ZERO_PLUS = 0.0001;
@@ -279,7 +279,7 @@ abstract class Utils {
       duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       height: Utils.TEXT_FIELD_HEIGHT,
       width: width,
-      decoration: Utils.buildNeumorphismBox(50.0, 5.0, 5.0, true),
+      decoration: Utils.buildNeumorphismBox(15.0, 5.0, 3.5, true),
       child: Padding(
         padding: const EdgeInsets.only(left: 25.0),
         child: TextField(
@@ -329,7 +329,7 @@ abstract class Utils {
                 const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
             height: 40,
             width: 80,
-            decoration: Utils.buildNeumorphismBox(18.0, 3.0, 3.0, true),
+            decoration: Utils.buildNeumorphismBox(18.0, 4.0, 2.5, true),
             alignment: alignment,
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -344,7 +344,7 @@ abstract class Utils {
                             Database.getGameTheme() == Utils.LIGHT_THEME_INDEX
                                 ? GameTheme.dark
                                 : GameTheme.light)
-                    : Utils.buildNeumorphismBox(25.0, 3.0, 3.0, false),
+                    : Utils.buildNeumorphismBox(25.0, 3.0, 2.0, false),
               ),
             ),
           );

@@ -11,7 +11,7 @@ class Background extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<OptionsNotifier>(builder: (context, notifier, _) {
       return AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
+        duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
         height: double.infinity,
         width: double.infinity,
         color: Utils.getBackgroundColorFromTheme(),

@@ -65,7 +65,7 @@ class _CreateRoomState extends State<CreateRoom> {
       width: MediaQuery.of(context).size.width *
           Utils.ROOM_LOOBY_WIDTH_LIMIT_RATIO,
       height: Utils.TEXT_FIELD_HEIGHT,
-      decoration: Utils.buildNeumorphismBox(25.0, 5.0, 5.0, true),
+      decoration: Utils.buildNeumorphismBox(15.0, 5.0, 3.5, true),
       child: Stack(
         children: [
           Align(
@@ -77,7 +77,7 @@ class _CreateRoomState extends State<CreateRoom> {
                     milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
                 height: 31,
                 width: 31,
-                decoration: Utils.buildNeumorphismBox(25.0, 2.0, 2.0, false),
+                decoration: Utils.buildNeumorphismBox(25.0, 4.0, 2.0, false),
               ),
             ),
           ),
@@ -168,7 +168,7 @@ class _CreateRoomState extends State<CreateRoom> {
                   }
                 }
               },
-            text: 'click to create!'),
+            icon: Icons.check),
           ],
         ),
       );

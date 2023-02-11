@@ -37,7 +37,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl0() {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + 4 * dashLength - outGamePxHeight / 14,
@@ -65,7 +65,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash1(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + 3 * dashLength,
@@ -78,7 +78,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl1(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + 3 * dashLength - outGamePxHeight / 14,
@@ -106,7 +106,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash2(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + 2 * dashLength,
@@ -119,7 +119,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl2(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + 2 * dashLength - outGamePxHeight / 14,
@@ -147,7 +147,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash3(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + dashLength,
@@ -160,7 +160,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl3(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + dashLength - outGamePxHeight / 14,
@@ -188,7 +188,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash4(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft,
@@ -206,7 +206,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl4(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 / 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft - outGamePxHeight / 14 + pathThickness / 2,
@@ -234,7 +234,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash5(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 / 2 * outGamePxHeight / (nbOfLine + 1),
         left: startOfPathLeft,
@@ -252,7 +252,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl5(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + dashLength - outGamePxHeight / 14,
@@ -280,7 +280,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildUpperLeftHidder() {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) + pathThickness / 2,
         left: startOfPathLeft + pathThickness,
@@ -299,7 +299,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash6(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + dashLength,
@@ -312,7 +312,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl6(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + 2 * dashLength - outGamePxHeight / 14,
@@ -340,7 +340,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash7(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + 2 * dashLength,
@@ -353,7 +353,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl7(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + 3 * dashLength - outGamePxHeight / 14,
@@ -381,7 +381,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash8(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + 3 * dashLength + pathThickness,
@@ -399,7 +399,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl8(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 5 / 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + 4 * dashLength - outGamePxHeight / 14,
@@ -427,7 +427,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash9(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 5 / 2 * outGamePxHeight / (nbOfLine + 1),
         left: startOfPathLeft + 3 * dashLength + pathThickness,
@@ -445,7 +445,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl9(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + 3 * dashLength - outGamePxHeight / 14,
@@ -473,7 +473,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildUpperRightHidder() {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) + pathThickness / 2,
         left: startOfPathLeft + 3 * dashLength - pathThickness / 2 - 1.0,
@@ -492,7 +492,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash10(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + 2 * dashLength,
@@ -505,7 +505,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl10(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + 2 * dashLength - outGamePxHeight / 14,
@@ -533,7 +533,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash11(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft + dashLength,
@@ -546,7 +546,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl11(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft + dashLength - outGamePxHeight / 14,
@@ -574,7 +574,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash12(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: startOfPathLeft,
@@ -587,7 +587,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl12(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: startOfPathLeft - outGamePxHeight / 14 + pathThickness / 2,
@@ -615,7 +615,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash13U(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
       ),
@@ -627,7 +627,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl13(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + 4 * dashLength - outGamePxHeight / 14,
@@ -655,7 +655,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash13L(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 4 * dashLength,
@@ -668,7 +668,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash14(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 3 * dashLength,
@@ -681,7 +681,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl14(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + 3 * dashLength - outGamePxHeight / 14,
@@ -709,7 +709,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash15(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 2 * dashLength,
@@ -722,7 +722,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl15(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + 2 * dashLength - outGamePxHeight / 14,
@@ -750,7 +750,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash16(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + dashLength,
@@ -763,7 +763,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl16(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + dashLength - outGamePxHeight / 14,
@@ -791,7 +791,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash17(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx,
@@ -809,7 +809,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl17(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 / 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx - outGamePxHeight / 14 + pathThickness / 2,
@@ -837,7 +837,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash18(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 / 2 * outGamePxHeight / (nbOfLine + 1),
         left: endMarginPx,
@@ -855,7 +855,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl18(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + dashLength - outGamePxHeight / 14,
@@ -883,7 +883,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLowerLeftHidder() {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: outGamePxHeight / (nbOfLine + 1) + pathThickness / 2,
         left: endMarginPx + pathThickness,
@@ -902,7 +902,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash19(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + dashLength,
@@ -915,7 +915,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl19(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + 2 * dashLength - outGamePxHeight / 14,
@@ -943,7 +943,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash20(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 2 * dashLength,
@@ -956,7 +956,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl20(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + 3 * dashLength - outGamePxHeight / 14,
@@ -984,7 +984,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash21(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 3 * dashLength + pathThickness,
@@ -1002,7 +1002,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl21(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 5 / 2 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + 4 * dashLength - outGamePxHeight / 14,
@@ -1030,7 +1030,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash22(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 5 / 2 * outGamePxHeight / (nbOfLine + 1),
         left: endMarginPx + 3 * dashLength + pathThickness,
@@ -1048,7 +1048,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl22(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + 3 * dashLength - outGamePxHeight / 14,
@@ -1076,7 +1076,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLowerRightHidder() {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 2 * outGamePxHeight / (nbOfLine + 1) + pathThickness / 2,
         left: endMarginPx + 3 * dashLength - 1.0 + pathThickness,
@@ -1095,7 +1095,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash23(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + 2 * dashLength,
@@ -1108,7 +1108,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl23(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + 2 * dashLength - outGamePxHeight / 14,
@@ -1136,7 +1136,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash24(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx + dashLength,
@@ -1149,7 +1149,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl24(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx + dashLength - outGamePxHeight / 14,
@@ -1177,7 +1177,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildDash25(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - pathThickness / 2,
         left: endMarginPx,
@@ -1190,7 +1190,7 @@ class _LevelPathState extends State<LevelPath> {
 
   AnimatedContainer buildLvl25(bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(
         top: 3 * outGamePxHeight / (nbOfLine + 1) - outGamePxHeight / 14,
         left: endMarginPx - outGamePxHeight / 14 + pathThickness / 2,

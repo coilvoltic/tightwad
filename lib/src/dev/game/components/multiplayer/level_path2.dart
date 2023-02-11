@@ -75,7 +75,7 @@ class _LevelPath2State extends State<LevelPath2> {
 
   AnimatedContainer buildSegmentFirstLine(final int index, bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(left: index * _width * _widthRatioLimit / (_nbOfRounds / 2 + 1),
                               top: 1 * _containerHeight / 3 - _pathThickness / 2),
       height: _pathThickness,
@@ -86,7 +86,7 @@ class _LevelPath2State extends State<LevelPath2> {
 
   AnimatedContainer buildLabelFirstLine(final int index, bool isPassed, RoundStatus roundStatus) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(left: (index + 1) * _width * _widthRatioLimit / (_nbOfRounds / 2 + 1) - _labelContainerSize / 2,
                               top: 1 * _containerHeight / 3 - _labelContainerSize / 2),
       height: _labelContainerSize,
@@ -101,7 +101,7 @@ class _LevelPath2State extends State<LevelPath2> {
 
   AnimatedContainer buildSegmentSecondLine(final int index, bool isPassed) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(left: (_nbOfRounds - index - 1) * _width * _widthRatioLimit / (_nbOfRounds / 2 + 1),
                               top: 2 * _containerHeight / 3 - _pathThickness / 2),
       height: _pathThickness,
@@ -112,7 +112,7 @@ class _LevelPath2State extends State<LevelPath2> {
 
   AnimatedContainer buildLabelSecondLine(final int index, bool isPassed, RoundStatus roundStatus) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
       margin: EdgeInsets.only(left: (_nbOfRounds - index) * _width * _widthRatioLimit / (_nbOfRounds / 2 + 1) - _labelContainerSize / 2,
                               top: 2 * _containerHeight / 3 - _labelContainerSize / 2),
       height: _labelContainerSize,
@@ -129,7 +129,7 @@ class _LevelPath2State extends State<LevelPath2> {
     return Stack(
       children: [
         AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
           margin: EdgeInsets.only(left: _nbOfRounds / 2 * _width * _widthRatioLimit / (_nbOfRounds / 2 + 1),
                                   top: 1 * _containerHeight / 3 - _pathThickness / 2),
           height: 1 * _containerHeight / 3 + _pathThickness,
@@ -140,7 +140,7 @@ class _LevelPath2State extends State<LevelPath2> {
           ),
         ),
         AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
           margin: EdgeInsets.only(left: _nbOfRounds / 2 * _width * _widthRatioLimit / (_nbOfRounds / 2 + 1) - _pathThickness,
                                   top: 1 * _containerHeight / 3 + _pathThickness / 2),
           height: 1 * _containerHeight / 3 - _pathThickness,

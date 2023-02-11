@@ -62,7 +62,7 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
       _gamePxSize     = min(min(width, height) / 1, height / 1.7);
       _iconSize       = 7.8 + _gamePxSize / 24 ;
       _buttonSize     = 15  + _gamePxSize / 12 ;
-      _offsetSize     =       _gamePxSize / 100;
+      _offsetSize     =       _gamePxSize / 150;
       _xMarginOffset  =       _gamePxSize / 20 ;
       _yMarginOffset  = 4 * ((height - min(min(width, height) / 1, height / 1.7)) / 2 - (2 * _buttonSize)) / 7 + _buttonSize;
       _borderRadius   =       _gamePxSize / 30 ;
