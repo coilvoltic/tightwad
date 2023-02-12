@@ -1202,16 +1202,11 @@ class _LevelPathState extends State<LevelPath> {
         borderRadius: const BorderRadius.all(Radius.circular(40.0)),
       ),
       child: Center(
-        child: Text(
-          '25',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            decoration: TextDecoration.none,
-            fontSize: outGamePxHeight / 12,
-            fontWeight: FontWeight.bold,
-            color: isPassed ? _labelPassedColor : _labelNotPassedColor,
-          ),
-        ),
+        child: Icon(
+          Icons.star_rate_rounded,
+          size: outGamePxHeight / 10,
+          color: isPassed ? _labelPassedColor : _labelNotPassedColor,
+        )
       ),
     );
   }

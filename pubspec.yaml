@@ -93,6 +93,8 @@ flutter:
     - assets/player2-6.wav
     - assets/player2-7.wav
     - assets/player2-8.wav
+    - assets/victory.mp3
+    - assets/defeat.mp3
 
   fonts:
     - family: BebasNeue

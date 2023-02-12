@@ -134,9 +134,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
             guestRoundStatus.add(RoundStatus.none);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
-          setGameStatus(GameStatus.error);
+          setError();
         }).onError((_, __) {
-          setGameStatus(GameStatus.error);
+          setError();
         });
   }
 
@@ -155,7 +155,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
       }).whenComplete(() => {
         setGameStatus(GameStatus.playing),
       }).onError((error, stackTrace) => {
-        setGameStatus(GameStatus.error),
+        setError(),
       });
   }
 
@@ -173,9 +173,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
             setGameStatus(GameStatus.playing);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
-          setGameStatus(GameStatus.error);
+          setError();
         }).onError((errorObj, stackTrace) {
-          setGameStatus(GameStatus.error);
+          setError();
         });
       await Future.delayed(const Duration(seconds: 1));
     }
@@ -215,7 +215,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
           notifyListeners(),
         },
       }).onError((error, stackTrace) => {
-        setGameStatus(GameStatus.error),
+        setError(),
       });
   }
 
@@ -249,7 +249,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
           notifyListeners(),
         },
       }).onError((error, stackTrace) => {
-        setGameStatus(GameStatus.error),
+        setError(),
       });
   }
 
@@ -376,8 +376,14 @@ class MultiPlayerNotifier extends ChangeNotifier {
       }
     }
     if (nbOfWins > nbOfLosses) {
+      if (Database.getSoundSettingOn()) {
+        playSound('victory.mp3');
+      }
       setGameStatus(GameStatus.winsession);
     } else if (nbOfWins < nbOfLosses) {
+      if (Database.getSoundSettingOn()) {
+        playSound('defeat.mp3');
+      }
       setGameStatus(GameStatus.losesession);
     } else {
       setGameStatus(GameStatus.drawsession);
@@ -394,7 +400,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         playSound('wow.wav');
       }
       setGameStatus(GameStatus.win);
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 3), () {
         checkEndSession();
       });
     });
@@ -406,7 +412,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         playSound('lose.wav');
       }
       setGameStatus(GameStatus.lose);
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 3), () {
         checkEndSession();
       });
     });
@@ -415,9 +421,19 @@ class MultiPlayerNotifier extends ChangeNotifier {
   void setDraw() {
     Timer(const Duration(seconds: 2), () {
       setGameStatus(GameStatus.draw);
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 3), () {
         checkEndSession();
       });
+    });
+  }
+
+  void setError() {
+    if (Database.getSoundSettingOn()) {
+      playSound('lose.wav');
+    }
+    setGameStatus(GameStatus.error);
+    Timer(const Duration(seconds: 2), () {
+      setGameStatus(GameStatus.retry);
     });
   }
 

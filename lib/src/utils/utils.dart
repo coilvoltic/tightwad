@@ -36,7 +36,7 @@ abstract class Utils {
   static const int MULTIPLAYERGAME_ENTITY_INDEX = 6;
 
   // ignore: constant_identifier_names
-  static const int THEME_ANIMATION_DURATION_MS = 300;
+  static const int THEME_ANIMATION_DURATION_MS = 220;
 
   // ignore: constant_identifier_names
   static const double ZERO_PLUS = 0.0001;

@@ -5,10 +5,12 @@ import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/dev/game/components/common/options/flow_settings_delegate%20copy.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
+import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
+import 'package:tightwad/src/utils/nothing.dart';
 import 'package:tightwad/src/utils/option_button_package.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
@@ -24,6 +26,7 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
   late AnimationController _settingsControler;
   late OptionsNotifier     _optionsNotifier;
   late EntityNotifier      _entityNotifier;
+  late MultiPlayerNotifier _mpNotifier;
   late GameHandlerNotifier _gameHandlerNotifier;
   bool _areSettingsChanging = false;
 
@@ -46,6 +49,7 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
     _optionsNotifier = OptionsNotifier();
     _entityNotifier = EntityNotifier();
     _gameHandlerNotifier = GameHandlerNotifier();
+    _mpNotifier = MultiPlayerNotifier();
     super.initState();
   }
 
@@ -125,9 +129,10 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    _optionsNotifier = Provider.of<OptionsNotifier>(context, listen: true);
+    _optionsNotifier     = Provider.of<OptionsNotifier>    (context, listen: true);
     _gameHandlerNotifier = Provider.of<GameHandlerNotifier>(context, listen: true);
-    _entityNotifier     = Provider.of<EntityNotifier>(context, listen: true);
+    _entityNotifier      = Provider.of<EntityNotifier>     (context, listen: true);
+    _mpNotifier          = Provider.of<MultiPlayerNotifier>(context, listen: true);
     
     constantsCalculation();
     if (_areSettingsChanging != _optionsNotifier.getAreSettingsChanging) {
@@ -135,11 +140,11 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
       _areSettingsChanging = _optionsNotifier.getAreSettingsChanging;
     }
 
-    if (_entityNotifier.getIsModeChanging || _gameHandlerNotifier.getGameStatus != GameStatus.playing ||
+    if (_entityNotifier.getIsModeChanging || _gameHandlerNotifier.getGameStatus != GameStatus.playing || _mpNotifier.getGameStatus != GameStatus.playing ||
     (Database.getGameEntity() != Utils.SINGLEPLAYERGAME_ENTITY_INDEX &&
      Database.getGameEntity() != Utils.MULTIPLAYERGAME_ENTITY_INDEX &&
      Database.getGameEntity() != Utils.LOBBY_ENTITY_INDEX)) {
-      return Container();
+      return const Nothing();
     } else {
       return buildSettingsButtons();
     }

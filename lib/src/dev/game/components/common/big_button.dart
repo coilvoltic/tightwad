@@ -31,12 +31,12 @@ class BigButtonState extends State<BigButton> {
                                   gameHandlerNotifier.getGameStatus == GameStatus.finish;
     final bool dueToSettings    = optionsNotifier.getAreSettingsChanging;
     final bool dueToMode        = entityNotifier.getIsModeChanging;
-    final bool dueToError       = mpNotifier.getGameStatus == GameStatus.error       ||
+    final bool dueToEndSession  = mpNotifier.getGameStatus == GameStatus.retry       ||
                                   mpNotifier.getGameStatus == GameStatus.winsession  ||
                                   mpNotifier.getGameStatus == GameStatus.losesession ||
                                   mpNotifier.getGameStatus == GameStatus.drawsession;
 
-    _isVisible = dueToMode || dueToSettings || dueToGameHandler || dueToError;
+    _isVisible = dueToMode || dueToSettings || dueToGameHandler || dueToEndSession;
 
     return Visibility(
       visible: _isVisible,
@@ -44,8 +44,8 @@ class BigButtonState extends State<BigButton> {
         child: SizedBox.expand(
           child: TextButton(
             onPressed: () => {
-              if (dueToError) {
-                entityNotifier.changeGameEntity(Entity.multiplayerwelcome),
+              if (dueToEndSession) {
+                entityNotifier.changeGameEntity(Entity.lobby),
                 mpNotifier.setGameStatus(GameStatus.none),
               } else if (dueToMode) {
                 entityNotifier.updateModeChanging(),
