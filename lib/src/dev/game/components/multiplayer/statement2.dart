@@ -59,15 +59,15 @@ class _Statement2State extends State<Statement2> {
       _statement = "NO WINNER!";
       _sizeRatio = 40;
     } else if (mpNotifier.getGameStatus == GameStatus.error) {
-      _statement = "AN ERROR\nOCCURED";
+      _statement = "ERROR\nOCCURED";
       _sizeRatio = 30;
     } else if (mpNotifier.getGameStatus == GameStatus.retry) {
-      _statement = "RETRY";
-      _sizeRatio = 50;
+      _statement = "TAP TO\nRETRY!";
+      _sizeRatio = 35;
     } else if (mpNotifier.getGameStatus == GameStatus.leavelostordraw ||
                mpNotifier.getGameStatus == GameStatus.leavewon) {
-      _statement = "LEAVE";
-      _sizeRatio = 50;
+      _statement = "TAP TO\nLEAVE";
+      _sizeRatio = 35;
     }
   }
 

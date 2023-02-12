@@ -42,13 +42,13 @@ class _StatementState extends State<Statement> {
       _statement = winStatements[statementIndex];
       _sizeRatio = statementIndex == 2 ? 38 : 50;
     } else if (notifier.getGameStatus == GameStatus.nextlevel) {
-      _statement = "TAP TO NEXT!";
+      _statement = "TAP TO\nNEXT!";
       _sizeRatio = 35;
     } else if (notifier.getGameStatus == GameStatus.tryagain) {
       _statement = "TRY AGAIN!";
       _sizeRatio = 45;
     } else if (notifier.getGameStatus == GameStatus.finish) {
-      _statement = "YOU'RE A HERO!";
+      _statement = "YOU'RE A\nHEROE!";
       _sizeRatio = 40;
     }
   }

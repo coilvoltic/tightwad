@@ -31,10 +31,9 @@ class BigButtonState extends State<BigButton> {
                                   gameHandlerNotifier.getGameStatus == GameStatus.finish;
     final bool dueToSettings    = optionsNotifier.getAreSettingsChanging;
     final bool dueToMode        = entityNotifier.getIsModeChanging;
-    final bool dueToEndSession  = mpNotifier.getGameStatus == GameStatus.retry       ||
-                                  mpNotifier.getGameStatus == GameStatus.winsession  ||
-                                  mpNotifier.getGameStatus == GameStatus.losesession ||
-                                  mpNotifier.getGameStatus == GameStatus.drawsession;
+    final bool dueToEndSession  = mpNotifier.getGameStatus == GameStatus.retry    ||
+                                  mpNotifier.getGameStatus == GameStatus.leavewon ||
+                                  mpNotifier.getGameStatus == GameStatus.leavelostordraw;
 
     _isVisible = dueToMode || dueToSettings || dueToGameHandler || dueToEndSession;
 
