@@ -71,26 +71,18 @@ class _Tile2State extends State<Tile2> {
   }
 
   void checkOpponentMove(MultiPlayerNotifier mpNotifier) {
-    print('check opponent move');
-    print('owner is : ${owner.toString()}');
     if (owner == Player.none) {
-      print('owner is none');
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
-        print('1: x = ${mpNotifier.getCreatorLastMove().x}, y = ${mpNotifier.getCreatorLastMove().y}');
-        print('2: x = ${widget.tileCoordinates.x}, y = ${widget.tileCoordinates.y}');
-        print(GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getCreatorLastMove()));
       }
       if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getCreatorLastMove())) {
         if (Database.getSoundSettingOn() && mpNotifier.getNbOfCreatorPress() > 0) {
           playSound('player1-${mpNotifier.getNbOfCreatorPress()}.mp3');
         }
-        print('creator');
         owner = Player.creator;
       } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getGuestLastMove())) {
         if (Database.getSoundSettingOn() && mpNotifier.getNbOfGuestPress() > 0) {
           playSound('player2-${mpNotifier.getNbOfGuestPress()}.wav');
         }
-        print('guest');
         owner = Player.guest;
       }
     }
