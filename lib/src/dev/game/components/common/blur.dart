@@ -35,6 +35,7 @@ class _BlurState extends State<Blur> {
                        mpNotifier.getGameStatus == GameStatus.drawsession ||
                        mpNotifier.getGameStatus == GameStatus.winsession  ||
                        mpNotifier.getGameStatus == GameStatus.retry       ||
+                       mpNotifier.getGameStatus == GameStatus.alone       ||
                        mpNotifier.getGameStatus == GameStatus.leavewon    ||
                        mpNotifier.getGameStatus == GameStatus.leavelostordraw);
     if (gameHandlerNotifier.getGameStatus != GameStatus.playing ||
@@ -44,6 +45,7 @@ class _BlurState extends State<Blur> {
         mpNotifier.getGameStatus == GameStatus.drawsession      || 
         mpNotifier.getGameStatus == GameStatus.winsession       ||
         mpNotifier.getGameStatus == GameStatus.retry            ||
+        mpNotifier.getGameStatus == GameStatus.alone            ||
         mpNotifier.getGameStatus == GameStatus.leavewon         ||
         mpNotifier.getGameStatus == GameStatus.leavelostordraw) { 
       _blurAnimationDuration = 1000;

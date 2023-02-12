@@ -68,14 +68,19 @@ class _Statement2State extends State<Statement2> {
       _sizeRatio = 35;
     } else if (mpNotifier.getGameStatus == GameStatus.leavelostordraw ||
                mpNotifier.getGameStatus == GameStatus.leavewon) {
-      _statement = "TAP TO\nLEAVE";
+      _statement = "TAP TO\nQUIT";
+      _sizeRatio = 35;
+    } else if (mpNotifier.getGameStatus == GameStatus.alone) {
+      _statement = "OPPONENT\nLEFT";
       _sizeRatio = 35;
     }
   }
 
   void computeStatementBouncingStatus(final MultiPlayerNotifier mpNotifier) {
     _isStatementBouncing = mpNotifier.getGameStatus == GameStatus.finish ||
-        mpNotifier.getGameStatus == GameStatus.retry;
+        mpNotifier.getGameStatus == GameStatus.retry    ||
+        mpNotifier.getGameStatus == GameStatus.leavewon ||
+        mpNotifier.getGameStatus == GameStatus.leavelostordraw;
   }
 
   @override

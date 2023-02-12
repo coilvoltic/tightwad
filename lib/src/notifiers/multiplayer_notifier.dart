@@ -170,8 +170,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<void> waitForMatrixAndStoreIt() async {
-    while (!_isMatrixReceived) {
-      print('attempt to fetch matrix...');
+    int nbOfAttempts = 0;
+    while (!_isMatrixReceived && nbOfAttempts < 10) {
       await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .get()
         .then((doc) {
@@ -189,13 +189,18 @@ class MultiPlayerNotifier extends ChangeNotifier {
         }).onError((errorObj, stackTrace) {
           setError();
         });
+      nbOfAttempts++;
       await Future.delayed(const Duration(seconds: 1));
     }
-    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
-      .update({
-        'matrix': '',
-        'matrix_backup': jsonEncode(matrix),
-      });
+    if (nbOfAttempts >= 10) {
+      setError();
+    } else {
+      await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
+        .update({
+          'matrix': '',
+          'matrix_backup': jsonEncode(matrix),
+        });
+    }
   }
 
   void updateLocalCreatorTiles(final Coordinates move) {
@@ -214,13 +219,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<void> launchNotifyRandomCreatorNewMove() async {
-    print('launching!');
     final int nbOfCreatorMoves = creatorMoves.length;
     Timer(const Duration(seconds: Utils.MOVE_TIMEOUT), () async {
       if (nbOfCreatorMoves == creatorMoves.length) {
         Random random = Random();
         final Coordinates randomMove = _creatorPossibleMoves[random.nextInt(_creatorPossibleMoves.length)];
-        print('timed out!');
         updateLocalCreatorTiles(randomMove);
         await notifyCreatorNewMove(randomMove);
       }
@@ -294,9 +297,19 @@ class MultiPlayerNotifier extends ChangeNotifier {
       });
   }
 
+  Future<void> launchQuitDueToIdleFromGuest() async {
+    final int nbOfGuestMoves = guestMoves.length;
+    Timer(const Duration(seconds: Utils.MOVE_TIMEOUT + 3), () async {
+      if (nbOfGuestMoves == guestMoves.length) {
+        setOpponentLeft();
+      }
+    });
+  }
+
   Future<void> listenToGuestMove() async {
     if (!_isListening) {
       _isListening = true;
+      launchQuitDueToIdleFromGuest();
       listener =  FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
         if (event.exists && event.data()!.containsKey('guestLastMove') && event.get('guestLastMove') != '') {
           guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
@@ -329,9 +342,19 @@ class MultiPlayerNotifier extends ChangeNotifier {
     }
   }
 
+  Future<void> launchQuitDueToIdleFromCreator() async {
+    final int nbOfCreatorMoves = creatorMoves.length;
+    Timer(const Duration(seconds: Utils.MOVE_TIMEOUT + 3), () async {
+      if (nbOfCreatorMoves == creatorMoves.length) {
+        setOpponentLeft();
+      }
+    });
+  }
+
   Future<void> listenToCreatorMove() async {
     if (!_isListening) {
       _isListening = true;
+      launchQuitDueToIdleFromCreator();
       listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
         if (event.exists && event.data()!.containsKey('creatorLastMove') && event.get('creatorLastMove') != '') {
           creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
@@ -494,6 +517,13 @@ class MultiPlayerNotifier extends ChangeNotifier {
     setGameStatus(GameStatus.error);
     Timer(const Duration(seconds: 2), () {
       setGameStatus(GameStatus.retry);
+    });
+  }
+
+  void setOpponentLeft() {
+    setGameStatus(GameStatus.alone);
+    Timer(const Duration(seconds: 2), () {
+      setGameStatus(GameStatus.leavelostordraw);
     });
   }
 
