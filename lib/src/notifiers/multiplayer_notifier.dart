@@ -106,8 +106,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
     creatorRoundStatus.clear();
     guestRoundStatus.clear();
     turn = Player.creator;
-    initializeData();
     await fetchUsefulSessionData();
+    initializeData();
   }
 
   Future<void> initializeGame() async {
@@ -156,6 +156,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'matrix': jsonEncode(matrix),
       }).whenComplete(() => {
         setGameStatus(GameStatus.playing),
+        if (turn == Player.creator) {
+          launchNotifyRandomCreatorNewMove(),
+        }
       }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
         setError();
       }).onError((error, stackTrace) => {
@@ -175,6 +178,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _isMatrixReceived = true;
             _guestPossibleMoves = GameUtils.fillAllMoves(getSqDim());
             _creatorPossibleMoves = GameUtils.fillAllMoves(getSqDim());
+            if (turn == Player.guest) {
+              launchNotifyRandomGuestNewMove();
+            }
             setGameStatus(GameStatus.playing);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
@@ -208,10 +214,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<void> launchNotifyRandomCreatorNewMove() async {
     final int nbOfCreatorMoves = creatorMoves.length;
-    Timer(const Duration(seconds: 15), () async {
+    Timer(const Duration(seconds: Utils.MOVE_TIMEOUT), () async {
       if (nbOfCreatorMoves == creatorMoves.length) {
         Random random = Random();
         final Coordinates randomMove = _creatorPossibleMoves[random.nextInt(_creatorPossibleMoves.length)];
+        updateLocalCreatorTiles(randomMove);
         await notifyCreatorNewMove(randomMove);
       }
     });
@@ -254,10 +261,11 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<void> launchNotifyRandomGuestNewMove() async {
     final int nbOfGuestMoves = guestMoves.length;
-    Timer(const Duration(seconds: 15), () async {
+    Timer(const Duration(seconds: Utils.MOVE_TIMEOUT), () async {
       if (nbOfGuestMoves == guestMoves.length) {
         Random random = Random();
         final Coordinates randomMove = _guestPossibleMoves[random.nextInt(_guestPossibleMoves.length)];
+        updateLocalGuestTiles(randomMove);
         await notifyGuestNewMove(randomMove);
       }
     });
