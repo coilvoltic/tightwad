@@ -70,29 +70,19 @@ class _Tile2State extends State<Tile2> {
     );
   }
 
-  void checkOpponentMove(MultiPlayerNotifier mpNotifier) {
+  void checkUndoneMoves(MultiPlayerNotifier mpNotifier) {
     if (owner == Player.none) {
-      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
-      }
-      if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getCreatorLastMove())) {
+      if (GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getCreatorLastMove())) {
         if (Database.getSoundSettingOn() && mpNotifier.getNbOfCreatorPress() > 0) {
           playSound('player1-${mpNotifier.getNbOfCreatorPress()}.mp3');
         }
         owner = Player.creator;
-      } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator && GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getGuestLastMove())) {
+      } else if (GameUtils.areCoordinatesEqual(widget.tileCoordinates, mpNotifier.getGuestLastMove())) {
         if (Database.getSoundSettingOn() && mpNotifier.getNbOfGuestPress() > 0) {
           playSound('player2-${mpNotifier.getNbOfGuestPress()}.wav');
         }
         owner = Player.guest;
       }
-    }
-  }
-
-  void getUpdatedToOpponentMove(MultiPlayerNotifier mpNotifier) {
-    if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator && mpNotifier.getTurn == Player.creator ||
-        MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest   && mpNotifier.getTurn == Player.guest   ||
-        mpNotifier.isEndGame()) {
-      checkOpponentMove(mpNotifier);
     }
   }
 
@@ -111,7 +101,7 @@ class _Tile2State extends State<Tile2> {
 
     return Consumer<OptionsNotifier>(
       builder: (context, _, __) {
-      getUpdatedToOpponentMove(mpNotifier);
+      checkUndoneMoves(mpNotifier);
       checkWhetherMoveIsForbidden(mpNotifier);
       return GestureDetector(
         onTap: () => {

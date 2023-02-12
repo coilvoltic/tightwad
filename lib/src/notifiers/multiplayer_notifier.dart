@@ -161,7 +161,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
       .update({
         'matrix': jsonEncode(matrix),
       }).whenComplete(() => {
-        print('matrix created!'),
         setGameStatus(GameStatus.playing),
       }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
         setError();
