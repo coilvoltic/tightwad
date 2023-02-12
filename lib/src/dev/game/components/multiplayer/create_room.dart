@@ -156,14 +156,21 @@ class _CreateRoomState extends State<CreateRoom> {
                   });
                 } else {
                   mpNotifier.setGameStatus(GameStatus.loading);
-                  await Utils.deleteRoomIfExists();
-                  String? errorWhileCreatingRoom = await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
-                  mpNotifier.setGameStatus(GameStatus.none);
-                  if (errorWhileCreatingRoom == null) {
-                    entityNotifier.changeGameEntity(Entity.waitingopponent);
+                  String? errorWhileDeletingRoom = await Utils.deleteRoomIfExists();
+                  if (errorWhileDeletingRoom == null) {
+                    String? errorWhileCreatingRoom = await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
+                    mpNotifier.setGameStatus(GameStatus.none);
+                    if (errorWhileCreatingRoom == null) {
+                      entityNotifier.changeGameEntity(Entity.waitingopponent);
+                    } else {
+                      setState(() {
+                        _nameErrorMessage = errorWhileCreatingRoom;
+                      });
+                    }
                   } else {
+                    mpNotifier.setGameStatus(GameStatus.none);
                     setState(() {
-                      _nameErrorMessage = errorWhileCreatingRoom;
+                      _nameErrorMessage = errorWhileDeletingRoom;
                     });
                   }
                 }

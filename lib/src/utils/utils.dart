@@ -53,7 +53,7 @@ abstract class Utils {
   // ignore: constant_identifier_names
   static const double TEXT_FIELD_HEIGHT = 50;
   // ignore: constant_identifier_names
-  static const int REQUEST_TIME_OUT = 10;
+  static const int REQUEST_TIME_OUT = 5;
   // ignore: constant_identifier_names
   static const int LOADING_DURATION = 1;
   // ignore: constant_identifier_names
@@ -371,7 +371,7 @@ abstract class Utils {
   static Future<String?> createRoomInFirebase(final String name, final int nbOfRounds) async {
     String? error;
     MultiPlayerNotifier.generateAndSetRoomId();
-    FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').set(<String, dynamic>{
+    await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').set(<String, dynamic>{
       'roomId': Database.getRoomId(),
       'nbOfRounds': nbOfRounds,
       'creatorName': name,

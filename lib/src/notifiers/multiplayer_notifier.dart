@@ -388,6 +388,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
     } else {
       setGameStatus(GameStatus.drawsession);
     }
+    Timer(const Duration(seconds: 2), () {
+      setGameStatus(GameStatus.finish);
+    });
   }
 
   bool isEndGame() {

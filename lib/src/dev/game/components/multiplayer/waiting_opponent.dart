@@ -23,7 +23,7 @@ class WaitingOpponent extends StatefulWidget {
 class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProviderStateMixin {
 
   late AnimationController _controller;
-  final double ratioWaitingOpponentStatement = 0.45;
+  final double ratioWaitingOpponentStatement = 0.38;
   final double ratioLoader = 0.15;
   final double ratioRoomIdStatement = 0.2;
 

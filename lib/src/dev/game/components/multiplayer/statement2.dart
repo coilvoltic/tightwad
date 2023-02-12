@@ -48,10 +48,10 @@ class _Statement2State extends State<Statement2> {
       _sizeRatio = 50;
     } else if (mpNotifier.getGameStatus == GameStatus.winsession) {
       _statement = "VICTORY!";
-      _sizeRatio = 45;
+      _sizeRatio = 40;
     } else if (mpNotifier.getGameStatus == GameStatus.losesession) {
       _statement = "DEFEAT!";
-      _sizeRatio = 45;
+      _sizeRatio = 42;
     } else if (mpNotifier.getGameStatus == GameStatus.drawsession) {
       _statement = "NO WINNER!";
       _sizeRatio = 40;
@@ -68,23 +68,22 @@ class _Statement2State extends State<Statement2> {
   }
 
   void computeStatementBouncingStatus(final MultiPlayerNotifier mpNotifier) {
-    _isStatementBouncing = mpNotifier.getGameStatus == GameStatus.nextlevel ||
-        mpNotifier.getGameStatus == GameStatus.tryagain ||
+    _isStatementBouncing = mpNotifier.getGameStatus == GameStatus.finish ||
         mpNotifier.getGameStatus == GameStatus.retry;
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<MultiPlayerNotifier>(builder: (context, mpNotifier, _) {
+      computeStatement(mpNotifier);
       computeStatementVisibilityStatus(mpNotifier);
+      computeStatementBouncingStatus(mpNotifier);
       return Visibility(
         visible: _isDisplayedStatement,
         child: TweenAnimationBuilder(
           duration: const Duration(milliseconds: 300),
           tween: Tween(begin: 0.0, end: _reversed ? -5.0 : 5.0),
           builder: (context, double statementPosition, child) {
-            computeStatement(mpNotifier);
-            computeStatementBouncingStatus(mpNotifier);
             return SafeArea(
               child: Center(
                 child: Transform.translate(
