@@ -154,6 +154,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'matrix': jsonEncode(matrix),
       }).whenComplete(() => {
         setGameStatus(GameStatus.playing),
+      }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
+        setError();
       }).onError((error, stackTrace) => {
         setError(),
       });
@@ -214,6 +216,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
           turn = Player.guest,
           notifyListeners(),
         },
+      }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
+        setError();
       }).onError((error, stackTrace) => {
         setError(),
       });
@@ -248,6 +252,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
           turn = Player.creator,
           notifyListeners(),
         },
+      }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
+        setError();
       }).onError((error, stackTrace) => {
         setError(),
       });
@@ -352,6 +358,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _isListening = false;
     _creatorScore = 0;
     _guestScore = 0;
+    turn = Player.creator;
     matrix.clear();
     creatorMoves.clear();
     guestMoves.clear();
