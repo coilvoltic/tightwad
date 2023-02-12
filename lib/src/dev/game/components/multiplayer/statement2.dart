@@ -27,19 +27,21 @@ class _Statement2State extends State<Statement2> {
   void computeStatementVisibilityStatus(final MultiPlayerNotifier mpNotifier) {
     _isDisplayedStatement = mpNotifier.getGameStatus == GameStatus.win         ||
                             mpNotifier.getGameStatus == GameStatus.lose        ||
+                            mpNotifier.getGameStatus == GameStatus.draw        ||
                             mpNotifier.getGameStatus == GameStatus.winsession  ||
                             mpNotifier.getGameStatus == GameStatus.losesession ||
                             mpNotifier.getGameStatus == GameStatus.drawsession ||
                             mpNotifier.getGameStatus == GameStatus.error       ||
                             mpNotifier.getGameStatus == GameStatus.retry       ||
+                            mpNotifier.getGameStatus == GameStatus.alone       ||
                             mpNotifier.getGameStatus == GameStatus.leavewon    ||
                             mpNotifier.getGameStatus == GameStatus.leavelostordraw;
   }
 
   void computeStatement(final MultiPlayerNotifier mpNotifier) {
     if (mpNotifier.getGameStatus == GameStatus.lose) {
-      _statement = "YOU LOSE";
-      _sizeRatio = 45;
+      _statement = "YOU LOSE!";
+      _sizeRatio = 42;
     } else if (mpNotifier.getGameStatus == GameStatus.win) {
       if (_currentRound != mpNotifier.getCurrentRound) {
         _currentRound = mpNotifier.getCurrentRound;
@@ -49,30 +51,30 @@ class _Statement2State extends State<Statement2> {
         _sizeRatio = statementIndex == 2 ? 38 : 50;
       }
     } else if (mpNotifier.getGameStatus == GameStatus.draw) {
-      _statement = "DRAW";
-      _sizeRatio = 50;
+      _statement = "DRAW!";
+      _sizeRatio = 48;
     } else if (mpNotifier.getGameStatus == GameStatus.winsession) {
       _statement = "VICTORY!";
-      _sizeRatio = 40;
+      _sizeRatio = 36;
     } else if (mpNotifier.getGameStatus == GameStatus.losesession) {
       _statement = "DEFEAT!";
       _sizeRatio = 42;
     } else if (mpNotifier.getGameStatus == GameStatus.drawsession) {
-      _statement = "NO WINNER!";
+      _statement = "NO\nWINNER!";
       _sizeRatio = 40;
     } else if (mpNotifier.getGameStatus == GameStatus.error) {
-      _statement = "ERROR\nOCCURED";
+      _statement = "ERROR\nOCCURED!";
       _sizeRatio = 30;
     } else if (mpNotifier.getGameStatus == GameStatus.retry) {
-      _statement = "TAP TO\nRETRY!";
+      _statement = "TAP TO\nRETRY";
       _sizeRatio = 35;
     } else if (mpNotifier.getGameStatus == GameStatus.leavelostordraw ||
                mpNotifier.getGameStatus == GameStatus.leavewon) {
       _statement = "TAP TO\nQUIT";
       _sizeRatio = 35;
     } else if (mpNotifier.getGameStatus == GameStatus.alone) {
-      _statement = "OPPONENT\nLEFT";
-      _sizeRatio = 35;
+      _statement = "OPPONENT\nLEFT!";
+      _sizeRatio = 30;
     }
   }
 

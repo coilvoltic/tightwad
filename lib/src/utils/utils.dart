@@ -61,7 +61,7 @@ abstract class Utils {
   // ignore: constant_identifier_names
   static const int ROOM_ID_MIN = 100000;
   // ignore: constant_identifier_names
-  static const int MOVE_TIMEOUT = 3;
+  static const int MOVE_TIMEOUT = 15;
 
   static Color getBackgroundColorFromTheme() {
     if (Database.getGameTheme() == LIGHT_THEME_INDEX) {

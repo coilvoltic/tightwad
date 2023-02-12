@@ -1219,7 +1219,7 @@ class _LevelPathState extends State<LevelPath> {
         MediaQuery.of(context).padding.bottom;
     width = MediaQuery.of(context).size.width;
     gamePxSize = min(min(width, height) / 1, height / 1.7);
-    outGamePxHeight = (height - gamePxSize / 5) / 2 - 200;
+    outGamePxHeight = (height - gamePxSize) / 2;
 
     startOfPathLeft = gamePxSize / 3.3 + 10;
     endOfPathRight = width - endMarginPx;

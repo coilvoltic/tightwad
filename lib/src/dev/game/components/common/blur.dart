@@ -29,6 +29,7 @@ class _BlurState extends State<Blur> {
                        optionsNotifier.getAreSettingsChanging ||
                        entityNotifier.getIsModeChanging ||
                        mpNotifier.getGameStatus == GameStatus.win         ||
+                       mpNotifier.getGameStatus == GameStatus.draw        ||
                        mpNotifier.getGameStatus == GameStatus.lose        ||
                        mpNotifier.getGameStatus == GameStatus.error       ||
                        mpNotifier.getGameStatus == GameStatus.losesession ||
@@ -40,18 +41,19 @@ class _BlurState extends State<Blur> {
                        mpNotifier.getGameStatus == GameStatus.leavelostordraw);
     if (gameHandlerNotifier.getGameStatus != GameStatus.playing ||
         mpNotifier.getGameStatus == GameStatus.win              ||
+        mpNotifier.getGameStatus == GameStatus.draw             ||
         mpNotifier.getGameStatus == GameStatus.lose             ||
         mpNotifier.getGameStatus == GameStatus.losesession      || 
         mpNotifier.getGameStatus == GameStatus.drawsession      || 
         mpNotifier.getGameStatus == GameStatus.winsession       ||
         mpNotifier.getGameStatus == GameStatus.retry            ||
-        mpNotifier.getGameStatus == GameStatus.alone            ||
         mpNotifier.getGameStatus == GameStatus.leavewon         ||
         mpNotifier.getGameStatus == GameStatus.leavelostordraw) { 
       _blurAnimationDuration = 1000;
       _blurValue = 4.0;
-    } else if (optionsNotifier.getAreSettingsChanging ||
-               entityNotifier.getIsModeChanging       ||
+    } else if (optionsNotifier.getAreSettingsChanging       ||
+               entityNotifier.getIsModeChanging             ||
+               mpNotifier.getGameStatus == GameStatus.alone ||
                mpNotifier.getGameStatus == GameStatus.error) {
       _blurAnimationDuration = 100;
       _blurValue = 4.0;

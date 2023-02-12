@@ -310,7 +310,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     if (!_isListening) {
       _isListening = true;
       launchQuitDueToIdleFromGuest();
-      listener =  FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
+      listener = FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}').snapshots().listen((event) async => {
         if (event.exists && event.data()!.containsKey('guestLastMove') && event.get('guestLastMove') != '') {
           guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
           listener.cancel(),
