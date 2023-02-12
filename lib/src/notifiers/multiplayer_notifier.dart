@@ -206,6 +206,17 @@ class MultiPlayerNotifier extends ChangeNotifier {
     }
   }
 
+  Future<void> launchNotifyRandomCreatorNewMove() async {
+    final int nbOfCreatorMoves = creatorMoves.length;
+    Timer(const Duration(seconds: 15), () async {
+      if (nbOfCreatorMoves == creatorMoves.length) {
+        Random random = Random();
+        final Coordinates randomMove = _creatorPossibleMoves[random.nextInt(_creatorPossibleMoves.length)];
+        await notifyCreatorNewMove(randomMove);
+      }
+    });
+  }
+
   Future<void> notifyCreatorNewMove(final Coordinates move) async {
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
@@ -239,6 +250,17 @@ class MultiPlayerNotifier extends ChangeNotifier {
       }
       notifyListeners();
     }
+  }
+
+  Future<void> launchNotifyRandomGuestNewMove() async {
+    final int nbOfGuestMoves = guestMoves.length;
+    Timer(const Duration(seconds: 15), () async {
+      if (nbOfGuestMoves == guestMoves.length) {
+        Random random = Random();
+        final Coordinates randomMove = _guestPossibleMoves[random.nextInt(_guestPossibleMoves.length)];
+        await notifyGuestNewMove(randomMove);
+      }
+    });
   }
 
   Future<void> notifyGuestNewMove(final Coordinates move) async {
@@ -287,6 +309,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             if (_guestPossibleMoves.length == 1) {
               GameUtils.preventPotentialStuckSituationInMpMode(_creatorPossibleMoves, _guestPossibleMoves[0]),
             },
+            launchNotifyRandomCreatorNewMove(),
             _isListening = false,
             notifyListeners(),
           },
@@ -321,6 +344,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             if (_creatorPossibleMoves.length == 1) {
               GameUtils.preventPotentialStuckSituationInMpMode(_guestPossibleMoves, _creatorPossibleMoves[0]),
             },
+            launchNotifyRandomGuestNewMove(),
             _isListening = false,
             notifyListeners(),
           },

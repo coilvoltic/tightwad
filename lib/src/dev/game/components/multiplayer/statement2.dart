@@ -31,7 +31,9 @@ class _Statement2State extends State<Statement2> {
                             mpNotifier.getGameStatus == GameStatus.losesession ||
                             mpNotifier.getGameStatus == GameStatus.drawsession ||
                             mpNotifier.getGameStatus == GameStatus.error       ||
-                            mpNotifier.getGameStatus == GameStatus.retry;
+                            mpNotifier.getGameStatus == GameStatus.retry       ||
+                            mpNotifier.getGameStatus == GameStatus.leavewon    ||
+                            mpNotifier.getGameStatus == GameStatus.leavelostordraw;
   }
 
   void computeStatement(final MultiPlayerNotifier mpNotifier) {
