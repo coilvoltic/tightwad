@@ -125,5 +125,14 @@ abstract class GameUtils {
       }
     }
   }
+  
+  static void preventPotentialStuckSituationInMpMode(List<Coordinates> movesList, final Coordinates move) {
+    if (movesList.any((item) => 
+      item.x == move.x && item.y == move.y
+    )) {
+      movesList.removeWhere((element) => element.x == move.x && element.y == move.y);
+      movesList.removeWhere((element) => element.x != move.x && element.y != move.y);
+    }
+  }
 
 }

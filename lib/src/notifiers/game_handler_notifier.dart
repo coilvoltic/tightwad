@@ -98,6 +98,10 @@ class GameHandlerNotifier extends ChangeNotifier {
     await Database.reinitializeLevel();
   }
 
+  void registerIsBoss() async {
+    await Database.registerIsBoss();
+  }
+
   /* '----------' GAME EVENT HANDLING '----------' */
   void registerUserMove(Coordinates move) {
     userMoveList.add(move);
@@ -288,6 +292,7 @@ class GameHandlerNotifier extends ChangeNotifier {
       Timer(const Duration(seconds: 1), () {
         if (lvl == 24) {
           gameStatus = GameStatus.finish;
+          registerIsBoss();
           reinitializeLevel();
         } else {
           gameStatus = GameStatus.nextlevel;

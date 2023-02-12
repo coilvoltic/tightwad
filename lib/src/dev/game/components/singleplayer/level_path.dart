@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:tightwad/src/utils/common_enums.dart';
@@ -1202,9 +1203,9 @@ class _LevelPathState extends State<LevelPath> {
         borderRadius: const BorderRadius.all(Radius.circular(40.0)),
       ),
       child: Center(
-        child: Icon(
-          Icons.star_rate_rounded,
-          size: outGamePxHeight / 10,
+        child: FaIcon(
+          FontAwesomeIcons.crown,
+          size: outGamePxHeight / 12,
           color: isPassed ? _labelPassedColor : _labelNotPassedColor,
         )
       ),

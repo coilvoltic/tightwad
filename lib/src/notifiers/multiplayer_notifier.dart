@@ -150,6 +150,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
   Future<void> createAndPushMatrix() async {
     generateMatrix();
     _creatorPossibleMoves = GameUtils.fillAllMoves(getSqDim());
+    _guestPossibleMoves = GameUtils.fillAllMoves(getSqDim());
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
         'matrix': jsonEncode(matrix),
@@ -173,6 +174,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
             });
             _isMatrixReceived = true;
             _guestPossibleMoves = GameUtils.fillAllMoves(getSqDim());
+            _creatorPossibleMoves = GameUtils.fillAllMoves(getSqDim());
             setGameStatus(GameStatus.playing);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
@@ -240,7 +242,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<void> notifyGuestNewMove(final Coordinates move) async {
-    GameUtils.updatePossibleMoves(_guestPossibleMoves, move, getSqDim());
     await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .update({
         'guestLastMove': {
@@ -268,6 +269,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
           guestMoves.add(Coordinates(event.get(FieldPath(const ['guestLastMove', 'x'])), event.get(FieldPath(const ['guestLastMove', 'y'])))),
           listener.cancel(),
           _guestScore += matrix.elementAt(guestMoves.last.x - 1).elementAt(guestMoves.last.y - 1),
+          GameUtils.updatePossibleMoves(_guestPossibleMoves, guestMoves.last, getSqDim()),
           if (isEndGame()) {
             notifyListeners(),
             endGame(),
@@ -281,6 +283,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
               element.x == getGuestLastMove().x && element.y == getGuestLastMove().y),
             if (creatorMoves.length == getSqDim() - 2) {
               GameUtils.preventPotentialStuckSituation(_creatorPossibleMoves),
+            },
+            if (_guestPossibleMoves.length == 1) {
+              GameUtils.preventPotentialStuckSituationInMpMode(_creatorPossibleMoves, _guestPossibleMoves[0]),
             },
             _isListening = false,
             notifyListeners(),
@@ -298,6 +303,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
           creatorMoves.add(Coordinates(event.get(FieldPath(const ['creatorLastMove', 'x'])), event.get(FieldPath(const ['creatorLastMove', 'y'])))),
           listener.cancel(),
           _creatorScore += matrix.elementAt(creatorMoves.last.x - 1).elementAt(creatorMoves.last.y - 1),
+          GameUtils.updatePossibleMoves(_creatorPossibleMoves, creatorMoves.last, getSqDim()),
           if (isEndGame()) {
             notifyListeners(),
             endGame(),
@@ -311,6 +317,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
               element.x == getCreatorLastMove().x && element.y == getCreatorLastMove().y),
             if (guestMoves.length == getSqDim() - 2) {
               GameUtils.preventPotentialStuckSituation(_guestPossibleMoves),
+            },
+            if (_creatorPossibleMoves.length == 1) {
+              GameUtils.preventPotentialStuckSituationInMpMode(_guestPossibleMoves, _creatorPossibleMoves[0]),
             },
             _isListening = false,
             notifyListeners(),

@@ -9,12 +9,13 @@ class Database {
   static const _keyGameTheme    = 'theme';
   static const _keySoundSetting = 'sound';
   static const _keyRoomId       = 'roomId';
+  static const _keyIsBoss       = 'isBoss';
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
     if (Database.getGameEntity() == Utils.MULTIPLAYERGAME_ENTITY_INDEX ||
         Database.getGameEntity() == Utils.WAITINGOPPONENT_ENTITY_INDEX) {
-      registerGameEntity(Utils.MULTIPLAYERWELCOME_ENTITY_INDEX);
+      registerGameEntity(Utils.LOBBY_ENTITY_INDEX);
     }
   }
 
@@ -46,9 +47,14 @@ class Database {
     await _preferences?.setString(_keyRoomId, newRoomid);
   }
 
+  static Future registerIsBoss() async {
+    await _preferences?.setBool(_keyIsBoss, true);
+  }
+
   static int    getGameEntity()     => _preferences?.getInt   (_keyGameEntity)   ?? Utils.SINGLEPLAYERWELCOME_ENTITY_INDEX;
   static int    getLevel()          => _preferences?.getInt   (_keyLevel)        ?? 0;
   static int    getGameTheme()      => _preferences?.getInt   (_keyGameTheme)    ?? Utils.LIGHT_THEME_INDEX;
   static bool   getSoundSettingOn() => _preferences?.getBool  (_keySoundSetting) ?? true;
   static String getRoomId()         => _preferences?.getString(_keyRoomId)       ?? '-1';
+  static bool   getIsBoss()         => _preferences?.getBool  (_keyIsBoss)       ?? false;
 }
