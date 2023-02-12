@@ -106,8 +106,8 @@ class MultiPlayerNotifier extends ChangeNotifier {
     creatorRoundStatus.clear();
     guestRoundStatus.clear();
     turn = Player.creator;
-    await fetchUsefulSessionData();
     initializeData();
+    await fetchUsefulSessionData();
   }
 
   Future<void> initializeGame() async {
@@ -161,6 +161,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
       .update({
         'matrix': jsonEncode(matrix),
       }).whenComplete(() => {
+        print('matrix created!'),
         setGameStatus(GameStatus.playing),
       }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
         setError();
@@ -214,11 +215,13 @@ class MultiPlayerNotifier extends ChangeNotifier {
   }
 
   Future<void> launchNotifyRandomCreatorNewMove() async {
+    print('launching!');
     final int nbOfCreatorMoves = creatorMoves.length;
     Timer(const Duration(seconds: Utils.MOVE_TIMEOUT), () async {
       if (nbOfCreatorMoves == creatorMoves.length) {
         Random random = Random();
         final Coordinates randomMove = _creatorPossibleMoves[random.nextInt(_creatorPossibleMoves.length)];
+        print('timed out!');
         updateLocalCreatorTiles(randomMove);
         await notifyCreatorNewMove(randomMove);
       }
