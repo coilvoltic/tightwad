@@ -41,9 +41,9 @@ abstract class Utils {
   // ignore: constant_identifier_names
   static const double ZERO_PLUS = 0.0001;
   // ignore: constant_identifier_names
-  static const double ROOM_LOBBY_TITLE_HEIGHT_RATIO = 0.35;
+  static const double ROOM_LOBBY_TITLE_HEIGHT_RATIO = 0.4;
   // ignore: constant_identifier_names
-  static const double ROOM_LOBBY_ROOM_CHOICE_HEIGHT_RATIO = 0.12;
+  static const double ROOM_LOBBY_ROOM_CHOICE_HEIGHT_RATIO = 0.08;
   // ignore: constant_identifier_names
   static const double ROOM_LOBBY_OPTIONS_HEIGHT_RATIO = 1 -
       (ROOM_LOBBY_TITLE_HEIGHT_RATIO + ROOM_LOBBY_ROOM_CHOICE_HEIGHT_RATIO) -
