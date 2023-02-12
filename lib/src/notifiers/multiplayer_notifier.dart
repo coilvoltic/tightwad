@@ -105,6 +105,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _currentRound = 1;
     creatorRoundStatus.clear();
     guestRoundStatus.clear();
+    turn = Player.creator;
     initializeData();
     await fetchUsefulSessionData();
   }
@@ -358,7 +359,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
     _isListening = false;
     _creatorScore = 0;
     _guestScore = 0;
-    turn = Player.creator;
     matrix.clear();
     creatorMoves.clear();
     guestMoves.clear();
@@ -387,17 +387,23 @@ class MultiPlayerNotifier extends ChangeNotifier {
         playSound('victory.mp3');
       }
       setGameStatus(GameStatus.winsession);
-    } else if (nbOfWins < nbOfLosses) {
-      if (Database.getSoundSettingOn()) {
-        playSound('defeat.mp3');
-      }
-      setGameStatus(GameStatus.losesession);
+      Timer(const Duration(seconds: 2), () {
+        setGameStatus(GameStatus.leavewon);
+      });
     } else {
-      setGameStatus(GameStatus.drawsession);
+      if (nbOfWins < nbOfLosses) {
+        if (Database.getSoundSettingOn()) {
+          playSound('defeat.mp3');
+        }
+        setGameStatus(GameStatus.losesession);
+      } else {
+        setGameStatus(GameStatus.drawsession);
+      }
+      Timer(const Duration(seconds: 2), () {
+        setGameStatus(GameStatus.leavelostordraw);
+      });
     }
-    Timer(const Duration(seconds: 2), () {
-      setGameStatus(GameStatus.finish);
-    });
+
   }
 
   bool isEndGame() {

@@ -20,9 +20,9 @@ class _Statement2State extends State<Statement2> {
   List<String> winStatements = ["GREAT!", "WOW!", "PERFECT!"];
   int statementIndex = 0;
   bool _isDisplayedStatement = false;
-
   bool _reversed = false;
   bool _isStatementBouncing = false;
+  int _currentRound = 0;
 
   void computeStatementVisibilityStatus(final MultiPlayerNotifier mpNotifier) {
     _isDisplayedStatement = mpNotifier.getGameStatus == GameStatus.win         ||
@@ -39,10 +39,13 @@ class _Statement2State extends State<Statement2> {
       _statement = "YOU LOSE";
       _sizeRatio = 45;
     } else if (mpNotifier.getGameStatus == GameStatus.win) {
-      Random random = Random();
-      statementIndex = random.nextInt(3);
-      _statement = winStatements[statementIndex];
-      _sizeRatio = statementIndex == 2 ? 38 : 50;
+      if (_currentRound != mpNotifier.getCurrentRound) {
+        _currentRound = mpNotifier.getCurrentRound;
+        Random random = Random();
+        statementIndex = random.nextInt(3);
+        _statement = winStatements[statementIndex];
+        _sizeRatio = statementIndex == 2 ? 38 : 50;
+      }
     } else if (mpNotifier.getGameStatus == GameStatus.draw) {
       _statement = "DRAW";
       _sizeRatio = 50;
@@ -61,7 +64,8 @@ class _Statement2State extends State<Statement2> {
     } else if (mpNotifier.getGameStatus == GameStatus.retry) {
       _statement = "RETRY";
       _sizeRatio = 50;
-    } else if (mpNotifier.getGameStatus == GameStatus.finish) {
+    } else if (mpNotifier.getGameStatus == GameStatus.leavelostordraw ||
+               mpNotifier.getGameStatus == GameStatus.leavewon) {
       _statement = "LEAVE";
       _sizeRatio = 50;
     }

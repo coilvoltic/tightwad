@@ -29,11 +29,12 @@ class _ConfettisState extends State<Confettis> {
   Widget build(BuildContext context) {
     return Consumer2<GameHandlerNotifier, MultiPlayerNotifier>(
       builder: (context, ghNotifier, mpNotifier, _) {
-        if (ghNotifier.getGameStatus == GameStatus.win       ||
-            ghNotifier.getGameStatus == GameStatus.nextlevel ||
-            ghNotifier.getGameStatus == GameStatus.finish    ||
-            mpNotifier.getGameStatus == GameStatus.win       ||
-            mpNotifier.getGameStatus == GameStatus.winsession)
+        if (ghNotifier.getGameStatus == GameStatus.win        ||
+            ghNotifier.getGameStatus == GameStatus.nextlevel  ||
+            ghNotifier.getGameStatus == GameStatus.finish     ||
+            mpNotifier.getGameStatus == GameStatus.win        ||
+            mpNotifier.getGameStatus == GameStatus.winsession ||
+            mpNotifier.getGameStatus == GameStatus.leavewon)
         {
           _controller.play();
         }

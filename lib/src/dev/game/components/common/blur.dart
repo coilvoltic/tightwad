@@ -34,14 +34,18 @@ class _BlurState extends State<Blur> {
                        mpNotifier.getGameStatus == GameStatus.losesession ||
                        mpNotifier.getGameStatus == GameStatus.drawsession ||
                        mpNotifier.getGameStatus == GameStatus.winsession  ||
-                       mpNotifier.getGameStatus == GameStatus.retry);
+                       mpNotifier.getGameStatus == GameStatus.retry       ||
+                       mpNotifier.getGameStatus == GameStatus.leavewon    ||
+                       mpNotifier.getGameStatus == GameStatus.leavelostordraw);
     if (gameHandlerNotifier.getGameStatus != GameStatus.playing ||
         mpNotifier.getGameStatus == GameStatus.win              ||
         mpNotifier.getGameStatus == GameStatus.lose             ||
         mpNotifier.getGameStatus == GameStatus.losesession      || 
         mpNotifier.getGameStatus == GameStatus.drawsession      || 
         mpNotifier.getGameStatus == GameStatus.winsession       ||
-        mpNotifier.getGameStatus == GameStatus.retry) { 
+        mpNotifier.getGameStatus == GameStatus.retry            ||
+        mpNotifier.getGameStatus == GameStatus.leavewon         ||
+        mpNotifier.getGameStatus == GameStatus.leavelostordraw) { 
       _blurAnimationDuration = 1000;
       _blurValue = 4.0;
     } else if (optionsNotifier.getAreSettingsChanging ||
