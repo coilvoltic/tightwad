@@ -113,8 +113,14 @@ class MultiPlayerNotifier extends ChangeNotifier {
   Future<void> initializeGame() async {
     if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.creator) {
       await createAndPushMatrix();
+      if (turn == Player.creator) {
+        launchNotifyRandomCreatorNewMove();
+      }
     } else if (MultiPlayerNotifier.multiPlayerStatus == MultiPlayerStatus.guest) {
       await waitForMatrixAndStoreIt();
+      if (turn == Player.guest) {
+        launchNotifyRandomGuestNewMove();
+      }
     }
   }
 
@@ -156,9 +162,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
         'matrix': jsonEncode(matrix),
       }).whenComplete(() => {
         setGameStatus(GameStatus.playing),
-        if (turn == Player.creator) {
-          launchNotifyRandomCreatorNewMove(),
-        }
       }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
         setError();
       }).onError((error, stackTrace) => {
@@ -168,6 +171,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<void> waitForMatrixAndStoreIt() async {
     while (!_isMatrixReceived) {
+      print('attempt to fetch matrix...');
       await FirebaseFirestore.instance.collection('rooms').doc('room-${Database.getRoomId()}')
       .get()
         .then((doc) {
@@ -178,9 +182,6 @@ class MultiPlayerNotifier extends ChangeNotifier {
             _isMatrixReceived = true;
             _guestPossibleMoves = GameUtils.fillAllMoves(getSqDim());
             _creatorPossibleMoves = GameUtils.fillAllMoves(getSqDim());
-            if (turn == Player.guest) {
-              launchNotifyRandomGuestNewMove();
-            }
             setGameStatus(GameStatus.playing);
           }
         }).timeout(const Duration(seconds: Utils.REQUEST_TIME_OUT), onTimeout: () {
