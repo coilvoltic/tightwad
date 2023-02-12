@@ -158,7 +158,7 @@ class _CreateRoomState extends State<CreateRoom> {
                   mpNotifier.setGameStatus(GameStatus.loading);
                   String? errorWhileDeletingRoom = await Utils.deleteRoomIfExists();
                   if (errorWhileDeletingRoom == null) {
-                    String? errorWhileCreatingRoom = await Utils.createRoomInFirebase(_nameController.text, _nbOfRounds);
+                    String? errorWhileCreatingRoom = await Utils.createRoomInFirebase(Utils.title(_nameController.text), _nbOfRounds);
                     mpNotifier.setGameStatus(GameStatus.none);
                     if (errorWhileCreatingRoom == null) {
                       entityNotifier.changeGameEntity(Entity.waitingopponent);

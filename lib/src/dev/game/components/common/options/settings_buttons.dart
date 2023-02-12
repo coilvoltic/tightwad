@@ -27,7 +27,7 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
   late OptionsNotifier     _optionsNotifier;
   late EntityNotifier      _entityNotifier;
   late MultiPlayerNotifier _mpNotifier;
-  late GameHandlerNotifier _gameHandlerNotifier;
+  late GameHandlerNotifier _ghNotifier;
   bool _areSettingsChanging = false;
 
   double _gamePxSize     = 0.0;
@@ -48,7 +48,7 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
     );
     _optionsNotifier = OptionsNotifier();
     _entityNotifier = EntityNotifier();
-    _gameHandlerNotifier = GameHandlerNotifier();
+    _ghNotifier = GameHandlerNotifier();
     _mpNotifier = MultiPlayerNotifier();
     super.initState();
   }
@@ -129,10 +129,10 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    _optionsNotifier     = Provider.of<OptionsNotifier>    (context, listen: true);
-    _gameHandlerNotifier = Provider.of<GameHandlerNotifier>(context, listen: true);
-    _entityNotifier      = Provider.of<EntityNotifier>     (context, listen: true);
-    _mpNotifier          = Provider.of<MultiPlayerNotifier>(context, listen: true);
+    _optionsNotifier = Provider.of<OptionsNotifier>    (context, listen: true);
+    _ghNotifier      = Provider.of<GameHandlerNotifier>(context, listen: true);
+    _entityNotifier  = Provider.of<EntityNotifier>     (context, listen: true);
+    _mpNotifier      = Provider.of<MultiPlayerNotifier>(context, listen: true);
     
     constantsCalculation();
     if (_areSettingsChanging != _optionsNotifier.getAreSettingsChanging) {
@@ -140,10 +140,9 @@ class _SettingsButtonsState extends State<SettingsButtons> with SingleTickerProv
       _areSettingsChanging = _optionsNotifier.getAreSettingsChanging;
     }
 
-    if (_entityNotifier.getIsModeChanging || _gameHandlerNotifier.getGameStatus != GameStatus.playing || _mpNotifier.getGameStatus != GameStatus.playing ||
-    (Database.getGameEntity() != Utils.SINGLEPLAYERGAME_ENTITY_INDEX &&
-     Database.getGameEntity() != Utils.MULTIPLAYERGAME_ENTITY_INDEX &&
-     Database.getGameEntity() != Utils.LOBBY_ENTITY_INDEX)) {
+    if (_entityNotifier.getIsModeChanging ||
+        (Database.getGameEntity() == Utils.SINGLEPLAYERGAME_ENTITY_INDEX && _ghNotifier.getGameStatus != GameStatus.playing) ||
+        (Database.getGameEntity() == Utils.MULTIPLAYERGAME_ENTITY_INDEX  && _mpNotifier.getGameStatus != GameStatus.playing)) {
       return const Nothing();
     } else {
       return buildSettingsButtons();

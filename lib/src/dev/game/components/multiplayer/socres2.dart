@@ -44,7 +44,7 @@ class _Scores2State extends State<Scores2> {
         decoration: BoxDecoration(
           border: Border.all(
             color: isTurn ? Utils.getIconColorFromTheme() : Utils.getIconColorFromTheme().withAlpha(128),
-            width: 2.0,
+            width: 4.0,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(10.0)),
         ),
@@ -101,7 +101,7 @@ class _Scores2State extends State<Scores2> {
           color: Utils.getBackgroundColorFromTheme(),
           border: Border.all(
             color: Utils.getIconColorFromTheme(),
-            width: 4.0
+            width: 7.0
           ),
           borderRadius: const BorderRadius.all(Radius.circular(15.0))
         ),

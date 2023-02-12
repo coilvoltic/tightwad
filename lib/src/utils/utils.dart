@@ -476,4 +476,8 @@ abstract class Utils {
     return Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), 1);
   }
 
+  static String title(final String name) {
+    return "${name[0].toUpperCase()}${name.substring(1).toLowerCase()}";
+  }
+
 }

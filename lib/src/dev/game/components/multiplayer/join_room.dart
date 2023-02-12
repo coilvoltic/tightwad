@@ -131,7 +131,7 @@ class _JoinRoomState extends State<JoinRoom> {
                   mpNotifier.setGameStatus(GameStatus.none);
                   return;
                 }
-                String? errorWhileJoining = await Utils.joinRoom(_nameController.text, _idController.text);
+                String? errorWhileJoining = await Utils.joinRoom(Utils.title(_nameController.text), _idController.text);
                 if (errorWhileJoining != null) {
                   setState(() {
                     _idErrorMessage = errorWhileJoining;

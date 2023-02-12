@@ -10,6 +10,7 @@ import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
+import 'package:tightwad/src/utils/nothing.dart';
 import 'package:tightwad/src/utils/option_button_package.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
@@ -24,7 +25,7 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
 
   late AnimationController _modeController;
   late EntityNotifier      _entityNotifier;
-  late GameHandlerNotifier _gameHandlerNotifier;
+  late GameHandlerNotifier _ghNotifier;
   late OptionsNotifier     _optionsNotifier;
   late MultiPlayerNotifier _mpNotifier;
   
@@ -47,7 +48,7 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
       vsync: this,
     );
     _entityNotifier = EntityNotifier();
-    _gameHandlerNotifier = GameHandlerNotifier();
+    _ghNotifier = GameHandlerNotifier();
     _optionsNotifier = OptionsNotifier();
     _mpNotifier = MultiPlayerNotifier();
     super.initState();
@@ -91,7 +92,7 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
             _entityNotifier.changeGameEntity(optionButtonPackage.mode),
           },
           if (optionButtonPackage.mode == Entity.singleplayerwelcome) {
-            _gameHandlerNotifier.resetLevel(),
+            _ghNotifier.resetLevel(),
           }
         }
       },
@@ -130,21 +131,20 @@ class _ModesButtonsState extends State<ModesButtons> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    _entityNotifier      = Provider.of<EntityNotifier>(context, listen: true);
-    _gameHandlerNotifier = Provider.of<GameHandlerNotifier>(context, listen: true);
-    _optionsNotifier     = Provider.of<OptionsNotifier>(context, listen: true);
-    _mpNotifier          = Provider.of<MultiPlayerNotifier>(context, listen: true);
+    _entityNotifier  = Provider.of<EntityNotifier>(context, listen: true);
+    _ghNotifier      = Provider.of<GameHandlerNotifier>(context, listen: true);
+    _optionsNotifier = Provider.of<OptionsNotifier>(context, listen: true);
+    _mpNotifier      = Provider.of<MultiPlayerNotifier>(context, listen: true);
     
     constantsCalculation();
     if (_isModeChanging != _entityNotifier.getIsModeChanging) {
       updateModeController();
       _isModeChanging = _entityNotifier.getIsModeChanging;
     }
-    if (_optionsNotifier.getAreSettingsChanging || _gameHandlerNotifier.getGameStatus != GameStatus.playing || _mpNotifier.getGameStatus != GameStatus.playing ||
-       (Database.getGameEntity() != Utils.SINGLEPLAYERGAME_ENTITY_INDEX &&
-        Database.getGameEntity() != Utils.MULTIPLAYERGAME_ENTITY_INDEX &&
-        Database.getGameEntity() != Utils.LOBBY_ENTITY_INDEX)) {
-        return Container();
+    if (_optionsNotifier.getAreSettingsChanging ||
+        (Database.getGameEntity() == Utils.SINGLEPLAYERGAME_ENTITY_INDEX && _ghNotifier.getGameStatus != GameStatus.playing) ||
+        (Database.getGameEntity() == Utils.MULTIPLAYERGAME_ENTITY_INDEX  && _mpNotifier.getGameStatus != GameStatus.playing)) {
+        return const Nothing();
       } else {
         return buildModesButtons();
       }
