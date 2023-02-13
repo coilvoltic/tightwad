@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 
-import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/dev/tutorial/components/learning/utils/mock_map.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/utils.dart';

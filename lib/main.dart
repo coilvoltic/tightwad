@@ -9,7 +9,6 @@ import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';
 import 'package:tightwad/src/notifiers/options_notifier.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
-import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/database/database.dart';
 import 'package:tightwad/src/utils/utils.dart';
 
