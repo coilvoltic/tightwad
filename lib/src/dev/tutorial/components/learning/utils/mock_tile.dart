@@ -6,6 +6,7 @@ import 'package:tightwad/src/utils/colors.dart';
 import 'package:tightwad/src/utils/common_enums.dart';
 import 'package:tightwad/src/utils/coordinates.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:tightwad/src/utils/utils.dart';
 
 class MockTile extends StatefulWidget {
   const MockTile({
@@ -62,21 +63,21 @@ class _MockTileState extends State<MockTile> {
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
-        color: ThemeColors.background.getLightColor,
-        borderRadius: BorderRadius.circular(23.0 - 2 * widget.sqNbOfTiles),
+        color: Utils.getBackgroundColorFromTheme(),
+        borderRadius: BorderRadius.circular(45.0 - 5 * widget.sqNbOfTiles),
         boxShadow: [
           BoxShadow(
             blurRadius: 4.0,
             offset: -Offset(
                 6.5 - widget.sqNbOfTiles / 2, 6.5 - widget.sqNbOfTiles / 2),
-            color: ThemeColors.tileBrightness.getLightColor,
+            color: Utils.getTileBrightnessColorFromTheme(),
             inset: widget.owner != Player.none,
           ),
           BoxShadow(
             blurRadius: 4.0,
             offset: Offset(
                 6.5 - widget.sqNbOfTiles / 2, 6.5 - widget.sqNbOfTiles / 2),
-            color: ThemeColors.tileShadow.getLightColor,
+            color: Utils.getTileShadowColorFromTheme(),
             inset: widget.owner != Player.none,
           ),
         ],

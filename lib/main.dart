@@ -43,7 +43,7 @@ class Tightwad extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           bottomSheetTheme: BottomSheetThemeData(
-            backgroundColor: ThemeColors.background.getLightColor,
+            backgroundColor: Utils.getBackgroundColorFromTheme(),
           ),
         ),
         title: 'Tightwad!',

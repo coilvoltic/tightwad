@@ -31,18 +31,18 @@ class _LearningPagesState extends State<LearningPages> {
 
   Widget buildPage1Description() {
     return SafeArea(
-        child: Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-        padding: const EdgeInsets.only(
-          top: 40.0,
-        ),
-        child: GlowText(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          padding: const EdgeInsets.only(
+            top: 40.0,
+          ),
+          child: GlowText(
           'YOU START THE GAME\nBY PICKING ONE ELEMENT',
-                      blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
-              glowColor: Utils.shouldGlow()
-                    ? Utils.getPassedColorFromTheme()
-                    : Colors.transparent,
+          blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+          glowColor: Utils.shouldGlow()
+                ? Utils.getPassedColorFromTheme()
+                : Colors.transparent,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'BebasNeue',
@@ -239,7 +239,7 @@ class _LearningPagesState extends State<LearningPages> {
     return Stack(
       children: [
         Container(
-            color: ThemeColors.background.getLightColor,
+            color: Utils.getBackgroundColorFromTheme(),
             child: SafeArea(
               child: Stack(
                 children: [
@@ -390,7 +390,7 @@ class _LearningPagesState extends State<LearningPages> {
           width: MediaQuery.of(context).size.width,
           child: Center(
             child: isLastPage
-                ? Container(color: ThemeColors.background.getLightColor)
+                ? Container(color: Utils.getBackgroundColorFromTheme())
                 : buildSmoothPageIndicator(),
           ),
         ),
