@@ -220,8 +220,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<void> launchNotifyRandomCreatorNewMove() async {
     final int nbOfCreatorMoves = creatorMoves.length;
+    final int currentRound = _currentRound;
     Timer(const Duration(seconds: Utils.MOVE_TIMEOUT), () async {
-      if (nbOfCreatorMoves == creatorMoves.length) {
+      if (nbOfCreatorMoves == creatorMoves.length && currentRound == _currentRound && _gameStatus == GameStatus.playing) {
         Random random = Random();
         final Coordinates randomMove = _creatorPossibleMoves[random.nextInt(_creatorPossibleMoves.length)];
         updateLocalCreatorTiles(randomMove);
@@ -267,8 +268,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<void> launchNotifyRandomGuestNewMove() async {
     final int nbOfGuestMoves = guestMoves.length;
+    final int currentRound = _currentRound;
     Timer(const Duration(seconds: Utils.MOVE_TIMEOUT), () async {
-      if (nbOfGuestMoves == guestMoves.length) {
+      if (nbOfGuestMoves == guestMoves.length && currentRound == _currentRound && _gameStatus == GameStatus.playing) {
         Random random = Random();
         final Coordinates randomMove = _guestPossibleMoves[random.nextInt(_guestPossibleMoves.length)];
         updateLocalGuestTiles(randomMove);
@@ -299,8 +301,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<void> launchQuitDueToIdleFromGuest() async {
     final int nbOfGuestMoves = guestMoves.length;
+    final int currentRound = _currentRound;
     Timer(const Duration(seconds: Utils.MOVE_TIMEOUT + 5), () async {
-      if (nbOfGuestMoves == guestMoves.length) {
+      if (nbOfGuestMoves == guestMoves.length && currentRound == _currentRound && _gameStatus == GameStatus.playing) {
         setOpponentLeft();
       }
     });
@@ -344,8 +347,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<void> launchQuitDueToIdleFromCreator() async {
     final int nbOfCreatorMoves = creatorMoves.length;
+    final int currentRound = _currentRound;
     Timer(const Duration(seconds: Utils.MOVE_TIMEOUT + 5), () async {
-      if (nbOfCreatorMoves == creatorMoves.length) {
+      if (nbOfCreatorMoves == creatorMoves.length && currentRound == _currentRound && _gameStatus == GameStatus.playing) {
         setOpponentLeft();
       }
     });
