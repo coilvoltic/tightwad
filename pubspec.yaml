@@ -36,7 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_inset_box_shadow: ^1.0.8
   provider: ^6.0.2
-  google_fonts: ^3.0.0
   confetti: ^0.7.0
   font_awesome_flutter: ^10.1.0
   smooth_page_indicator: ^1.0.0+2
@@ -95,6 +94,8 @@ flutter:
     - assets/player2-8.wav
     - assets/victory.mp3
     - assets/defeat.mp3
+    - assets/draw.wav
+    - assets/draw-session.wav
 
   fonts:
     - family: BebasNeue
@@ -112,6 +113,9 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: fonts/Montserrat.ttf
+    - family: FreestyleScript
+      fonts:
+        - asset: fonts/FreestyleScript.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

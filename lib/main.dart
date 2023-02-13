@@ -63,15 +63,15 @@ class SplashScreen extends StatelessWidget {
       splash: SafeArea(
         child: Center(
           child: GlowText(
-            'tightwad!',
-            blurRadius: Utils.shouldGlow() ? 2.5 : 0.0,
+            'Tw',
+            blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
             glowColor: Utils.shouldGlow()
                   ? Utils.getPassedColorFromTheme()
                   : Colors.transparent,
             style: TextStyle(
-              fontFamily: 'Parisienne',
+              fontFamily: 'FreestyleScript',
               decoration: TextDecoration.none,
-              fontSize: 80.0,
+              fontSize: 130.0,
               fontWeight: FontWeight.bold,
               color: Utils.getPassedColorFromTheme(),
             ),

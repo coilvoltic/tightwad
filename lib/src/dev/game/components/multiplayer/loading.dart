@@ -29,7 +29,7 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return SpinKitPulse(
       color: Utils.getIconColorFromTheme(),
-      size: 150.0,
+      size: 100.0,
       controller: _controller,
     );
   }

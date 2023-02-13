@@ -464,6 +464,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
         }
         setGameStatus(GameStatus.losesession);
       } else {
+        if (Database.getSoundSettingOn()) {
+          playSound('draw-session.wav');
+        }
         setGameStatus(GameStatus.drawsession);
       }
       Timer(const Duration(seconds: 2), () {
@@ -503,6 +506,9 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   void setDraw() {
     Timer(const Duration(seconds: 2), () {
+      if (Database.getSoundSettingOn()) {
+        playSound('draw.wav');
+      }
       setGameStatus(GameStatus.draw);
       Timer(const Duration(seconds: 3), () {
         checkEndSession();

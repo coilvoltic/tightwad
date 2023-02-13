@@ -53,7 +53,7 @@ class Database {
 
   static int    getGameEntity()     => _preferences?.getInt   (_keyGameEntity)   ?? Utils.SINGLEPLAYERWELCOME_ENTITY_INDEX;
   static int    getLevel()          => _preferences?.getInt   (_keyLevel)        ?? 0;
-  static int    getGameTheme()      => _preferences?.getInt   (_keyGameTheme)    ?? Utils.LIGHT_THEME_INDEX;
+  static int    getGameTheme()      => _preferences?.getInt   (_keyGameTheme)    ?? Utils.DIAMOND_THEME_INDEX;
   static bool   getSoundSettingOn() => _preferences?.getBool  (_keySoundSetting) ?? true;
   static String getRoomId()         => _preferences?.getString(_keyRoomId)       ?? '-1';
   static bool   getIsBoss()         => _preferences?.getBool  (_keyIsBoss)       ?? false;

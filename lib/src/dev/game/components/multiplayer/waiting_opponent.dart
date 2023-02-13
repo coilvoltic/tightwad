@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_glow/flutter_glow.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:tightwad/src/database/database.dart';
@@ -23,7 +24,7 @@ class WaitingOpponent extends StatefulWidget {
 class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProviderStateMixin {
 
   late AnimationController _controller;
-  final double ratioWaitingOpponentStatement = 0.38;
+  final double ratioWaitingOpponentStatement = 0.41;
   final double ratioLoader = 0.15;
   final double ratioRoomIdStatement = 0.2;
 
@@ -58,12 +59,16 @@ class _WaitingOpponentState extends State<WaitingOpponent> with SingleTickerProv
               color: Utils.getPassedColorFromTheme(),
             ),
           ),
-          Text(
+          GlowText(
             'opponent',
+            blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+            glowColor: Utils.shouldGlow()
+                  ? Utils.getPassedColorFromTheme()
+                  : Colors.transparent,
             style: TextStyle(
               fontFamily: 'Parisienne',
               decoration: TextDecoration.none,
-              fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 25),
+              fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 30),
               fontWeight: FontWeight.bold,
               color: Utils.getPassedColorFromTheme(),
             ),

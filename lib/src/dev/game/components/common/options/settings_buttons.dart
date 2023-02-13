@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tightwad/src/database/database.dart';
-import 'package:tightwad/src/dev/game/components/common/options/flow_settings_delegate%20copy.dart';
+import 'package:tightwad/src/dev/game/components/common/options/flow_settings_delegate.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
 import 'package:tightwad/src/notifiers/game_handler_notifier.dart';
 import 'package:tightwad/src/notifiers/multiplayer_notifier.dart';

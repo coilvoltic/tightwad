@@ -11,9 +11,9 @@ import 'package:tightwad/src/utils/level_handler_factory.dart';
 import 'package:tightwad/src/database/database.dart';
 
 class GameHandlerNotifier extends ChangeNotifier {
+  
   GameStatus gameStatus = GameStatus.playing;
-  // int lvl = Database.getLevel();
-  int lvl = 5;
+  int lvl = Database.getLevel();
   bool isNewLvl = false;
   Coordinates algoNextMove = Coordinates(0, 0);
 
@@ -283,13 +283,13 @@ class GameHandlerNotifier extends ChangeNotifier {
 
   void setWin() {
     isNewLvl = true;
-    Timer(const Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 2), () {
       if (Database.getSoundSettingOn()) {
         playSound('wow.wav');
       }
       gameStatus = GameStatus.win;
       notifyListeners();
-      Timer(const Duration(seconds: 1), () {
+      Timer(const Duration(seconds: 2), () {
         if (lvl == 24) {
           gameStatus = GameStatus.finish;
           registerIsBoss();
@@ -303,13 +303,13 @@ class GameHandlerNotifier extends ChangeNotifier {
   }
 
   void setLose() {
-    Timer(const Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 2), () {
       if (Database.getSoundSettingOn()) {
         playSound('lose.wav');
       }
       gameStatus = GameStatus.lose;
       notifyListeners();
-      Timer(const Duration(seconds: 1), () {
+      Timer(const Duration(seconds: 2), () {
         gameStatus = GameStatus.tryagain;
         notifyListeners();
       });

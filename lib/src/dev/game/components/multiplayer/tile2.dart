@@ -57,7 +57,7 @@ class _Tile2State extends State<Tile2> {
 
     return GlowText(
       '${widget.number}',
-      blurRadius: Utils.shouldGlow() ? 2.5 : 0.0,
+      blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
       glowColor: Utils.shouldGlow() ? textColor : Colors.transparent,
       textAlign: TextAlign.center,
       style: TextStyle(

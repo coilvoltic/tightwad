@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_glow/flutter_glow.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tightwad/src/notifiers/entity_notifier.dart';
@@ -25,7 +26,6 @@ class _LearningPagesState extends State<LearningPages> {
   @override
   void dispose() {
     pageViewController.dispose();
-
     super.dispose();
   }
 
@@ -37,15 +37,19 @@ class _LearningPagesState extends State<LearningPages> {
         padding: const EdgeInsets.only(
           top: 40.0,
         ),
-        child: Text(
+        child: GlowText(
           'YOU START THE GAME\nBY PICKING ONE ELEMENT',
+                      blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+              glowColor: Utils.shouldGlow()
+                    ? Utils.getPassedColorFromTheme()
+                    : Colors.transparent,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'BebasNeue',
             decoration: TextDecoration.none,
             fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
             fontWeight: FontWeight.bold,
-            color: ThemeColors.background.getDarkColor,
+            color: Utils.getPassedColorFromTheme(),
           ),
         ),
       ),
@@ -72,26 +76,34 @@ class _LearningPagesState extends State<LearningPages> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            GlowText(
               'YOU CAN CHOOSE ONLY ONE\nELEMENT PER ROW AND COLUMN',
+                          blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+              glowColor: Utils.shouldGlow()
+                    ? Utils.getPassedColorFromTheme()
+                    : Colors.transparent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
-                color: ThemeColors.background.getDarkColor,
+                color: Utils.getPassedColorFromTheme(),
               ),
             ),
-            Text(
+            GlowText(
               'SO THERE WILL BE BLOCKED CELLS',
+                          blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+              glowColor: Utils.shouldGlow()
+                    ? Utils.getPassedColorFromTheme()
+                    : Colors.transparent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
-                color: ThemeColors.background.getDarkColor,
+                color: Utils.getPassedColorFromTheme(),
               ),
             ),
           ],
@@ -120,26 +132,34 @@ class _LearningPagesState extends State<LearningPages> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            GlowText(
               'LOOK AT SOME COMBINATIONS\nYOU COULD OBTAIN AT THE END',
+                          blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+              glowColor: Utils.shouldGlow()
+                    ? Utils.getPassedColorFromTheme()
+                    : Colors.transparent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
-                color: ThemeColors.background.getDarkColor,
+                color: Utils.getPassedColorFromTheme(),
               ),
             ),
-            Text(
+            GlowText(
               'TRY TO HAVE IT AT SMALL AS POSSIBLE',
+                          blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+              glowColor: Utils.shouldGlow()
+                    ? Utils.getPassedColorFromTheme()
+                    : Colors.transparent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
-                color: ThemeColors.background.getDarkColor,
+                color: Utils.getPassedColorFromTheme(),
               ),
             ),
           ],
@@ -168,26 +188,34 @@ class _LearningPagesState extends State<LearningPages> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            GlowText(
               'YOU AND AN ALGORITHM WILL\nCHOOSE AN ELEMENT ONE BY ONE',
+                          blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+              glowColor: Utils.shouldGlow()
+                    ? Utils.getPassedColorFromTheme()
+                    : Colors.transparent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
-                color: ThemeColors.background.getDarkColor,
+                color: Utils.getPassedColorFromTheme(),
               ),
             ),
-            Text(
+            GlowText(
               'AT THE END, SMALLEST SUM WINS.',
+                          blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+              glowColor: Utils.shouldGlow()
+                    ? Utils.getPassedColorFromTheme()
+                    : Colors.transparent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'BebasNeue',
                 decoration: TextDecoration.none,
                 fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                 fontWeight: FontWeight.bold,
-                color: ThemeColors.background.getDarkColor,
+                color: Utils.getPassedColorFromTheme(),
               ),
             ),
           ],
@@ -216,14 +244,18 @@ class _LearningPagesState extends State<LearningPages> {
               child: Stack(
                 children: [
                   Center(
-                    child: Text(
+                    child: GlowText(
                       'GOT IT?',
+                                  blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+              glowColor: Utils.shouldGlow()
+                    ? Utils.getPassedColorFromTheme()
+                    : Colors.transparent,
                       style: TextStyle(
                         fontFamily: 'BebasNeue',
                         decoration: TextDecoration.none,
                         fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 60),
                         fontWeight: FontWeight.bold,
-                        color: ThemeColors.background.getDarkColor,
+                        color: Utils.getPassedColorFromTheme(),
                       ),
                     ),
                   ),
@@ -240,14 +272,18 @@ class _LearningPagesState extends State<LearningPages> {
                             ),
                             child: Transform.translate(
                               offset: Offset(0.0, statementPosition),
-                              child: Text(
+                              child: GlowText(
                                 'TAP TO PLAY!',
+                                            blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+              glowColor: Utils.shouldGlow()
+                    ? Utils.getPassedColorFromTheme()
+                    : Colors.transparent,
                                 style: TextStyle(
                                   fontFamily: 'BebasNeue',
                                   decoration: TextDecoration.none,
                                   fontSize: Utils.getSizeFromContext(MediaQuery.of(context).size, 15),
                                   fontWeight: FontWeight.bold,
-                                  color: ThemeColors.background.getDarkColor,
+                                  color: Utils.getPassedColorFromTheme(),
                                 ),
                               ),
                             ),
@@ -294,14 +330,18 @@ class _LearningPagesState extends State<LearningPages> {
                 splashFactory: NoSplash.splashFactory,
                 minimumSize: Size.fromHeight(bottomSheetHeight),
               ),
-              child: Text(
+              child: GlowText(
                 'CLICK TO PLAY!',
+                            blurRadius: Utils.shouldGlow() ? Utils.GLOWING_VALUE : 0.0,
+              glowColor: Utils.shouldGlow()
+                    ? Utils.getPassedColorFromTheme()
+                    : Colors.transparent,
                 style: TextStyle(
                   fontFamily: 'Righteous',
                   decoration: TextDecoration.none,
                   fontSize: 28.0,
                   fontWeight: FontWeight.bold,
-                  color: ThemeColors.background.getDarkColor,
+                  color: Utils.getPassedColorFromTheme(),
                 ),
               ),
             ),
@@ -316,7 +356,7 @@ class _LearningPagesState extends State<LearningPages> {
       effect: WormEffect(
         spacing: 15,
         dotColor: Colors.black12,
-        activeDotColor: ThemeColors.background.getDarkColor,
+        activeDotColor: Utils.getPassedColorFromTheme(),
       ),
     );
   }

@@ -36,7 +36,7 @@ abstract class Utils {
   static const int MULTIPLAYERGAME_ENTITY_INDEX = 6;
 
   // ignore: constant_identifier_names
-  static const int THEME_ANIMATION_DURATION_MS = 220;
+  static const int THEME_ANIMATION_DURATION_MS = 200;
 
   // ignore: constant_identifier_names
   static const double ZERO_PLUS = 0.0001;
@@ -62,6 +62,8 @@ abstract class Utils {
   static const int ROOM_ID_MIN = 100000;
   // ignore: constant_identifier_names
   static const int MOVE_TIMEOUT = 15;
+  // ignore: constant_identifier_names
+  static const double GLOWING_VALUE = 15.0;
 
   static Color getBackgroundColorFromTheme() {
     if (Database.getGameTheme() == LIGHT_THEME_INDEX) {

@@ -63,7 +63,7 @@ class _Statement2State extends State<Statement2> {
       _statement = "NO\nWINNER!";
       _sizeRatio = 40;
     } else if (mpNotifier.getGameStatus == GameStatus.error) {
-      _statement = "ERROR\nOCCURED!";
+      _statement = "AN ERROR\nOCCURED!";
       _sizeRatio = 30;
     } else if (mpNotifier.getGameStatus == GameStatus.retry) {
       _statement = "TAP TO\nRETRY";
