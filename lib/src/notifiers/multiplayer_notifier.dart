@@ -454,7 +454,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         playSound('victory.mp3');
       }
       setGameStatus(GameStatus.winsession);
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 4), () {
         setGameStatus(GameStatus.leavewon);
       });
     } else {
@@ -469,7 +469,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
         }
         setGameStatus(GameStatus.drawsession);
       }
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 4), () {
         setGameStatus(GameStatus.leavelostordraw);
       });
     }
