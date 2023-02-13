@@ -45,7 +45,6 @@ class Passed {
   Color light   = const Color.fromRGBO(46, 50, 57, 1);
   Color dark    = const Color.fromRGBO(231, 236, 239, 1);
   Color diamond = const Color.fromRGBO(231, 236, 239, 1);
-  // const Color.fromRGBO(29, 174, 214, 1)
 
   Color get getLightColor   => light;
   Color get getDarkColor    => dark;
