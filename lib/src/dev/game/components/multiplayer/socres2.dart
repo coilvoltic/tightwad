@@ -39,7 +39,7 @@ class _Scores2State extends State<Scores2> {
         duration: const Duration(milliseconds: Utils.THEME_ANIMATION_DURATION_MS),
         alignment: player == MultiPlayerStatus.creator ? Alignment.centerLeft : Alignment.centerRight,
         padding: player == MultiPlayerStatus.creator ? const EdgeInsets.only(left: 10.0) : const EdgeInsets.only(right: 10.0),
-        height: _height * 0.35,
+        height: _height * 0.32,
         width: MediaQuery.of(context).size.width * 0.45,
         decoration: BoxDecoration(
           border: Border.all(
