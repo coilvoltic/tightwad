@@ -299,7 +299,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<void> launchQuitDueToIdleFromGuest() async {
     final int nbOfGuestMoves = guestMoves.length;
-    Timer(const Duration(seconds: Utils.MOVE_TIMEOUT + 3), () async {
+    Timer(const Duration(seconds: Utils.MOVE_TIMEOUT + 5), () async {
       if (nbOfGuestMoves == guestMoves.length) {
         setOpponentLeft();
       }
@@ -344,7 +344,7 @@ class MultiPlayerNotifier extends ChangeNotifier {
 
   Future<void> launchQuitDueToIdleFromCreator() async {
     final int nbOfCreatorMoves = creatorMoves.length;
-    Timer(const Duration(seconds: Utils.MOVE_TIMEOUT + 3), () async {
+    Timer(const Duration(seconds: Utils.MOVE_TIMEOUT + 5), () async {
       if (nbOfCreatorMoves == creatorMoves.length) {
         setOpponentLeft();
       }
